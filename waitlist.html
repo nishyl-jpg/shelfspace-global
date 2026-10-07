@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shelfspace Global: join the waiting list</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="description" content="A digital mall where every creator has their own shop. Join the waiting list and tell us what you need from it.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;800;900&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@500;600&display=swap">
+<style>
+  /* Layout: one 680px column. Step 1 picks the group, step 2 is that group's questions, step 3 confirms. */
+  :root{
+    --bg:#0D0D0D; --surface:#171717; --surface-2:#212121; --ink:#F3F3F1; --muted:#ABABA6; --line:#343434;
+    --accent:#FF1F1F; --accent-strong:#D90000; --on-accent:#FFFFFF; --good:#7FCB93; --warn:#FF8A80;
+    --display:'Roboto Condensed','Arial Narrow',sans-serif;
+    --body:'Roboto',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --mono:'Roboto Mono',Consolas,monospace;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:680px;margin:0 auto;padding-inline:20px}
+  header{border-bottom:1px solid var(--line)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:62px}
+  .mark{display:flex;align-items:center;gap:10px;font:900 1.35rem var(--display);text-transform:uppercase;letter-spacing:.04em}
+  .mark small{font:700 .5em var(--body);letter-spacing:.2em;color:var(--muted)}
+  .tile{width:26px;height:20px;border-radius:6px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
+  .pill{font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:6px 11px;color:var(--muted);white-space:nowrap}
+  main{padding-block:36px 64px}
+  h1,h2{font-family:var(--display);text-transform:uppercase;line-height:1.02;margin:0;text-wrap:balance}
+  h1{font-size:clamp(2.1rem,7vw,3.3rem);font-weight:900}
+  h1 em{font-style:normal;color:var(--accent)}
+  h2{font-size:1.6rem;font-weight:800}
+  .lede{color:var(--muted);margin:14px 0 0;max-width:56ch}
+  .fine{font:500 .78rem var(--mono);color:var(--muted);margin-top:12px}
+  .choices{display:grid;gap:12px;margin-top:28px}
+  .choice{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:18px;font:inherit;cursor:pointer;transition:border-color .15s,background-color .15s}
+  .choice:hover{border-color:var(--accent);background:var(--surface-2)}
+  .choice b{display:block;font:800 1.25rem var(--display);text-transform:uppercase}
+  .choice span{font-size:.9rem;color:var(--muted)}
+  .choice i{margin-left:auto;font-style:normal;color:var(--accent);font-size:1.3rem}
+  .q{border-top:1px solid var(--line);padding-block:22px}
+  .q:first-of-type{border-top:0}
+  .q legend,.q label.t{display:block;font-weight:700;padding:0;margin-bottom:4px}
+  .q .help{font-size:.86rem;color:var(--muted);margin:0 0 10px}
+  .q .req{color:var(--accent);margin-left:4px}
+  fieldset{border:0;margin:0;padding:0;min-width:0}
+  .opts{display:grid;gap:8px;margin-top:10px}
+  .opt{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 12px;cursor:pointer}
+  .opt:has(input:checked){border-color:var(--accent);background:var(--surface-2)}
+  .opt input{margin-top:3px;accent-color:var(--accent-strong);flex:none}
+  .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+  .scale label{display:block;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 0;font:700 1.05rem var(--mono);cursor:pointer}
+  .scale label:has(input:checked){background:var(--accent-strong);border-color:var(--accent-strong);color:var(--on-accent)}
+  .scale input{position:absolute;opacity:0;pointer-events:none}
+  .ends{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:6px}
+  input[type=text],input[type=email],textarea,select{width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;margin-top:8px}
+  textarea{min-height:92px;resize:vertical}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .err{color:var(--warn);font-size:.86rem;margin-top:8px}
+  .q.bad{border-left:3px solid var(--accent);padding-left:14px}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 26px;border-radius:999px;font:700 1rem var(--body);border:1px solid transparent;cursor:pointer}
+  .btn-primary{background:var(--accent-strong);color:var(--on-accent)}
+  .btn-primary:hover{filter:brightness(1.12)}
+  .btn-primary[disabled]{opacity:.6;cursor:progress}
+  .btn-ghost{background:transparent;color:var(--muted);border-color:var(--line)}
+  .done{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:14px;padding:26px;margin-top:8px}
+  .done p{margin:10px 0 0;color:var(--muted)}
+  footer{border-top:1px solid var(--line);padding-block:22px 36px;font:500 .74rem var(--mono);color:var(--muted)}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+  [hidden]{display:none!important}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="mark" href="index.html" style="color:inherit;text-decoration:none"><span class="tile" aria-hidden="true"><svg viewBox="0 0 14 10" width="14" height="10"><rect width="14" height="2.4" rx="1.2" fill="#fff"/><rect y="7.6" width="14" height="2.4" rx="1.2" fill="#fff"/></svg></span><span>Shelfspace <small>GLOBAL</small></span></a>
+    <span class="pill">Patent pending</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Step 1: who are you -->
+  <section id="step-pick">
+    <h1>Join the <em>waiting list.</em></h1>
+    <p class="lede">Shelfspace Global is a digital mall where every creator has their own shop, suppliers ship straight from their warehouse, and shoppers walk in without an account. Tell us who you are and answer a few questions. It takes about three minutes.</p>
+    <p class="fine">No account needed. Leave your email only if you want a place on the list.</p>
+    <div class="choices" id="choices"></div>
+  </section>
+
+  <!-- Step 2: questions -->
+  <form id="step-form" hidden novalidate>
+    <p class="fine" id="group-label"></p>
+    <h2 id="group-title"></h2>
+    <p class="lede" id="group-desc"></p>
+    <div id="questions"></div>
+    <p class="err" id="form-err" role="alert" hidden></p>
+    <div class="actions">
+      <button class="btn btn-primary" id="send" type="submit">Join the waiting list</button>
+      <button class="btn btn-ghost" id="back" type="button">Back</button>
+    </div>
+    <p class="fine">Your answers go to Shelfspace Global only. We do not sell or share them.</p>
+  </form>
+
+  <!-- Step 3: confirmation -->
+  <section id="step-done" hidden>
+    <div class="done">
+      <h2 id="done-title">Answers sent.</h2>
+      <p id="done-text"></p>
+      <p>Questions? Write to hello@shelfspaceglobal.com.</p>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>SHELFSPACE GLOBAL · 2026</span><span>SA provisional patent application 2026/09595</span></div></footer>
+
+<script>
+/* Answers are posted to the existing Shelfspace Global Google Form, so they land in the same response sheet. */
+var FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSdTpBTTPUHgRCukU_XewYgRlQldmbHyi80Xf88HRashU-cN1g/formResponse";
+var WHO_ENTRY = 1396700633;
+var WHERE = { entry: 834814955, title: "Where are you based?", type: "drop", req: true, opts: ["South Africa", "Elsewhere in Africa", "UK or Europe", "US or Canada", "Somewhere else"] };
+var EMAIL_HELP = "Needed if you want a place on the waiting list. We will not share it or send spam.";
+var CALL = function (entry) { return { entry: entry, title: "Could we contact you for a 15-minute call?", type: "radio", opts: ["Yes", "No"] }; };
+
+var GROUPS = [
+  { key: "creator", page: 1, who: "I make content (YouTube, TikTok, Instagram, podcasts…)", card: ["Creators", "YouTube, TikTok, Instagram, podcasts"], title: "For creators", desc: "About how you earn from products today. Rough answers are fine.", qs: [
+    { entry: 1192213137, title: "Where do you post? (pick all that apply)", type: "check", req: true, other: true, opts: ["YouTube", "TikTok", "Instagram", "Twitch", "Podcast", "Blog or newsletter"] },
+    { entry: 1339282343, title: "How big is your audience on your main platform?", type: "radio", req: true, opts: ["Under 500", "500 to 10K", "10K to 100K", "100K to 1M", "Over 1M"] },
+    { entry: 2004033347, title: "How do you earn from products today? (pick all that apply)", type: "check", req: true, other: true, opts: ["Affiliate links (Amazon, Takealot, etc.)", "Brand deals or sponsorships", "My own merch or store (Shopify, etc.)", "Digital products (courses, PDFs, presets, templates)", "A link-in-bio page (Linktree, Beacons, Stan, etc.)", "I don't earn from products yet"] },
+    { entry: 1854035181, title: "Roughly how much do you earn per month from selling or recommending products?", type: "radio", req: true, opts: ["Nothing yet", "Under R1,000", "R1,000 to R5,000", "R5,000 to R20,000", "Over R20,000", "Prefer not to say"] },
+    { entry: 951895552, title: "How much time a week do you spend managing product links, codes and listings?", type: "radio", req: true, opts: ["Under 1 hour", "1 to 3 hours", "3 to 6 hours", "More than 6 hours"] },
+    { entry: 816828674, title: "What is the most annoying part of selling or recommending products right now?", help: "Think of the last time it went wrong.", type: "para" },
+    { entry: 915827455, title: "Shelfspace Global would give you your own shop in a digital mall, themed to your channel. You could stock brand products (earning a cut, no stock to handle), your own downloads and apps, and your existing Shopify catalog. Viewers need no account. How likely would you be to set one up in the first month?", type: "scale", req: true, ends: ["Not likely", "Very likely"] },
+    { entry: 1857485212, title: "Which would matter most to you? (pick up to 3)", type: "check", req: true, max: 3, opts: ["A shop themed to match my channel", "Stocking brand products without holding stock", "Selling my own digital products or apps", "Importing my existing Shopify store", "An AI assistant that helps my viewers find things", "AI tips on what to feature and bundle", "Clear stats on what sells"] },
+    { entry: 850515205, title: "Which way of paying would you prefer?", type: "radio", req: true, opts: ["Free to use, Shelfspace Global takes a small % of sales", "A monthly subscription, 0% commission", "Free up to a limit, then a subscription", "Not sure"] },
+    { entry: 368704564, title: "What would stop you from using it?", type: "para" },
+    { entry: 1937573977, title: "Email", help: EMAIL_HELP, type: "email" },
+    CALL(1400769292)
+  ]},
+  { key: "shopper", page: 2, who: "I watch creators and sometimes buy what they recommend", card: ["Shoppers", "You buy things creators recommend"], title: "For shoppers", desc: "About buying things creators recommend.", qs: [
+    { entry: 435355757, title: "How often do you buy something a creator recommended?", type: "radio", req: true, opts: ["Weekly", "Monthly", "A few times a year", "Rarely or never"] },
+    { entry: 586376269, title: "The last time you did, how did you buy it? (pick all that apply)", type: "check", req: true, other: true, opts: ["Link in the description or bio", "Used their discount code", "Searched for it in a store myself", "On the creator's own store", "TikTok Shop or Instagram shopping"] },
+    { entry: 799650675, title: "Have you ever NOT bought something a creator recommended because… (pick all that apply)", type: "check", other: true, opts: ["The link or code didn't work", "I had to create an account", "I couldn't find the product again later", "I didn't trust the store", "Shipping cost or time", "None of these"] },
+    { entry: 1053128206, title: "What kinds of things do you buy from creators? (pick all that apply)", type: "check", other: true, opts: ["Beauty and skincare", "Fitness", "Outdoor", "Home and kitchen", "Tech and gadgets", "Fashion", "Courses and digital downloads"] },
+    { entry: 1333723380, title: "What annoys you most about buying things creators recommend?", type: "para" },
+    { entry: 590271699, title: "Imagine each creator you follow has their own shop that looks like their channel, with everything they recommend in one place and no account needed. How interested would you be in browsing it?", type: "scale", req: true, ends: ["Not interested", "Very interested"] },
+    { entry: 737697516, title: "Would you use an AI assistant to find things across creators' shops (e.g. \"running shoes, size 11, under R1,500\")?", type: "radio", req: true, opts: ["Yes, definitely", "Maybe", "No, I prefer browsing myself"] },
+    { entry: 1261849982, title: "Email", help: EMAIL_HELP, type: "email" },
+    CALL(158575728)
+  ]},
+  { key: "business", page: 3, who: "I run a brand or supply products", card: ["Brands and suppliers", "You make or distribute products"], title: "For brands and suppliers", desc: "About how you work with creators today.", qs: [
+    { entry: 900464744, title: "What do you sell?", type: "short", req: true },
+    { entry: 1669395950, title: "How many people work in the business?", type: "radio", req: true, opts: ["Just me", "2 to 10", "11 to 50", "More than 50"] },
+    { entry: 1574306653, title: "How do you work with creators today? (pick all that apply)", type: "check", req: true, other: true, opts: ["Paid sponsorships", "Affiliate or commission programmes", "Gifting or product seeding", "Through an agency", "Marketplaces like TikTok Shop", "We don't work with creators yet"] },
+    { entry: 1338682522, title: "Roughly what do you spend on creator or influencer marketing per month?", type: "radio", req: true, opts: ["Nothing", "Under R10,000", "R10,000 to R50,000", "R50,000 to R200,000", "Over R200,000", "Prefer not to say"] },
+    { entry: 1295540597, title: "What is the biggest problem with creator marketing for you?", type: "para" },
+    { entry: 1771937025, title: "With Shelfspace Global you would list your products once. Creators choose to stock them on their shops and earn a commission on each sale. Stock and prices stay in sync. How interested would you be?", type: "scale", req: true, ends: ["Not interested", "Very interested"] },
+    { entry: 93531462, title: "What commission per sale would you offer creators?", type: "radio", req: true, opts: ["Under 5%", "5% to 10%", "10% to 20%", "More than 20%", "It depends on the product"] },
+    { entry: 544403685, title: "What would you need to see before you trusted it with your products?", type: "para" },
+    { entry: 130844189, title: "Email", help: EMAIL_HELP, type: "email" },
+    CALL(1525905904)
+  ]}
+];
+
+var $ = function (id) { return document.getElementById(id); };
+var el = function (tag, attrs, kids) {
+  var n = document.createElement(tag);
+  Object.keys(attrs || {}).forEach(function (k) { if (k === "text") n.textContent = attrs[k]; else if (k === "cls") n.className = attrs[k]; else n.setAttribute(k, attrs[k]); });
+  (kids || []).forEach(function (c) { n.appendChild(c); });
+  return n;
+};
+var current = null;
+
+GROUPS.forEach(function (g) {
+  var b = el("button", { cls: "choice", type: "button" }, [el("div", {}, [el("b", { text: g.card[0] }), el("span", { text: g.card[1] })]), el("i", { text: "→", "aria-hidden": "true" })]);
+  b.addEventListener("click", function () { open(g); });
+  $("choices").appendChild(b);
+});
+
+function field(q) {
+  var name = "entry." + q.entry, id = "q" + q.entry;
+  var titleKids = [document.createTextNode(q.title)];
+  if (q.req) titleKids.push(el("span", { cls: "req", text: "*", "aria-hidden": "true" }));
+  var box = el("div", { cls: "q", "data-entry": q.entry });
+  var grouped = q.type === "radio" || q.type === "check" || q.type === "scale";
+  var host = grouped ? el("fieldset", {}, [el("legend", {}, titleKids)]) : el("div", {}, [el("label", { cls: "t", for: id }, titleKids)]);
+  if (q.help) host.appendChild(el("p", { cls: "help", text: q.help }));
+  if (q.type === "radio" || q.type === "check") {
+    var opts = el("div", { cls: "opts" });
+    q.opts.forEach(function (o, i) {
+      opts.appendChild(el("label", { cls: "opt" }, [el("input", { type: q.type === "radio" ? "radio" : "checkbox", name: name, value: o, id: id + "_" + i }), el("span", { text: o })]));
+    });
+    if (q.other) {
+      var txt = el("input", { type: "text", id: id + "_othertext", placeholder: "Other (type it here)", "aria-label": "Other" });
+      opts.appendChild(txt);
+    }
+    host.appendChild(opts);
+  } else if (q.type === "scale") {
+    var sc = el("div", { cls: "scale" });
+    for (var v = 1; v <= 5; v++) sc.appendChild(el("label", {}, [el("input", { type: "radio", name: name, value: String(v), id: id + "_" + v }), document.createTextNode(String(v))]));
+    host.appendChild(sc);
+    host.appendChild(el("div", { cls: "ends" }, [el("span", { text: "1 = " + q.ends[0] }), el("span", { text: "5 = " + q.ends[1] })]));
+  } else if (q.type === "drop") {
+    var sel = el("select", { name: name, id: id }, [el("option", { value: "", text: "Choose one" })]);
+    q.opts.forEach(function (o) { sel.appendChild(el("option", { value: o, text: o })); });
+    host.appendChild(sel);
+  } else if (q.type === "para") {
+    host.appendChild(el("textarea", { name: name, id: id }));
+  } else {
+    host.appendChild(el("input", { type: q.type === "email" ? "email" : "text", name: name, id: id, autocomplete: q.type === "email" ? "email" : "off" }));
+  }
+  box.appendChild(host);
+  return box;
+}
+
+function open(g) {
+  current = g;
+  $("group-label").textContent = "ABOUT 3 MINUTES";
+  $("group-title").textContent = g.title;
+  $("group-desc").textContent = g.desc;
+  var host = $("questions"); host.textContent = "";
+  [WHERE].concat(g.qs).forEach(function (q) { host.appendChild(field(q)); });
+  $("step-pick").hidden = true; $("step-form").hidden = false; $("form-err").hidden = true;
+  window.scrollTo(0, 0);
+}
+var pre = GROUPS.filter(function (g) { return "#" + g.key === location.hash; })[0]; if (pre) open(pre);
+$("back").addEventListener("click", function () { $("step-form").hidden = true; $("step-pick").hidden = false; window.scrollTo(0, 0); });
+
+function collect() {
+  var data = new URLSearchParams(), firstBad = null, problem = "";
+  data.append("entry." + WHO_ENTRY, current.who);
+  [WHERE].concat(current.qs).forEach(function (q) {
+    var box = document.querySelector('.q[data-entry="' + q.entry + '"]'), name = "entry." + q.entry, values = [];
+    box.classList.remove("bad");
+    if (q.type === "radio" || q.type === "check" || q.type === "scale") {
+      box.querySelectorAll('input[name="' + name + '"]:checked').forEach(function (i) { values.push(i.value); });
+      var other = q.other ? document.getElementById("q" + q.entry + "_othertext").value.trim() : "";
+      values.forEach(function (v) { data.append(name, v); });
+      if (other) { data.append(name, "__other_option__"); data.append(name + ".other_option_response", other); values.push(other); }
+      if (q.max && values.length > q.max) { box.classList.add("bad"); firstBad = firstBad || box; problem = "Pick up to " + q.max + " for the highlighted question."; }
+    } else {
+      var v = box.querySelector("input,textarea,select").value.trim();
+      if (v) { values.push(v); data.append(name, v); }
+      if (q.type === "email" && v && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { box.classList.add("bad"); firstBad = firstBad || box; problem = "That email address does not look right."; }
+    }
+    if (q.req && !values.length) { box.classList.add("bad"); firstBad = firstBad || box; problem = problem || "Answer the highlighted questions to continue."; }
+  });
+  data.append("pageHistory", "0," + current.page);
+  return { data: data, firstBad: firstBad, problem: problem, email: data.get("entry." + current.qs[current.qs.length - 2].entry) };
+}
+
+$("step-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var r = collect(), err = $("form-err");
+  if (r.firstBad) { err.textContent = r.problem; err.hidden = false; r.firstBad.scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  err.hidden = true;
+  var btn = $("send"); btn.disabled = true; btn.textContent = "Sending…";
+  // Google Forms does not allow the browser to read its reply, so a completed request is treated as sent.
+  fetch(FORM_ACTION, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: r.data.toString() })
+    .then(function () {
+      $("done-title").textContent = r.email ? "You're on the list." : "Answers sent.";
+      $("done-text").textContent = r.email ? "We will email " + r.email + " when the first shops open. Thank you for telling us what you need." : "Thank you. You did not leave an email, so we cannot add you to the waiting list. Go back and add one if you want a place.";
+      $("step-form").hidden = true; $("step-done").hidden = false; window.scrollTo(0, 0);
+    })
+    .catch(function () {
+      err.textContent = "Your answers could not be sent. Check your connection and press the button again.";
+      err.hidden = false;
+    })
+    .then(function () { btn.disabled = false; btn.textContent = "Join the waiting list"; });
+});
+</script>
+</body>
+</html>

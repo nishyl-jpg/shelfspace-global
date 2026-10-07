@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Shelfspace Global is a digital mall where every creator has their own shop. Join the waiting list.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Shelfspace Global: a mall where every creator has their own shop</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;800;900&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@500;600&family=Cormorant+Garamond:wght@700&family=Bebas+Neue&family=Fredoka:wght@600&display=swap">
+<style>
+  /* Layout: one 1080px column; hero split (pitch | stacked shopfronts), then audience picker, assumptions, how-it-works, privacy */
+  :root{
+    --bg:#FFFFFF;
+    --surface:#F8F8F7;
+    --surface-2:#EFEFED;
+    --ink:#111111;
+    --muted:#5A5A57;
+    --line:#E3E3E0;
+    --accent:#FF0000;
+    --accent-strong:#CC0000;
+    --accent-text:#C20000;
+    --on-accent:#FFFFFF;
+    --chip:#111111;
+    --on-chip:#FFFFFF;
+    --good:#1A7A35;
+    --shadow:rgba(17,17,17,0.14);
+    --display:'Roboto Condensed','Arial Narrow',sans-serif;
+    --body:'Roboto',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --mono:'Roboto Mono','SFMono-Regular',Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F0F0F; --surface:#1A1A1A; --surface-2:#242424; --ink:#F2F2F0; --muted:#B2B2AE; --line:#363636;
+      --accent:#FF1F1F; --accent-strong:#CC0000; --accent-text:#FF6B63; --on-accent:#FFFFFF; --chip:#F2F2F0; --on-chip:#111111;
+      --good:#81C995; --shadow:rgba(0,0,0,0.6); color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F0F0F; --surface:#1A1A1A; --surface-2:#242424; --ink:#F2F2F0; --muted:#B2B2AE; --line:#363636;
+    --accent:#FF1F1F; --accent-strong:#CC0000; --accent-text:#FF6B63; --on-accent:#FFFFFF; --chip:#F2F2F0; --on-chip:#111111;
+    --good:#81C995; --shadow:rgba(0,0,0,0.6); color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
+  h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:1;margin:0;text-wrap:balance}
+  p{margin:0;text-wrap:pretty}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}
+  .eyebrow{font:600 .75rem/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;font:700 .92rem var(--body);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:filter .15s,background-color .15s,transform .1s}
+  .btn:active{transform:scale(.98)}
+  .btn-primary{background:var(--accent-strong);color:var(--on-accent)}
+  .btn-primary:hover{filter:brightness(1.1)}
+  .btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{background:var(--surface-2)}
+  .btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed}
+
+  header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:62px}
+  .mark{display:flex;align-items:center;gap:10px;font:900 1.4rem var(--display);text-transform:uppercase;letter-spacing:.04em;text-decoration:none}
+  .tile{width:26px;height:20px;border-radius:6px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
+  .stage-pill{font:600 .72rem var(--mono);letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--muted)}
+
+  .hero{padding-block:56px 64px;border-bottom:1px solid var(--line);background:radial-gradient(ellipse 800px 380px at 90% -10%,color-mix(in srgb,var(--accent) 9%,transparent),transparent 70%)}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.6rem);font-weight:800;margin-top:14px}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero .lede{font-size:1.1rem;color:var(--muted);max-width:52ch;margin-top:18px}
+  .hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+  .hero .fine{font:500 .8rem var(--mono);color:var(--muted);margin-top:14px}
+
+  .fronts{position:relative;height:380px}
+  .front{position:absolute;width:78%;border-radius:14px;overflow:hidden;border:10px solid var(--chip);box-shadow:0 30px 50px -28px var(--shadow);background:var(--p-surface);color:var(--p-ink)}
+  .front .sign{background:var(--p-bg);border-bottom:5px solid var(--p-accent);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .front .sign b{color:var(--p-accent);font-size:1.7rem;line-height:1;white-space:nowrap}
+  .front .sign span{font:600 .7rem var(--mono);letter-spacing:.12em;color:var(--p-muted)}
+  .front .win{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px;background:var(--p-bg)}
+  .front .item{background:var(--p-surface);border:1px solid var(--p-line);border-radius:8px;padding:8px;font-size:.72rem;line-height:1.25;display:flex;flex-direction:column;gap:6px}
+  .front .item i{display:block;height:34px;border-radius:5px;background:var(--p-accent);opacity:.85}
+  .front .item s{text-decoration:none;font:600 .72rem var(--mono);color:var(--p-accent)}
+  .f1{top:0;left:0;transform:rotate(-4deg);--p-bg:#0E1B33;--p-surface:#16264A;--p-ink:#F4F6FF;--p-muted:#A9B7DE;--p-accent:#D4AF37;--p-line:#2A407A}
+  .f1 b{font-family:'Cormorant Garamond',Georgia,serif}
+  .f2{top:120px;right:0;transform:rotate(3deg);--p-bg:#1B2420;--p-surface:#233129;--p-ink:#EFF5EE;--p-muted:#9DB2A3;--p-accent:#EE8A45;--p-line:#33453C}
+  .f2 b{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400}
+  .f3{top:236px;left:6%;transform:rotate(-1.5deg);--p-bg:#FBF5FA;--p-surface:#FFFFFF;--p-ink:#3B2E3A;--p-muted:#7A6878;--p-accent:#C23A6B;--p-line:#F0DCE8}
+  .f3 b{font-family:'Fredoka',sans-serif}
+  .fronts figcaption{position:absolute;bottom:-34px;left:0;right:0;text-align:center;font:500 .75rem var(--mono);color:var(--muted)}
+
+  section.band{padding-block:64px;border-bottom:1px solid var(--line)}
+  .band h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-top:8px}
+  .band .intro{color:var(--muted);max-width:62ch;margin-top:12px}
+
+  .sides{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:32px}
+  .side{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+  .side .who{display:flex;align-items:center;gap:12px}
+  .side .ico{width:44px;height:44px;border-radius:12px;background:var(--chip);color:var(--on-chip);display:flex;align-items:center;justify-content:center;flex:none}
+  .side h3{font-size:1.45rem;font-weight:800}
+  .side .sub{font-size:.88rem;color:var(--muted)}
+  .side ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1}
+  .side li{position:relative;padding-left:18px;font-size:.94rem}
+  .side li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .side .meta{font:500 .75rem var(--mono);color:var(--muted)}
+  .side .btn{width:100%}
+
+  .tests{margin-top:32px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .test{border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:start}
+  .test .id{grid-row:span 3;font:700 .8rem var(--mono);background:var(--chip);color:var(--on-chip);border-radius:8px;padding:6px 9px;letter-spacing:.06em}
+  .test h3{font-family:var(--body);text-transform:none;font-size:1.05rem;font-weight:700;line-height:1.35}
+  .test p{font-size:.9rem;color:var(--muted)}
+  .test .signal{font-size:.86rem;color:var(--ink)}
+  .test .signal b{font:600 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--good);margin-right:6px}
+
+  .steps{margin-top:32px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:s}
+  .step{padding-top:18px;border-top:3px solid var(--ink)}
+  .step:nth-child(2){border-color:var(--accent-strong)}
+  .step:nth-child(3){border-color:var(--good)}
+  .step .n{font:600 .75rem var(--mono);color:var(--muted);letter-spacing:.12em}
+  .step h3{font-size:1.3rem;font-weight:800;margin-top:6px}
+  .step p{font-size:.94rem;color:var(--muted);margin-top:8px}
+
+  .promise{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:28px}
+  .promise div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .promise b{display:block;font:800 1.5rem var(--display);text-transform:uppercase}
+  .promise span{font-size:.88rem;color:var(--muted)}
+
+  .closing{padding-block:56px;background:var(--surface-2)}
+  .closing .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px}
+  .closing h2{font-size:clamp(1.6rem,3.6vw,2.3rem);font-weight:800;max-width:22ch}
+  footer{padding-block:28px 40px;font:500 .75rem var(--mono);color:var(--muted)}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+  .toast{font:500 .8rem var(--mono);color:var(--accent-text);min-height:1.2em}
+
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr}
+    .fronts{height:330px;max-width:460px;width:100%;margin:8px auto 30px}
+    .sides,.steps{grid-template-columns:1fr}
+    .tests{grid-template-columns:1fr}
+    .promise{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:420px){
+    .front .sign b{font-size:1.3rem}
+    .promise{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Shelfspace Global, back to top">
+      <span class="tile" aria-hidden="true"><svg viewBox="0 0 14 10" width="14" height="10"><rect width="14" height="2.4" rx="1.2" fill="#fff"/><rect y="7.6" width="14" height="2.4" rx="1.2" fill="#fff"/></svg></span>
+      <span>Shelfspace <small style="font:700 .5em var(--body);letter-spacing:.18em;color:var(--muted);vertical-align:middle">GLOBAL</small></span>
+    </a>
+    <span class="stage-pill">Opening soon</span>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Opening soon · join the waiting list</p>
+        <h1>A mall where every creator has <em>their own shop.</em></h1>
+        <p class="lede">Shelfspace Global gives each creator a shop themed like their channel, stocked with their own products, apps and downloads, plus brands they choose to carry. Viewers walk in without an account. The first shops are opening soon. Join the waiting list to be among them.</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#pick">Join the waiting list</a>
+          <a class="btn btn-ghost" href="mall.html" target="_blank" rel="noopener">Walk the mall ↗</a>
+        </div>
+        <p class="fine">About 3 minutes · no account needed</p>
+      </div>
+      <figure class="fronts" aria-label="Three example creator shopfronts, each in its own colours and lettering">
+        <div class="front f1" aria-hidden="true">
+          <div class="sign"><b>Mara Reviews</b><span>SHOP 12</span></div>
+          <div class="win">
+            <div class="item"><i></i>Barrier Repair<s>R449</s></div>
+            <div class="item"><i></i>Glass Spray<s>R189</s></div>
+            <div class="item"><i></i>Routine PDF<s>R79</s></div>
+          </div>
+        </div>
+        <div class="front f2" aria-hidden="true">
+          <div class="sign"><b>GearDrop w/ Pete</b><span>SHOP 07</span></div>
+          <div class="win">
+            <div class="item"><i></i>Camp Stool<s>R699</s></div>
+            <div class="item"><i></i>Route App<s>Free</s></div>
+            <div class="item"><i></i>Spork Set<s>R249</s></div>
+          </div>
+        </div>
+        <div class="front f3" aria-hidden="true">
+          <div class="sign"><b>Stretch with Zee</b><span>SHOP 21</span></div>
+          <div class="win">
+            <div class="item"><i></i>Band Set<s>R329</s></div>
+            <div class="item"><i></i>8-Week Plan<s>R99</s></div>
+            <div class="item"><i></i>Yoga Block<s>R219</s></div>
+          </div>
+        </div>
+        <figcaption>Example shops from the prototype. The creators are fictional.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="band" id="pick">
+    <div class="wrap">
+      <p class="eyebrow">Waiting list</p>
+      <h2>Which one are you?</h2>
+      <p class="intro">Pick your group, answer a few short questions and leave your email to hold your place. Your answers decide what we open with.</p>
+
+      <div class="sides">
+        <article class="side">
+          <div class="who">
+            <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg></span>
+            <div><h3>Creators</h3><div class="sub">YouTube, TikTok, Instagram, podcasts</div></div>
+          </div>
+          <ul>
+            <li>Your own shop, themed to your channel</li>
+            <li>Carry brand products and earn a cut, with no stock to hold</li>
+            <li>Sell your downloads and apps, or bring your Shopify store</li>
+          </ul>
+          <p class="meta">12 questions · about 3 min</p>
+          <a class="btn btn-primary" data-survey="creator" href="#pick">Join as a creator</a>
+        </article>
+
+        <article class="side">
+          <div class="who">
+            <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.5 12h-11z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg></span>
+            <div><h3>Shoppers</h3><div class="sub">You buy things creators recommend</div></div>
+          </div>
+          <ul>
+            <li>Everything a creator recommends, in one place</li>
+            <li>No account, no expired links, codes that work</li>
+            <li>An assistant that finds &ldquo;size 11, under R1,500&rdquo; for you</li>
+          </ul>
+          <p class="meta">9 questions · about 2 min</p>
+          <a class="btn btn-primary" data-survey="shopper" href="#pick">Join as a shopper</a>
+        </article>
+
+        <article class="side">
+          <div class="who">
+            <span class="ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-4 7 4v13"/><path d="M9 21v-6h6v6"/></svg></span>
+            <div><h3>Brands &amp; suppliers</h3><div class="sub">You make or distribute products</div></div>
+          </div>
+          <ul>
+            <li>List your catalog once, on your own terms</li>
+            <li>Creators choose to stock you and earn per sale</li>
+            <li>Stock and prices stay in sync on every shelf</li>
+          </ul>
+          <p class="meta">10 questions · about 3 min</p>
+          <a class="btn btn-primary" data-survey="business" href="#pick">Join as a business</a>
+        </article>
+      </div>
+      <p class="toast" id="survey-note" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="band" id="testing">
+    <div class="wrap">
+      <p class="eyebrow">What is opening</p>
+      <h2>Four things you get</h2>
+      <p class="intro">This is what the mall opens with. The waiting list tells us which shops and products to open first.</p>
+      <div class="tests">
+        <div class="test"><span class="id">01</span><h3>Your own shop, not another link</h3><p>A storefront in your style, with your name on the sign and every product you back on one shelf.</p><p class="signal"><b>Creators</b>Every sale in your shop is credited to you.</p></div>
+        <div class="test"><span class="id">02</span><h3>Walk in and buy without an account</h3><p>No sign-up form at the door. The price you see is the price you pay, with delivery shown up front.</p><p class="signal"><b>Shoppers</b>Nothing added at checkout.</p></div>
+        <div class="test"><span class="id">03</span><h3>List once, ship from your warehouse</h3><p>Creators choose to stock your products. Orders come straight to you, and you see which shops sell them.</p><p class="signal"><b>Suppliers</b>Nothing sits on anyone else's shelf.</p></div>
+        <div class="test"><span class="id">04</span><h3>Stoavia, the AI concierge</h3><p>Ask for what you need in plain words and Stoavia walks you to the right shop.</p><p class="signal"><b>Everyone</b>One mall, one place to ask.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="how">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2>List. Stock. Walk in.</h2>
+      <div class="steps">
+        <div class="step"><span class="n">STEP 1</span><h3>Anyone lists</h3><p>A brand, supplier or creator adds a product, app or download with its price and terms.</p></div>
+        <div class="step"><span class="n">STEP 2</span><h3>Creators stock and theme</h3><p>Creators pick what goes on their shelf, set their own code, and style the shop like their channel.</p></div>
+        <div class="step"><span class="n">STEP 3</span><h3>Viewers walk in</h3><p>Viewers browse the shop or ask Stoavia, and buy without creating an account. The supplier ships the order.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="privacy">
+    <div class="wrap">
+      <p class="eyebrow">What happens with your answers</p>
+      <h2>Short, honest, and yours</h2>
+      <div class="promise">
+        <div><b>3 min</b><span>About as long as a coffee order.</span></div>
+        <div><b>No sign-up</b><span>You answer right here on this site. You don't need an account.</span></div>
+        <div><b>Email optional</b><span>Leave it to hold your place on the waiting list.</span></div>
+        <div><b>Never sold</b><span>Answers are used to decide what we open with. We don't share them.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="wrap">
+      <h2>Be one of the first through the doors.</h2>
+      <a class="btn btn-primary" href="#pick">Join the waiting list</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>SHELFSPACE GLOBAL · opening soon · 2026</span><span>The mall behind every creator's channel</span></div>
+</footer>
+
+<script>
+  /* Paste the three "Direct link" URLs printed by the Apps Script here. Empty = survey not live yet. */
+  var SURVEY = { creator: "waitlist.html#creator", shopper: "waitlist.html#shopper", business: "waitlist.html#business" };
+
+  var note = document.getElementById("survey-note");
+  document.querySelectorAll("[data-survey]").forEach(function (a) {
+    var url = SURVEY[a.getAttribute("data-survey")];
+    if (url) {
+      a.href = url;
+      
+      a.rel = "noopener";
+      
+    } else {
+      a.setAttribute("aria-disabled", "true");
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        note.textContent = "The survey opens soon. Check back in a day or two.";
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

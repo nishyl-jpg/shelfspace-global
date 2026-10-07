@@ -1,0 +1,2464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Walk through the Shelfspace Global prototype: a digital mall of creator shops.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Shelfspace Global</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700;800;900&family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@500;600&family=Cormorant+Garamond:wght@600;700&family=Bebas+Neue&family=Fredoka:wght@500;600&family=Fraunces:opsz,wght@9..144,600&family=DM+Serif+Display&family=Syne:wght@700&family=Anton&family=Josefin+Sans:wght@700&display=swap">
+<style>
+  /* Layout: sticky masthead, a pinned 3D mall as the opener, then full-bleed bands on a 1140px column */
+  :root{
+    --bg:#FFFFFF;
+    --surface:#F9F9F9;
+    --surface-2:#F1F1F1;
+    --ink:#0F0F0F;
+    --ink-muted:#5A5A5A;
+    --line:#E5E5E5;
+    --accent:#FF0000;         /* brand red: logo tile, bullets, large display type */
+    --accent-strong:#CC0000;  /* button fills and small red text (passes 4.5:1) */
+    --accent-text:#CC0000;
+    --accent-ink:#FFFFFF;
+    --verified:#1A7A35;
+    --verified-bg:#E6F4EA;
+    --chip-bg:#0F0F0F;
+    --chip-ink:#FFFFFF;
+    --shadow:rgba(15,15,15,0.14);
+    --header-bg:rgba(255,255,255,0.86);
+    --scrim:rgba(10,10,10,0.55);
+    /* the mall */
+    --mall-sky:#D9D9D7;
+    --mall-wall:#F2F2F0;
+    --mall-floor:#E2E2DF;
+    --mall-floor-line:rgba(15,15,15,0.07);
+    --mall-ceiling:#FAFAF9;
+    --mall-light:rgba(255,255,255,0.95);
+    --mall-trim:#0F0F0F;
+    --mall-shade:rgba(15,15,15,0.28);
+    --mall-people:rgba(35,35,35,0.42);
+    --facade:#171717;
+    --facade-2:#222222;
+    --facade-ink:#FFFFFF;
+    --facade-muted:#A6A6A6;
+    --pavement:#2B2B2B;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0F0F0F;
+      --surface:#1C1C1C;
+      --surface-2:#262626;
+      --ink:#F1F1F1;
+      --ink-muted:#B0B0B0;
+      --line:#383838;
+      --accent:#FF1F1F;
+      --accent-strong:#CC0000;
+      --accent-text:#FF6B63;
+      --accent-ink:#FFFFFF;
+      --verified:#81C995;
+      --verified-bg:#1E3A2A;
+      --chip-bg:#F1F1F1;
+      --chip-ink:#0F0F0F;
+      --shadow:rgba(0,0,0,0.55);
+      --header-bg:rgba(15,15,15,0.86);
+      --scrim:rgba(0,0,0,0.7);
+      --mall-sky:#050505;
+      --mall-wall:#1C1C1C;
+      --mall-floor:#141414;
+      --mall-floor-line:rgba(255,255,255,0.05);
+      --mall-ceiling:#111111;
+      --mall-light:rgba(255,255,255,0.22);
+      --mall-trim:#2E2E2E;
+      --mall-shade:rgba(0,0,0,0.55);
+      --mall-people:rgba(210,210,210,0.2);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0F0F0F;
+    --surface:#1C1C1C;
+    --surface-2:#262626;
+    --ink:#F1F1F1;
+    --ink-muted:#B0B0B0;
+    --line:#383838;
+    --accent:#FF1F1F;
+    --accent-strong:#CC0000;
+    --accent-text:#FF6B63;
+    --accent-ink:#FFFFFF;
+    --verified:#81C995;
+    --verified-bg:#1E3A2A;
+    --chip-bg:#F1F1F1;
+    --chip-ink:#0F0F0F;
+    --shadow:rgba(0,0,0,0.55);
+    --header-bg:rgba(15,15,15,0.86);
+    --scrim:rgba(0,0,0,0.7);
+    --mall-sky:#050505;
+    --mall-wall:#1C1C1C;
+    --mall-floor:#141414;
+    --mall-floor-line:rgba(255,255,255,0.05);
+    --mall-ceiling:#111111;
+    --mall-light:rgba(255,255,255,0.22);
+    --mall-trim:#2E2E2E;
+    --mall-shade:rgba(0,0,0,0.55);
+    --mall-people:rgba(210,210,210,0.2);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px);}
+  body{margin:0;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;font-family:'Roboto',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.5;}
+  ::selection{background:var(--accent-strong);color:var(--accent-ink);}
+  .font-display{font-family:'Roboto Condensed','Arial Narrow',sans-serif;}
+  .font-mono{font-family:'Roboto Mono','SFMono-Regular',Consolas,monospace;}
+  h1,h2,h3{text-wrap:balance;}
+  p{text-wrap:pretty;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--accent-strong);outline-offset:2px;}
+  .masthead{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--header-bg);-webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);}
+  .nav-scroll{scrollbar-width:none;}
+  .nav-scroll::-webkit-scrollbar{display:none;}
+
+  /* mall walk-through: a tall scroll track with a pinned 3D stage */
+  .mall{position:relative;height:580vh;}
+  .mall-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--mall-sky);}
+  .mall-screen{position:absolute;left:50%;top:50%;width:1200px;height:750px;margin:-375px 0 0 -600px;perspective:900px;perspective-origin:50% 46%;}
+  .mall-world,.mall-level{position:absolute;inset:0;transform-style:preserve-3d;}
+  .mall-world{will-change:transform;}
+  .p3{position:absolute;left:50%;top:50%;transform-style:preserve-3d;}
+  .mall-floor{background:
+      linear-gradient(90deg, transparent 49.6%, var(--mall-floor-line) 49.6% 50.4%, transparent 50.4%),
+      repeating-linear-gradient(0deg, var(--mall-floor-line) 0 3px, transparent 3px 260px),
+      repeating-linear-gradient(90deg, var(--mall-floor-line) 0 3px, transparent 3px 260px),
+      var(--mall-floor);}
+  .mall-ceiling{background:repeating-linear-gradient(0deg, var(--mall-light) 0 34px, transparent 34px 420px), var(--mall-ceiling);}
+  .mall-wall{background:repeating-linear-gradient(90deg, transparent 0 1296px, var(--mall-trim) 1296px 1300px), var(--mall-wall);}
+  .storefront{appearance:none;font:inherit;transition:filter .2s ease;}
+  .storefront:hover{filter:brightness(1.06);}
+  .storefront:focus-visible{outline:10px solid var(--accent-strong);outline-offset:6px;}
+  .hang{appearance:none;font:inherit;border:0;cursor:pointer;}
+  .hang:focus-visible{outline:8px solid var(--accent-strong);outline-offset:6px;}
+  .mall-vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 48%, transparent 55%, var(--mall-shade) 100%);}
+  .mall-cap{position:absolute;pointer-events:none;transition:opacity .15s linear;}
+  .mall-cap a,.mall-cap button{pointer-events:auto;}
+  .mall-flash{position:absolute;inset:0;background:var(--mall-sky);opacity:0;pointer-events:none;transition:opacity .35s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:5;}
+  .glass{background:linear-gradient(155deg, rgba(210,228,236,0.55), rgba(160,190,205,0.22) 55%, rgba(210,228,236,0.4));box-shadow:inset 0 0 0 3px rgba(255,255,255,0.25);}
+  .shop-overlay{position:absolute;inset:0;overflow-y:auto;opacity:0;transform-origin:50% 60%;}
+  .person{position:absolute;left:50%;top:50%;width:90px;height:260px;margin:-130px 0 0 -45px;animation:stroll var(--dur) linear infinite;animation-delay:var(--delay);}
+  @keyframes stroll{from{transform:translate3d(var(--x),200px,var(--z0))}to{transform:translate3d(var(--x),200px,var(--z1))}}
+  @keyframes win-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .win-in{animation:win-in .6s ease both;}
+  @keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+  .nudge{animation:nudge 1.6s ease-in-out infinite;}
+  @keyframes here{0%{transform:scale(1);opacity:.8}100%{transform:scale(2.6);opacity:0}}
+  .here-ring{transform-box:fill-box;transform-origin:center;animation:here 1.6s ease-out infinite;}
+  @keyframes dot{0%,80%,100%{opacity:.25}40%{opacity:1}}
+  .dots span{display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:4px;animation:dot 1.2s infinite;}
+  .dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+  .swatch input:checked + span{outline:3px solid var(--accent-strong);outline-offset:2px;}
+  .swatch input:focus-visible + span{outline:3px solid var(--accent-strong);outline-offset:4px;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{transition:none!important;animation:none!important;}
+  }
+  #root:empty::before{content:"Loading Shelfspace Global…";display:block;padding:48px 20px;font:500 0.9rem 'Roboto Mono',Consolas,monospace;color:var(--ink-muted);text-align:center;}
+</style>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: 'var(--bg)',
+          surface: 'var(--surface)',
+          surface2: 'var(--surface-2)',
+          ink: 'var(--ink)',
+          inkmuted: 'var(--ink-muted)',
+          line: 'var(--line)',
+          accent: 'var(--accent)',
+          accentstrong: 'var(--accent-strong)',
+          accenttext: 'var(--accent-text)',
+          accentink: 'var(--accent-ink)',
+          verified: 'var(--verified)',
+          verifiedbg: 'var(--verified-bg)',
+          chipbg: 'var(--chip-bg)',
+          chipink: 'var(--chip-ink)'
+        }
+      }
+    }
+  };
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useMemo } = React;
+
+/* ---------- primitives ---------- */
+
+function Button({ variant = "outline", href, className = "", children, ...props }) {
+  const base = "inline-flex items-center justify-center min-h-[44px] rounded-full font-bold text-[0.9rem] px-5 no-underline transition-[filter,background-color,transform] duration-150 active:scale-[0.98]";
+  const styles = {
+    primary: "bg-accentstrong text-accentink hover:brightness-110",
+    outline: "bg-surface text-ink border border-line hover:bg-surface2",
+    compact: "bg-accentstrong text-accentink hover:brightness-110 px-4 text-[0.85rem]"
+  };
+  const cls = base + " " + (styles[variant] || styles.outline) + " " + className;
+  if (href) return <a href={href} className={cls} {...props}>{children}</a>;
+  return <button type="button" className={cls} {...props}>{children}</button>;
+}
+
+function Badge({ className = "", children }) {
+  return (
+    <span className={"font-mono text-[0.75rem] font-semibold tracking-wide bg-surface2 border border-line px-2.5 py-1 rounded-full text-inkmuted " + className}>
+      {children}
+    </span>
+  );
+}
+
+function Card({ className = "", children }) {
+  return (
+    <div className={"bg-surface border border-line rounded-2xl shadow-[0_16px_32px_-20px_var(--shadow)] " + className}>
+      {children}
+    </div>
+  );
+}
+
+function Eyebrow({ className = "", children }) {
+  return (
+    <p className={"font-mono text-[0.75rem] font-semibold tracking-[0.14em] uppercase text-inkmuted " + className}>
+      {children}
+    </p>
+  );
+}
+
+function CodeChip({ code, item, className, style }) {
+  const [state, setState] = useState("idle");
+  const ref = useRef(null);
+  const done = (s) => { setState(s); setTimeout(() => setState("idle"), 1400); };
+  const selectText = () => {
+    try {
+      const range = document.createRange();
+      range.selectNodeContents(ref.current.querySelector("[data-code]"));
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } catch (e) {}
+    done("select");
+  };
+  const copy = (e) => {
+    e.stopPropagation();
+    try {
+      navigator.clipboard.writeText(code).then(() => done("copied")).catch(selectText);
+    } catch (err) { selectText(); }
+  };
+  const label = state === "copied" ? "Copied" : state === "select" ? "Press Ctrl+C" : code;
+  return (
+    <button
+      ref={ref}
+      type="button"
+      onClick={copy}
+      aria-label={"Copy code " + code + " for " + item}
+      style={style}
+      className={className || "font-mono text-[0.78rem] font-semibold bg-chipbg text-chipink min-h-[40px] min-w-[84px] px-3 rounded-lg tracking-wide whitespace-nowrap flex-none transition-colors hover:bg-accentstrong hover:text-accentink active:scale-95"}
+    >
+      <span data-code className={state === "idle" ? "" : "sr-only"}>{code}</span>
+      {state !== "idle" && <span aria-live="polite">{label}</span>}
+    </button>
+  );
+}
+
+function LogoTile({ w = 26, h = 20 }) {
+  return (
+    <span className="flex items-center justify-center bg-accent rounded-md flex-none" style={{ width: w, height: h }} aria-hidden="true">
+      <svg viewBox="0 0 14 10" width={w * 0.54} height={h * 0.5} fill="none">
+        <rect y="0" width="14" height="2.4" rx="1.2" fill="#FFFFFF" />
+        <rect y="7.6" width="14" height="2.4" rx="1.2" fill="#FFFFFF" />
+      </svg>
+    </span>
+  );
+}
+
+function Wordmark() {
+  return (
+    <a href="#top" className="font-display font-black text-2xl uppercase tracking-wide flex items-center gap-2.5 no-underline" aria-label="Shelfspace Global, back to the mall entrance">
+      <LogoTile />
+      <span>Shelfspace <span className="text-[0.55em] font-bold tracking-[0.18em] text-inkmuted align-middle">Global</span></span>
+    </a>
+  );
+}
+
+const Wrap = ({ className = "", children }) => (
+  <div className={"max-w-[1140px] mx-auto px-5 " + className}>{children}</div>
+);
+
+/* ---------- mall data ---------- */
+
+const SHOPS = [
+  {
+    id: "mara", level: 1, unit: "Shop 12", name: "Mara Reviews", handle: "@marareviews", niche: "Skincare & home", room: "The marble case",
+    initial: "M", platform: "IG", follow: "142K followers", code: "MARA15", layout: "boutique",
+    font: "'Cormorant Garamond', Georgia, serif", weight: 700,
+    tagline: "Slow skincare, glass bottles, nothing wasted.",
+    vars: { "--p-bg": "#0E1B33", "--p-surface": "#16264A", "--p-ink": "#F4F6FF", "--p-inkmuted": "#A9B7DE", "--p-accent": "#D4AF37", "--p-line": "#2A407A" },
+    stripes: "rgba(212,175,55,0.10)",
+    products: [
+      { type: "Physical", kind: "jar", name: "Overnight Barrier Repair, 30ml", price: 449, desc: "A thick night cream for skin that stings after cleansing. Mara uses it three nights a week." },
+      { type: "Physical", kind: "bottle", name: "Refillable Glass Spray Bottle", price: 189, desc: "200ml amber glass with a fine mist head. Fill it with toner, rose water or plain water." },
+      { type: "Digital", kind: "doc", name: "5-Step Routine Guide (PDF)", price: 79, desc: "Mara's morning and night routine, with what to skip when you only have two minutes." },
+      { type: "Physical", kind: "bag", name: "Bamboo Cotton Rounds, 3-pack", price: 129, desc: "Washable rounds that replace about 600 disposable pads a year." }
+    ]
+  },
+  {
+    id: "glow", level: 1, unit: "Shop 14", name: "Glow Theory", handle: "@glowtheory", niche: "Skincare explained", room: "The lab bench",
+    initial: "G", platform: "TT", follow: "88K followers", code: "GLOW10", layout: "studio",
+    font: "'DM Serif Display', Georgia, serif", weight: 400,
+    tagline: "Glass skin, explained in sixty seconds.",
+    vars: { "--p-bg": "#2B1B2E", "--p-surface": "#3A2640", "--p-ink": "#FFF3F8", "--p-inkmuted": "#CDB3C8", "--p-accent": "#F7A8C8", "--p-line": "#573B5E" },
+    stripes: null,
+    products: [
+      { type: "Physical", kind: "bottle", name: "Rice Toner, 150ml", price: 279, desc: "A milky toner for dull skin. Pat it in, don't swipe." },
+      { type: "Physical", kind: "jar", name: "SPF 50 Gel Cream", price: 349, desc: "Sunscreen that leaves no white cast on deeper skin tones." },
+      { type: "Digital", kind: "doc", name: "Dewy Routine Cheat Sheet (PDF)", price: 39, desc: "One page, four steps, and which products can swap for cheaper ones." },
+      { type: "Physical", kind: "box", name: "Silicone Face Brush", price: 159, desc: "Soft silicone bristles for cleansing. Dries fast and lasts for years." }
+    ]
+  },
+  {
+    id: "pete", level: 1, unit: "Shop 07", name: "GearDrop w/ Pete", handle: "GearDrop w/ Pete", niche: "Outdoor & camping", room: "Basecamp",
+    initial: "P", platform: "YT", follow: "380K subscribers", code: "PETE10", layout: "basecamp",
+    font: "'Bebas Neue', 'Roboto Condensed', Impact, sans-serif", weight: 400,
+    tagline: "Gear I actually carried up the mountain.",
+    vars: { "--p-bg": "#1B2420", "--p-surface": "#233129", "--p-ink": "#EFF5EE", "--p-inkmuted": "#9DB2A3", "--p-accent": "#EE8A45", "--p-line": "#33453C" },
+    stripes: null,
+    products: [
+      { type: "Physical", kind: "box", name: "Packable Camp Stool", price: 699, desc: "Folds to the size of a water bottle and holds 120kg." },
+      { type: "App", kind: "app", name: "Trail Route Planner (built w/ Lovable)", price: 0, desc: "Pete's own app for planning day hikes with water stops and turnaround times." },
+      { type: "Physical", kind: "box", name: "Titanium Spork Set", price: 249, desc: "Spork, knife and a carry sleeve. 38 grams all in." },
+      { type: "Physical", kind: "bag", name: "2L Collapsible Water Bag", price: 189, desc: "Rolls flat when empty. Hang it from a branch as a camp tap." }
+    ]
+  },
+  {
+    id: "salt", level: 1, unit: "Shop 09", name: "Salt & Summit", handle: "@saltandsummit", niche: "Coast & mountain", room: "The trailhead",
+    initial: "S", platform: "YT", follow: "210K subscribers", code: "SALT15", layout: "pantry",
+    font: "'Josefin Sans', 'Roboto', sans-serif", weight: 700,
+    tagline: "Coast to peak, packed light.",
+    vars: { "--p-bg": "#EAF2F4", "--p-surface": "#FFFFFF", "--p-ink": "#13303A", "--p-inkmuted": "#50707A", "--p-accent": "#0E7490", "--p-line": "#CFE0E4" },
+    stripes: null,
+    products: [
+      { type: "Physical", kind: "bag", name: "Merino Beanie", price: 349, desc: "Warm when damp and doesn't hold smell on multi-day trips." },
+      { type: "Digital", kind: "doc", name: "Tide & Trail Guide (PDF)", price: 89, desc: "Twelve coastal routes with tide windows, so you don't get cut off." },
+      { type: "Physical", kind: "bag", name: "Ultralight Tarp, 3x3m", price: 899, desc: "Shelter from rain or sun. 480 grams with guylines." },
+      { type: "App", kind: "app", name: "Peak Finder (app)", price: 0, desc: "Point your phone at the skyline and it names the peaks." }
+    ]
+  },
+  {
+    id: "zee", level: 2, unit: "Shop 21", name: "Stretch with Zee", handle: "@stretchwithzee", niche: "Fitness & recovery", room: "The studio",
+    initial: "Z", platform: "TT", follow: "610K followers", code: "ZEE20", layout: "studio",
+    font: "'Fredoka', 'Roboto', sans-serif", weight: 600,
+    tagline: "Ten minutes a day. Bands, mats and a plan.",
+    vars: { "--p-bg": "#FBF5FA", "--p-surface": "#FFFFFF", "--p-ink": "#3B2E3A", "--p-inkmuted": "#7A6878", "--p-accent": "#C23A6B", "--p-line": "#F0DCE8" },
+    stripes: null,
+    products: [
+      { type: "Physical", kind: "band", name: "Resistance Band Set, 5pc", price: 329, desc: "Five resistance levels, colour coded, with a door anchor." },
+      { type: "Digital", kind: "doc", name: "8-Week Recovery Program (PDF)", price: 99, desc: "Ten-minute daily sessions for tight hips, backs and shoulders." },
+      { type: "Physical", kind: "box", name: "Cork Yoga Block", price: 219, desc: "Grippy even with sweaty hands. Natural cork, no foam." },
+      { type: "Physical", kind: "box", name: "Foam Roller, 45cm", price: 289, desc: "Medium density. Firm enough to work, soft enough to start on." }
+    ]
+  },
+  {
+    id: "iron", level: 2, unit: "Shop 22", name: "Iron Lot", handle: "@ironlot", niche: "Strength training", room: "The platform",
+    initial: "I", platform: "IG", follow: "330K followers", code: "IRON20", layout: "basecamp",
+    font: "'Anton', Impact, sans-serif", weight: 400,
+    tagline: "Heavy basics. No fluff.",
+    vars: { "--p-bg": "#111111", "--p-surface": "#1C1C1C", "--p-ink": "#F5F5F5", "--p-inkmuted": "#A3A3A3", "--p-accent": "#FACC15", "--p-line": "#2E2E2E" },
+    stripes: null,
+    products: [
+      { type: "Physical", kind: "band", name: "Lifting Straps", price: 199, desc: "Padded cotton straps for pulls when your grip gives out first." },
+      { type: "Digital", kind: "doc", name: "12-Week Strength Block (PDF)", price: 149, desc: "Three days a week, four lifts, clear progression." },
+      { type: "Physical", kind: "jar", name: "Chalk Ball", price: 89, desc: "Refillable chalk ball. Less mess than loose chalk." },
+      { type: "App", kind: "app", name: "Rep Counter (app)", price: 0, desc: "Logs sets with one tap and tells you when to add weight." }
+    ]
+  },
+  {
+    id: "hana", level: 2, unit: "Shop 03", name: "Homebody Hana", handle: "Homebody Hana", niche: "Home & kitchen", room: "Hana's kitchen",
+    initial: "H", platform: "YT", follow: "95K subscribers", code: "HANA12", layout: "pantry",
+    font: "'Fraunces', Georgia, serif", weight: 600,
+    tagline: "Sharp knives, good pans, weeknight dinners.",
+    vars: { "--p-bg": "#FFF8EC", "--p-surface": "#FFFFFF", "--p-ink": "#2B2A26", "--p-inkmuted": "#6E6A5E", "--p-accent": "#2F6B4F", "--p-line": "#EADFC8" },
+    stripes: null,
+    products: [
+      { type: "Physical", kind: "box", name: "6-Piece Ceramic Knife Set", price: 899, desc: "Stays sharp for months. Hand wash only." },
+      { type: "Shopify", kind: "store", name: "Hana's Kitchen Shop (full catalog)", price: null, desc: "Hana's existing Shopify store, synced onto this shelf. 48 items." },
+      { type: "Digital", kind: "doc", name: "Weeknight Meal Planner (PDF)", price: 59, desc: "Five dinners a week, one shopping list, 30 minutes each." },
+      { type: "Physical", kind: "pan", name: "Cast-Iron Skillet, 26cm", price: 749, desc: "Pre-seasoned. Goes from stove to oven to table." }
+    ]
+  },
+  {
+    id: "pine", level: 2, unit: "Shop 25", name: "Pixel & Pine", handle: "@pixelandpine", niche: "Home planning", room: "The workbench",
+    initial: "P", platform: "YT", follow: "64K subscribers", code: "PINE10", layout: "boutique",
+    font: "'Syne', 'Roboto', sans-serif", weight: 700,
+    tagline: "Plan the home, then live in it.",
+    vars: { "--p-bg": "#F2F7F5", "--p-surface": "#FFFFFF", "--p-ink": "#16302B", "--p-inkmuted": "#56706A", "--p-accent": "#0F766E", "--p-line": "#D5E6E0" },
+    stripes: null,
+    products: [
+      { type: "Digital", kind: "doc", name: "Home Planner (Notion template)", price: 149, desc: "Chores, budgets and maintenance dates in one Notion workspace." },
+      { type: "Digital", kind: "app", name: "Room Mood Boards (preset pack)", price: 99, desc: "Twenty colour and furniture boards to plan a room before you buy." },
+      { type: "Digital", kind: "doc", name: "Label Maker Printables (PDF)", price: 49, desc: "Pantry, closet and cable labels, ready to print on A4." },
+      { type: "Physical", kind: "box", name: "Pine Desk Organizer", price: 389, desc: "Solid pine, three compartments, made by a local woodworker." }
+    ]
+  }
+];
+
+const LEVELS = {
+  1: { name: "Level 1", label: "Beauty & Outdoor", wings: [["Beauty wing", -820], ["Outdoor wing", -2250]], shops: ["mara", "glow", "pete", "salt"] },
+  2: { name: "Level 2", label: "Fitness & Home", wings: [["Fitness wing", -820], ["Home wing", -2250]], shops: ["zee", "iron", "hana", "pine"] }
+};
+
+/* wall slots: which side and the depth of the unit's centre (world units; the concourse runs 0 to -4400) */
+const SLOTS = [
+  { side: -1, z: -1300 },
+  { side: 1, z: -1750 },
+  { side: -1, z: -2650 },
+  { side: 1, z: -3050 },
+  { side: -1, z: -3700 }
+];
+const ESCALATOR_Z = -3950;
+
+const SHOPPERS = [
+  { x: -360, z0: -4200, z1: -300, dur: 38, delay: -4, bag: "#D4AF37" },
+  { x: 380, z0: -500, z1: -4300, dur: 44, delay: -16, bag: "#EE8A45" },
+  { x: -300, z0: -900, z1: -4300, dur: 52, delay: -30, bag: "#C23A6B" },
+  { x: 330, z0: -4300, z1: -600, dur: 36, delay: -21, bag: "#0E7490" },
+  { x: -410, z0: -3600, z1: -200, dur: 47, delay: -9, bag: "#F7A8C8" },
+  { x: 410, z0: -1500, z1: -4300, dur: 40, delay: -33, bag: "#2F6B4F" }
+];
+
+const priceLabel = (p) => p === null ? "48 items" : p === 0 ? "Free" : "R" + p.toLocaleString("en-ZA");
+
+/* ---------- builder data ---------- */
+
+const PALETTES = [
+  { id: "midnight", name: "Midnight", accent: "#F59E0B", vars: { "--p-bg": "#111827", "--p-surface": "#1F2937", "--p-ink": "#F9FAFB", "--p-inkmuted": "#9CA3AF", "--p-line": "#374151" } },
+  { id: "forest", name: "Forest", accent: "#7DD3A0", vars: { "--p-bg": "#14231C", "--p-surface": "#1D3328", "--p-ink": "#EEF5EF", "--p-inkmuted": "#9DB5A5", "--p-line": "#2E4A3B" } },
+  { id: "blush", name: "Blush", accent: "#D6336C", vars: { "--p-bg": "#FFF5F7", "--p-surface": "#FFFFFF", "--p-ink": "#3A2530", "--p-inkmuted": "#85707B", "--p-line": "#F5DCE3" } },
+  { id: "paper", name: "Paper", accent: "#1D4ED8", vars: { "--p-bg": "#FAFAF7", "--p-surface": "#FFFFFF", "--p-ink": "#1F1F1C", "--p-inkmuted": "#6B6B63", "--p-line": "#E7E5DC" } },
+  { id: "ocean", name: "Ocean", accent: "#38BDF8", vars: { "--p-bg": "#0B2530", "--p-surface": "#103442", "--p-ink": "#E8F6FA", "--p-inkmuted": "#93BCC9", "--p-line": "#1E4E60" } },
+  { id: "ember", name: "Ember", accent: "#FB923C", vars: { "--p-bg": "#2A1410", "--p-surface": "#3A1D16", "--p-ink": "#FFF1EA", "--p-inkmuted": "#D1A99A", "--p-line": "#5A2E23" } }
+];
+
+const FONTS = [
+  { id: "fraunces", name: "Fraunces", css: "'Fraunces', Georgia, serif", weight: 600 },
+  { id: "cormorant", name: "Cormorant", css: "'Cormorant Garamond', Georgia, serif", weight: 700 },
+  { id: "dmserif", name: "DM Serif", css: "'DM Serif Display', Georgia, serif", weight: 400 },
+  { id: "bebas", name: "Bebas Neue", css: "'Bebas Neue', Impact, sans-serif", weight: 400 },
+  { id: "anton", name: "Anton", css: "'Anton', Impact, sans-serif", weight: 400 },
+  { id: "fredoka", name: "Fredoka", css: "'Fredoka', 'Roboto', sans-serif", weight: 600 },
+  { id: "syne", name: "Syne", css: "'Syne', 'Roboto', sans-serif", weight: 700 },
+  { id: "josefin", name: "Josefin Sans", css: "'Josefin Sans', 'Roboto', sans-serif", weight: 700 }
+];
+
+const LAYOUTS = [
+  { id: "boutique", name: "Boutique", note: "One glass shelf, centred" },
+  { id: "basecamp", name: "Basecamp", note: "A hero item and a list" },
+  { id: "studio", name: "Studio", note: "Big rounded cards" },
+  { id: "pantry", name: "Pantry", note: "Labelled shelves" }
+];
+
+const SAMPLE_DESC = "Sample listing. Swap in your own product when you claim the shop.";
+const NICHES = {
+  Beauty: [["Physical", "bottle", "Hydrating Serum, 30ml", 389], ["Physical", "jar", "Clay Mask", 259], ["Digital", "doc", "Skin Journal (PDF)", 69], ["Physical", "bag", "Travel Pouch", 149]],
+  Outdoor: [["Physical", "box", "Rechargeable Headlamp", 329], ["App", "app", "Trail Map (app)", 0], ["Physical", "bag", "Dry Bag, 20L", 279], ["Physical", "jar", "Enamel Mug", 159]],
+  Fitness: [["Physical", "band", "Mini Loop Bands", 199], ["Digital", "doc", "30-Day Plan (PDF)", 89], ["Physical", "bag", "Grip Socks", 129], ["Physical", "bottle", "Shaker Bottle", 179]],
+  Home: [["Physical", "box", "Linen Tea Towels", 199], ["Digital", "doc", "Recipe Cards (PDF)", 49], ["Physical", "pan", "Olive Wood Board", 459], ["Physical", "jar", "Spice Jar Set", 299]],
+  Digital: [["Digital", "doc", "Notion Template", 149], ["Digital", "app", "Preset Pack", 199], ["Digital", "app", "Icon Set", 99], ["Digital", "doc", "Mini Course", 399]]
+};
+
+const DEFAULT_CFG = { name: "Your Shop", handle: "@yourchannel", niche: "Beauty", tagline: "Things I actually use, in one place.", palette: "midnight", accent: "#F59E0B", font: "fraunces", layout: "boutique" };
+
+function makeShop(cfg) {
+  const pal = PALETTES.find((p) => p.id === cfg.palette) || PALETTES[0];
+  const font = FONTS.find((f) => f.id === cfg.font) || FONTS[0];
+  const lay = LAYOUTS.find((l) => l.id === cfg.layout) || LAYOUTS[0];
+  const name = (cfg.name || "").trim() || "Your Shop";
+  const letters = name.toUpperCase().replace(/[^A-Z]/g, "");
+  return {
+    id: "mine", level: 1, unit: "Shop 01", name, handle: (cfg.handle || "").trim() || "@yourchannel", niche: cfg.niche, room: lay.name,
+    initial: (letters[0] || "Y"), platform: "NEW", follow: "Newest tenant", code: (letters.slice(0, 4) || "SHOP") + "10", layout: lay.id,
+    font: font.css, weight: font.weight, tagline: (cfg.tagline || "").trim() || DEFAULT_CFG.tagline,
+    vars: { ...pal.vars, "--p-accent": cfg.accent || pal.accent }, stripes: null,
+    products: Array.isArray(cfg.products) && cfg.products.length
+      ? cfg.products
+      : (NICHES[cfg.niche] || NICHES.Beauty).map(([type, kind, n, price]) => ({ type, kind, name: n, price, desc: SAMPLE_DESC })),
+    cfg
+  };
+}
+
+/* ---------- Stoavia: the mall's AI assistant (Claude via the page's `sample` capability) ---------- */
+
+const StoaviaCtx = React.createContext({ status: "off", askJson: null });
+const useStoavia = () => React.useContext(StoaviaCtx);
+const OFF_CODES = ["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"];
+
+function atriumMessage(e) {
+  const c = e && e.code;
+  if (OFF_CODES.includes(c)) return "Stoavia isn't available here. It runs when this page is open in Claude and you allow it to ask Claude.";
+  if (c === "rate_limited") return "Stoavia is busy right now. Give it a minute and try again.";
+  if (c === "session_expired") return "Sign in to Claude again to use Stoavia.";
+  if (c === "refused") return "Stoavia can't help with that one. Try asking another way.";
+  if (c === "prompt_too_large") return "That's too much at once. Try something shorter.";
+  return "Stoavia lost its train of thought. Try again.";
+}
+
+function StoaviaProvider({ children }) {
+  const [status, setStatus] = useState("loading");
+  const fnRef = useRef(null);
+  useEffect(() => {
+    let live = true;
+    (async () => {
+      try {
+        const c = window.claude;
+        if (!c || typeof c.use !== "function") { live && setStatus("off"); return; }
+        const s = await c.use("sample");
+        if (!live) return;
+        if (!s) { setStatus("off"); return; }
+        fnRef.current = s;
+        setStatus("ready");
+      } catch (e) { live && setStatus("off"); }
+    })();
+    return () => { live = false; };
+  }, []);
+  const askJson = async (input, opts) => {
+    const s = fnRef.current;
+    if (!s) throw { code: "not_granted", message: "sample unavailable" };
+    try { return await s.json(input, opts); }
+    catch (e) { if (e && OFF_CODES.includes(e.code)) setStatus("off"); throw e; }
+  };
+  return <StoaviaCtx.Provider value={{ status, askJson }}>{children}</StoaviaCtx.Provider>;
+}
+
+function StoaviaMark({ size = 28 }) {
+  return (
+    <span aria-hidden="true" className="flex items-center justify-center rounded-lg flex-none" style={{ width: size, height: size, background: "var(--accent-strong)" }}>
+      <svg viewBox="0 0 24 24" width={size * 0.64} height={size * 0.64} fill="none" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 21V11a8 8 0 0 1 16 0v10" /><path d="M9 21v-6a3 3 0 0 1 6 0v6" /><path d="M2.5 21h19" /><path d="M12 3v2.5" />
+      </svg>
+    </span>
+  );
+}
+
+function Thinking({ label }) {
+  return <span className="inline-flex items-center gap-2"><span className="dots" aria-hidden="true"><span /><span /><span /></span><span>{label}</span></span>;
+}
+
+function wingOf(s) {
+  if (s.id === "mine") return "New tenants";
+  const L = LEVELS[s.level];
+  const i = L ? L.shops.indexOf(s.id) : -1;
+  return L ? (i < 2 ? L.wings[0][0] : L.wings[1][0]) : "";
+}
+
+function catalogText(shops) {
+  return shops.map((s) =>
+    s.id + " | " + s.name + " (" + s.handle + ") | Level " + s.level + ", " + wingOf(s) + ", " + s.unit + " | " + s.niche + " | code " + s.code + "\n" +
+    s.products.map((p) => "  - " + p.name + " | " + p.type + " | " + priceLabel(p.price) + " | " + p.desc).join("\n")
+  ).join("\n");
+}
+
+const ATRIUM_RULES = [
+  "You are Stoavia, the concierge of Shelfspace Global, a digital mall where each creator runs their own themed shop.",
+  "Help the visitor find products and shops, compare items, suggest gifts, and explain how Shelfspace Global works.",
+  "Facts: visitors never need an account; each shop has a discount code the visitor copies; checkout happens wherever the listing lives, and Shelfspace Global never runs checkout. Level 1 is Beauty & Outdoor, Level 2 is Fitness & Home, with escalators between them.",
+  "Only recommend products that are in the catalog below, with their exact names; never invent products, prices or codes. Prices are in South African rand (R).",
+  "Keep the reply under 70 words, warm and plain. No markdown.",
+  "Reply with only JSON in this shape:",
+  '{"reply": "text", "products": [{"shop": "shop id", "name": "exact product name"}], "go": "shop id or null", "followups": ["short question", "short question"]}',
+  "products: 0 to 4 items that answer the question. go: one shop to walk the visitor to when one clearly fits, else null. followups: up to 3 short things the visitor might ask next."
+].join("\n");
+
+function StoaviaPanel({ open, onClose, shops, mallApi, pending, clearPending }) {
+  const atrium = useStoavia();
+  const [msgs, setMsgs] = useState([]);
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState(false);
+  const ctlRef = useRef(null), inputRef = useRef(null), endRef = useRef(null);
+  const byId = useMemo(() => { const m = {}; shops.forEach((s) => (m[s.id] = s)); return m; }, [shops]);
+
+  useEffect(() => { if (open) setTimeout(() => inputRef.current && inputRef.current.focus(), 60); }, [open]);
+  useEffect(() => { endRef.current && endRef.current.scrollIntoView({ block: "end" }); }, [msgs, busy]);
+  useEffect(() => {
+    if (!open) return;
+    const k = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [open]);
+
+  const send = async (raw) => {
+    const q = (raw || "").trim();
+    if (!q || busy) return;
+    if (atrium.status !== "ready") {
+      setMsgs((m) => [...m, { role: "user", text: q }, { role: "atrium", text: atriumMessage({ code: atrium.status === "loading" ? "upstream_error" : "not_granted" }), error: true }]);
+      setText("");
+      return;
+    }
+    const history = msgs.filter((m) => !m.error).slice(-8);
+    const where = mallApi.current && mallApi.current.where ? mallApi.current.where() : null;
+    const rules = ATRIUM_RULES + "\n\nCatalog (shop id | name | location | category | code, then products as name | type | price | description):\n" + catalogText(shops) +
+      "\n\nWhere the visitor is right now: " + (where ? where : "reading the page below the mall") + ".";
+    const turns = [{ role: "user", content: rules }];
+    history.forEach((m) => turns.push(m.role === "user" ? { role: "user", content: m.text } : { role: "assistant", content: m.raw }));
+    turns.push({ role: "user", content: q });
+    setMsgs((m) => [...m, { role: "user", text: q }]);
+    setText("");
+    setBusy(true);
+    const ctl = new AbortController();
+    ctlRef.current = ctl;
+    try {
+      const r = await atrium.askJson(turns, { modelTier: "quick", cache: false, signal: ctl.signal });
+      const reply = r && typeof r.reply === "string" && r.reply.trim() ? r.reply.trim() : "Here's what I found.";
+      const products = (r && Array.isArray(r.products) ? r.products : []).map((p) => {
+        const s = p && byId[String(p.shop)];
+        const prod = s && s.products.find((x) => x.name === String(p.name));
+        return prod ? { shop: s, product: prod } : null;
+      }).filter(Boolean).slice(0, 4);
+      const go = r && r.go && byId[String(r.go)] ? byId[String(r.go)] : null;
+      const followups = (r && Array.isArray(r.followups) ? r.followups : []).filter((x) => typeof x === "string" && x.trim()).slice(0, 3);
+      const rawOut = JSON.stringify({ reply, products: products.map((x) => ({ shop: x.shop.id, name: x.product.name })), go: go ? go.id : null });
+      setMsgs((m) => [...m, { role: "atrium", text: reply, products, go, followups, raw: rawOut }]);
+    } catch (e) {
+      setMsgs((m) => [...m, { role: "atrium", text: e && e.code === "cancelled" ? "Stopped." : atriumMessage(e), error: true }]);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  useEffect(() => { if (open && pending) { send(pending); clearPending(); } }, [open, pending]);
+
+  const goTo = (shop, productName) => {
+    mallApi.current && mallApi.current.visit(shop.id, productName);
+    if (window.innerWidth < 768) onClose();
+  };
+
+  if (!open) return null;
+  const starters = ["A gift under R300 for a skincare fan", "What do I need for a first camping trip?", "Which shops sell digital downloads?", "How does checkout work here?"];
+
+  return (
+    <div role="dialog" aria-label="Stoavia, the mall concierge"
+      className="fixed z-[75] inset-x-0 bottom-0 h-[86svh] rounded-t-2xl md:inset-x-auto md:right-0 md:top-0 md:h-full md:w-[420px] md:rounded-none flex flex-col bg-bg text-ink border border-line shadow-[0_0_60px_-20px_var(--shadow)]">
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-line" style={{ paddingTop: "max(12px, env(safe-area-inset-top, 0px))" }}>
+        <StoaviaMark size={34} />
+        <div className="flex-1 min-w-0">
+          <div className="font-display font-extrabold uppercase text-[1.2rem] leading-none">Stoavia</div>
+          <div className="text-[0.8rem] text-inkmuted">Mall concierge · knows every shop and shelf</div>
+        </div>
+        <button type="button" onClick={onClose} className="min-h-[40px] px-3.5 rounded-full border border-line bg-surface text-[0.85rem] font-medium">Close</button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3" aria-live="polite">
+        <div className="rounded-2xl rounded-tl-sm bg-surface border border-line px-4 py-3 text-[0.94rem] leading-relaxed max-w-[92%]">
+          Hi, I&rsquo;m Stoavia. Tell me what you&rsquo;re after, or who it&rsquo;s for, and I&rsquo;ll find it across every shop and walk you there.
+        </div>
+        {msgs.length === 0 && (
+          <div className="flex flex-wrap gap-2">
+            {starters.map((s) => (
+              <button key={s} type="button" onClick={() => send(s)} className="text-left text-[0.84rem] min-h-[40px] px-3.5 py-2 rounded-full border border-line bg-bg hover:bg-surface transition-colors">{s}</button>
+            ))}
+          </div>
+        )}
+        {msgs.map((m, i) => m.role === "user" ? (
+          <div key={i} className="self-end max-w-[85%] rounded-2xl rounded-tr-sm bg-chipbg text-chipink px-4 py-2.5 text-[0.94rem]">{m.text}</div>
+        ) : (
+          <div key={i} className="max-w-[94%] flex flex-col gap-2">
+            <div className={"rounded-2xl rounded-tl-sm border px-4 py-3 text-[0.94rem] leading-relaxed " + (m.error ? "border-dashed border-line text-inkmuted" : "bg-surface border-line")}>{m.text}</div>
+            {m.products && m.products.length > 0 && (
+              <ul className="grid grid-cols-2 gap-2 list-none p-0 m-0">
+                {m.products.map(({ shop, product }) => (
+                  <li key={shop.id + product.name} className="rounded-xl p-2.5 flex flex-col gap-1.5 min-w-0" style={{ ...shop.vars, background: "var(--p-bg)", color: "var(--p-ink)", border: "1px solid var(--p-line)" }}>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <ProductArt kind={product.kind} size={34} />
+                      <span className="text-[0.72rem] truncate" style={{ fontFamily: shop.font, fontWeight: shop.weight, color: "var(--p-accent)" }}>{shop.name}</span>
+                    </div>
+                    <span className="text-[0.82rem] leading-snug">{product.name}</span>
+                    <span className="flex items-center justify-between gap-1 mt-auto">
+                      <span className="font-mono text-[0.8rem] font-bold" style={{ color: "var(--p-accent)" }}>{priceLabel(product.price)}</span>
+                      <button type="button" onClick={() => goTo(shop, product.name)} className="text-[0.76rem] font-semibold min-h-[32px] px-2.5 rounded-full" style={{ background: "var(--p-accent)", color: "var(--p-bg)" }}>See it</button>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {m.go && (
+              <button type="button" onClick={() => goTo(m.go)} className="self-start inline-flex items-center gap-2 min-h-[40px] px-3.5 rounded-full text-[0.85rem] font-semibold"
+                style={{ ...m.go.vars, background: "var(--p-bg)", color: "var(--p-accent)", border: "1px solid var(--p-accent)" }}>
+                Walk me to {m.go.name} →
+              </button>
+            )}
+            {m.followups && m.followups.length > 0 && i === msgs.length - 1 && (
+              <div className="flex flex-wrap gap-1.5">
+                {m.followups.map((f) => (
+                  <button key={f} type="button" onClick={() => send(f)} className="text-left text-[0.8rem] min-h-[36px] px-3 py-1.5 rounded-full border border-line hover:bg-surface transition-colors">{f}</button>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+        {busy && <div className="text-[0.88rem] text-inkmuted px-1"><Thinking label="Stoavia is looking through the shelves" /></div>}
+        <div ref={endRef} />
+      </div>
+
+      <form onSubmit={(e) => { e.preventDefault(); send(text); }} className="border-t border-line p-3 flex gap-2 items-center" style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom, 0px))" }}>
+        <label htmlFor="atrium-input" className="sr-only">Ask Stoavia</label>
+        <input id="atrium-input" ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} autoComplete="off" maxLength={400}
+          placeholder="Ask about shops, gifts, prices…" className="flex-1 min-w-0 min-h-[46px] rounded-full border border-line bg-surface text-ink px-4 text-[0.98rem]" />
+        {busy
+          ? <Button variant="outline" onClick={() => ctlRef.current && ctlRef.current.abort()}>Stop</Button>
+          : <button type="submit" disabled={!text.trim()} className="min-h-[46px] px-4 rounded-full bg-accentstrong text-accentink font-bold text-[0.9rem] disabled:opacity-40">Ask</button>}
+      </form>
+    </div>
+  );
+}
+
+/* merchandising: Stoavia reviews one shelf and suggests an order, a hero item, tips and a bundle */
+function MerchAdvisor({ shop, neighbors = [], onApply, applied }) {
+  const atrium = useStoavia();
+  const [st, setSt] = useState({ status: "idle" });
+  const ctlRef = useRef(null);
+  useEffect(() => { setSt({ status: "idle" }); return () => { ctlRef.current && ctlRef.current.abort(); }; }, [shop.id]);
+  if (atrium.status === "off") return null;
+
+  const run = async (fresh) => {
+    const ctl = new AbortController();
+    ctlRef.current = ctl;
+    setSt({ status: "loading" });
+    const others = neighbors.filter((n) => n.id !== shop.id).map((n) => n.name + " (" + n.niche + ")").join(", ") || "none";
+    const prompt = [
+      "You are Stoavia, the merchandising assistant in Shelfspace Global, a digital mall where creators run their own themed shops.",
+      "Review this creator's shelf and suggest how to merchandise it. Be concrete and practical, and talk to the creator directly.",
+      "",
+      "Shop: " + shop.name + " (" + shop.handle + "), " + shop.niche + ". Tagline: \"" + shop.tagline + "\". Shelf layout: " + shop.layout + ". Location: Level " + shop.level + ", " + wingOf(shop) + ".",
+      "Products in the current shelf order (prices in South African rand; the first three also fill the storefront window in the mall):",
+      shop.products.map((p, i) => (i + 1) + ". " + p.name + " | " + p.type + " | " + priceLabel(p.price) + " | " + p.desc).join("\n"),
+      "Neighbouring shops on the same floor: " + others + ".",
+      "",
+      "Reply with only JSON in this shape:",
+      '{"headline": "one sentence, max 90 characters", "hero": "exact product name to feature first", "order": ["every product name exactly as written, best first"], "why_order": "max 160 characters", "tips": [{"title": "max 40 characters", "detail": "max 160 characters"}], "bundle": {"name": "max 40 characters", "items": ["2 or 3 exact product names"], "price": 0, "pitch": "max 120 characters"}}',
+      "Give exactly 3 tips. The bundle price is a whole number in rand, below the items' combined price; use null for bundle if no bundle makes sense."
+    ].join("\n");
+    try {
+      const r = await atrium.askJson(prompt, { modelTier: "default", signal: ctl.signal, cache: fresh ? { gcTime: 600000, refresh: true } : { gcTime: 600000 } });
+      const names = shop.products.map((p) => p.name);
+      let order = (r && Array.isArray(r.order) ? r.order.map(String) : []).filter((n, i, a) => names.includes(n) && a.indexOf(n) === i);
+      names.forEach((n) => { if (!order.includes(n)) order.push(n); });
+      const hero = r && names.includes(String(r.hero)) ? String(r.hero) : order[0];
+      order = [hero, ...order.filter((n) => n !== hero)];
+      const tips = (r && Array.isArray(r.tips) ? r.tips : []).filter((t) => t && t.title && t.detail).slice(0, 3).map((t) => ({ title: String(t.title).slice(0, 60), detail: String(t.detail).slice(0, 220) }));
+      let bundle = r && r.bundle && Array.isArray(r.bundle.items) ? r.bundle : null;
+      if (bundle) {
+        const items = bundle.items.map(String).filter((n) => names.includes(n));
+        bundle = items.length >= 2 ? { name: String(bundle.name || "Bundle").slice(0, 50), items, price: Number.isFinite(Number(bundle.price)) ? Math.round(Number(bundle.price)) : null, pitch: String(bundle.pitch || "").slice(0, 160) } : null;
+      }
+      setSt({ status: "done", headline: String((r && r.headline) || "Here's how I'd set up this shelf.").slice(0, 120), order, hero, why: String((r && r.why_order) || "").slice(0, 220), tips, bundle });
+    } catch (e) {
+      if (e && e.code === "cancelled") setSt({ status: "idle" });
+      else setSt({ status: "error", message: atriumMessage(e) });
+    }
+  };
+
+  const box = { background: "var(--p-surface)", border: "1px solid var(--p-line)" };
+  return (
+    <section aria-label="Stoavia merchandising" className="mt-8 rounded-2xl p-4 md:p-5" style={box}>
+      <div className="flex items-start gap-3 flex-wrap">
+        <StoaviaMark size={30} />
+        <div className="flex-1 min-w-[200px]">
+          <div className="font-bold text-[1rem]">Stoavia merchandising</div>
+          <div className="text-[0.84rem]" style={{ color: "var(--p-inkmuted)" }}>For the shop owner. Stoavia reviews this shelf and suggests an order, a hero item, a bundle and three quick wins.</div>
+        </div>
+        {st.status === "idle" && <button type="button" onClick={() => run(false)} className="min-h-[44px] px-4 rounded-full font-bold text-[0.88rem]" style={{ background: "var(--p-accent)", color: "var(--p-bg)" }}>Get suggestions</button>}
+        {st.status === "loading" && <button type="button" onClick={() => ctlRef.current && ctlRef.current.abort()} className="min-h-[44px] px-4 rounded-full text-[0.88rem] font-medium" style={{ border: "1px solid var(--p-line)" }}>Stop</button>}
+      </div>
+
+      {st.status === "loading" && <p className="mt-4 text-[0.9rem]" style={{ color: "var(--p-inkmuted)" }} aria-live="polite"><Thinking label="Stoavia is walking the shelf. This can take up to a minute." /></p>}
+      {st.status === "error" && (
+        <div className="mt-4 flex items-center gap-3 flex-wrap" aria-live="polite">
+          <p className="text-[0.9rem] m-0" style={{ color: "var(--p-inkmuted)" }}>{st.message}</p>
+          <button type="button" onClick={() => run(true)} className="min-h-[40px] px-3.5 rounded-full text-[0.85rem] font-medium" style={{ border: "1px solid var(--p-line)" }}>Try again</button>
+        </div>
+      )}
+      {st.status === "done" && (
+        <div className="mt-4" aria-live="polite">
+          <p className="text-[1.15rem] leading-snug m-0" style={{ fontFamily: shop.font, fontWeight: shop.weight }}>{st.headline}</p>
+          <div className="mt-4 grid md:grid-cols-2 gap-4">
+            <div className="min-w-0">
+              <div className="font-mono text-[0.72rem] font-bold tracking-wider uppercase" style={{ color: "var(--p-inkmuted)" }}>Suggested shelf order</div>
+              <ol className="mt-2 flex flex-col gap-1.5 p-0 m-0 list-none">
+                {st.order.map((n, i) => (
+                  <li key={n} className="flex items-center gap-2 text-[0.9rem]">
+                    <span className="font-mono text-[0.75rem] w-6 flex-none" style={{ color: "var(--p-inkmuted)" }}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="min-w-0">{n}</span>
+                    {n === st.hero && <span className="font-mono text-[0.66rem] font-bold px-1.5 py-0.5 rounded flex-none" style={{ background: "var(--p-accent)", color: "var(--p-bg)" }}>HERO</span>}
+                    {i < 3 && n !== st.hero && <span className="font-mono text-[0.66rem] px-1.5 py-0.5 rounded flex-none" style={{ border: "1px solid var(--p-line)", color: "var(--p-inkmuted)" }}>WINDOW</span>}
+                  </li>
+                ))}
+              </ol>
+              {st.why && <p className="text-[0.84rem] mt-2 leading-relaxed" style={{ color: "var(--p-inkmuted)" }}>{st.why}</p>}
+              {st.bundle && (
+                <div className="mt-3 rounded-xl p-3" style={{ background: "var(--p-bg)", border: "1px dashed var(--p-accent)" }}>
+                  <div className="flex justify-between items-baseline gap-2">
+                    <span className="font-bold text-[0.95rem]">{st.bundle.name}</span>
+                    {st.bundle.price !== null && <span className="font-mono font-bold text-[0.95rem]" style={{ color: "var(--p-accent)" }}>R{st.bundle.price.toLocaleString("en-ZA")}</span>}
+                  </div>
+                  <div className="text-[0.82rem] mt-1" style={{ color: "var(--p-inkmuted)" }}>{st.bundle.items.join(" + ")}</div>
+                  {st.bundle.pitch && <div className="text-[0.85rem] mt-1.5">{st.bundle.pitch}</div>}
+                </div>
+              )}
+            </div>
+            <ul className="flex flex-col gap-2.5 list-none p-0 m-0 min-w-0">
+              {st.tips.map((t) => (
+                <li key={t.title} className="rounded-xl p-3" style={{ background: "var(--p-bg)", border: "1px solid var(--p-line)" }}>
+                  <div className="font-bold text-[0.9rem]">{t.title}</div>
+                  <div className="text-[0.85rem] mt-0.5 leading-relaxed" style={{ color: "var(--p-inkmuted)" }}>{t.detail}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2 items-center">
+            {onApply && !applied && <button type="button" onClick={() => onApply(shop.id, st.order)} className="min-h-[44px] px-4 rounded-full font-bold text-[0.88rem]" style={{ background: "var(--p-accent)", color: "var(--p-bg)" }}>Apply this shelf order</button>}
+            {onApply && applied && (
+              <>
+                <span className="text-[0.88rem] font-semibold">Applied to the shelf and the storefront window.</span>
+                <button type="button" onClick={() => onApply(shop.id, null)} className="min-h-[40px] px-3.5 rounded-full text-[0.85rem] underline underline-offset-4" style={{ color: "var(--p-inkmuted)" }}>Undo</button>
+              </>
+            )}
+            <button type="button" onClick={() => run(true)} className="min-h-[40px] px-3.5 rounded-full text-[0.85rem] font-medium" style={{ border: "1px solid var(--p-line)" }}>Ask again</button>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* store building: Stoavia turns a one-line description into a full shop design */
+const PRODUCT_TYPES = ["Physical", "Digital", "App", "Shopify"];
+const ART_KINDS = ["bottle", "jar", "box", "doc", "app", "bag", "pan", "band", "store"];
+
+function StoaviaBuilder({ cfg, onDesign }) {
+  const atrium = useStoavia();
+  const [brief, setBrief] = useState("");
+  const [st, setSt] = useState({ status: "idle" });
+  const ctlRef = useRef(null);
+  if (atrium.status === "off") {
+    return <p className="text-[0.84rem] text-inkmuted m-0 rounded-xl border border-dashed border-line p-3">Stoavia can design this shop for you when the page is open in Claude.</p>;
+  }
+  const run = async () => {
+    const b = brief.trim();
+    if (!b) return;
+    const ctl = new AbortController();
+    ctlRef.current = ctl;
+    setSt({ status: "loading" });
+    const prompt = [
+      "You are Stoavia, the shop designer in Shelfspace Global, a digital mall where each creator gets a themed shop.",
+      "Design a shop for this creator from their description. Make it feel like their channel, not a generic store.",
+      "",
+      "Creator's description: \"\"\"" + b.slice(0, 1200) + "\"\"\"",
+      "",
+      "Choose from these options only:",
+      "niche: " + Object.keys(NICHES).join(", "),
+      "palette: " + PALETTES.map((p) => p.id + " (" + p.name + ", background " + p.vars["--p-bg"] + ", text " + p.vars["--p-ink"] + ")").join("; "),
+      "font: fraunces (soft editorial serif), cormorant (elegant high-contrast serif), dmserif (bold fashion serif), bebas (tall condensed caps, rugged), anton (heavy condensed, gym poster), fredoka (rounded and friendly), syne (quirky modern geometric), josefin (clean vintage geometric sans)",
+      "layout: boutique (one glass shelf, centred, for few premium items), basecamp (a hero item plus a list, for gear), studio (big rounded cards, playful), pantry (numbered labelled shelves, for collections)",
+      "product type: Physical, Digital, App, Shopify. product kind (the drawing used): bottle, jar, box, doc, app, bag, pan, band, store",
+      "",
+      "Reply with only JSON in this shape:",
+      '{"name": "max 20 characters", "handle": "@handle, max 24 characters", "niche": "", "tagline": "max 56 characters", "palette": "", "accent": "#RRGGBB", "font": "", "layout": "", "products": [{"type": "", "kind": "", "name": "max 40 characters", "price": 0, "desc": "max 120 characters"}], "why": "one or two sentences on the choices"}',
+      "Give exactly 4 products that fit what this creator would really sell. Prices are whole numbers in South African rand (0 for free apps). The accent must be easy to read on the palette's background."
+    ].join("\n");
+    try {
+      const r = await atrium.askJson(prompt, { modelTier: "default", cache: false, signal: ctl.signal });
+      const pick = (v, list, fallback) => (list.includes(String(v)) ? String(v) : fallback);
+      const products = (r && Array.isArray(r.products) ? r.products : []).slice(0, 4).map((p) => {
+        const type = pick(p && p.type, PRODUCT_TYPES, "Physical");
+        const n = Number(p && p.price);
+        return {
+          type, kind: pick(p && p.kind, ART_KINDS, "box"),
+          name: String((p && p.name) || "Untitled product").slice(0, 44),
+          price: type === "Shopify" ? null : Number.isFinite(n) ? Math.max(0, Math.round(n)) : 0,
+          desc: String((p && p.desc) || SAMPLE_DESC).slice(0, 140)
+        };
+      });
+      const next = {
+        ...cfg,
+        name: String((r && r.name) || cfg.name).slice(0, 20),
+        handle: String((r && r.handle) || cfg.handle).slice(0, 24),
+        niche: pick(r && r.niche, Object.keys(NICHES), cfg.niche),
+        tagline: String((r && r.tagline) || cfg.tagline).slice(0, 56),
+        palette: pick(r && r.palette, PALETTES.map((p) => p.id), cfg.palette),
+        accent: /^#[0-9a-f]{6}$/i.test(String(r && r.accent)) ? String(r.accent) : cfg.accent,
+        font: pick(r && r.font, FONTS.map((f) => f.id), cfg.font),
+        layout: pick(r && r.layout, LAYOUTS.map((l) => l.id), cfg.layout),
+        products: products.length === 4 ? products : undefined
+      };
+      onDesign(next, cfg);
+      setSt({ status: "done", why: String((r && r.why) || "").slice(0, 300), prev: cfg });
+    } catch (e) {
+      if (e && e.code === "cancelled") setSt({ status: "idle" });
+      else setSt({ status: "error", message: atriumMessage(e) });
+    }
+  };
+  return (
+    <div className="rounded-xl border border-line bg-bg p-4">
+      <div className="flex items-center gap-2.5">
+        <StoaviaMark size={28} />
+        <div>
+          <div className="font-bold text-[0.95rem] leading-tight">Design it with Stoavia</div>
+          <div className="text-[0.8rem] text-inkmuted">Describe your channel. Stoavia picks the look, layout and four starter products.</div>
+        </div>
+      </div>
+      <label htmlFor="b-brief" className="sr-only">Describe your channel</label>
+      <textarea id="b-brief" rows={3} value={brief} onChange={(e) => setBrief(e.target.value)} maxLength={1200}
+        placeholder="e.g. I review budget espresso gear and home barista setups on YouTube. Calm, nerdy, a bit retro."
+        className="mt-3 w-full rounded-lg border border-line bg-surface text-ink px-3 py-2.5 text-[0.95rem] leading-relaxed resize-y" />
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        {st.status === "loading"
+          ? <>
+              <span className="text-[0.88rem] text-inkmuted" aria-live="polite"><Thinking label="Stoavia is designing your shop. This can take up to a minute." /></span>
+              <Button variant="outline" onClick={() => ctlRef.current && ctlRef.current.abort()}>Stop</Button>
+            </>
+          : <button type="button" onClick={run} disabled={!brief.trim()} className="min-h-[44px] px-4 rounded-full bg-accentstrong text-accentink font-bold text-[0.88rem] disabled:opacity-40">
+              {st.status === "done" ? "Design it again" : "Design my shop"}
+            </button>}
+        {st.status === "done" && st.prev && <button type="button" onClick={() => { onDesign(st.prev); setSt({ status: "idle" }); }} className="min-h-[44px] text-[0.85rem] text-inkmuted underline underline-offset-4">Undo</button>}
+      </div>
+      {st.status === "done" && st.why && <p className="text-[0.85rem] mt-2 m-0 leading-relaxed" aria-live="polite"><span className="font-semibold">Stoavia:</span> {st.why}</p>}
+      {st.status === "error" && <p className="text-[0.85rem] mt-2 m-0 text-inkmuted" aria-live="polite">{st.message}</p>}
+    </div>
+  );
+}
+
+const STORE_KEY = "shelfspace.myshop.v1";
+function loadCfg() {
+  try { const raw = localStorage.getItem(STORE_KEY); return raw ? { ...DEFAULT_CFG, ...JSON.parse(raw) } : null; } catch (e) { return null; }
+}
+function saveCfg(cfg) { try { localStorage.setItem(STORE_KEY, JSON.stringify(cfg)); } catch (e) {} }
+function clearCfg() { try { localStorage.removeItem(STORE_KEY); } catch (e) {} }
+
+function hexLum(hex) {
+  const h = (hex || "#000000").replace("#", "");
+  const c = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255).map((v) => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+const contrast = (a, b) => { const x = hexLum(a), y = hexLum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+
+/* ---------- product art ---------- */
+
+function ProductArt({ kind, size = 96 }) {
+  const A = "var(--p-accent)", S = "var(--p-surface)", I = "var(--p-ink)";
+  const shapes = {
+    bottle: <g><rect x="42" y="8" width="16" height="16" rx="3" fill={I} opacity=".7" /><rect x="30" y="22" width="40" height="70" rx="12" fill={A} /><rect x="36" y="46" width="28" height="22" rx="3" fill={S} opacity=".9" /></g>,
+    jar: <g><rect x="24" y="20" width="52" height="14" rx="4" fill={I} opacity=".7" /><rect x="20" y="32" width="60" height="58" rx="14" fill={A} /><rect x="30" y="52" width="40" height="18" rx="3" fill={S} opacity=".9" /></g>,
+    box: <g><path d="M16 34 50 19 84 34 84 76 50 91 16 76Z" fill={A} /><path d="M16 34 50 49 84 34M50 49V91" stroke={S} strokeWidth="3" fill="none" opacity=".85" /></g>,
+    doc: <g><path d="M26 10h36l16 16v64H26z" fill={S} stroke={A} strokeWidth="4" strokeLinejoin="round" /><path d="M62 10v16h16" fill="none" stroke={A} strokeWidth="4" strokeLinejoin="round" /><path d="M36 46h30M36 58h30M36 70h18" stroke={A} strokeWidth="4" strokeLinecap="round" /></g>,
+    app: <g><rect x="16" y="16" width="68" height="68" rx="19" fill={A} /><path d="M32 66 46 42 56 58 63 49 72 66Z" fill={S} /><circle cx="38" cy="34" r="6" fill={S} /></g>,
+    bag: <g><path d="M36 36c0-11 6-18 14-18s14 7 14 18" fill="none" stroke={I} strokeWidth="4" opacity=".7" /><path d="M20 34h60l-5 56H25z" fill={A} /><rect x="38" y="52" width="24" height="14" rx="3" fill={S} opacity=".85" /></g>,
+    pan: <g><circle cx="42" cy="54" r="31" fill={A} /><circle cx="42" cy="54" r="21" fill={S} opacity=".3" /><rect x="68" y="50" width="28" height="9" rx="4.5" fill={I} opacity=".7" /></g>,
+    band: <g><ellipse cx="50" cy="52" rx="33" ry="23" fill="none" stroke={A} strokeWidth="11" /><ellipse cx="50" cy="52" rx="20" ry="12" fill="none" stroke={I} strokeWidth="3" opacity=".25" /></g>,
+    store: <g><rect x="18" y="40" width="64" height="48" rx="4" fill={S} stroke={A} strokeWidth="4" /><path d="M13 40 21 16h58l8 24z" fill={A} /><path d="M29 16v24M43 16v24M57 16v24M71 16v24" stroke={S} strokeWidth="3" opacity=".6" /><rect x="42" y="60" width="16" height="28" fill={A} /></g>
+  };
+  return <svg viewBox="0 0 100 100" width={size} height={size} aria-hidden="true" style={{ display: "block", overflow: "visible" }}>{shapes[kind] || shapes.box}</svg>;
+}
+
+/* ---------- mall pieces ---------- */
+
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+const smooth = (a, b, p) => { const t = clamp01((p - a) / (b - a)); return t * t * (3 - 2 * t); };
+/* camera depth over scroll progress: approach the doors, pass through, walk the concourse, stop at the shop */
+const CAMERA = [[0, -420], [0.2, 180], [0.33, 1150], [0.8, 3260], [0.9, 3560], [1, 3560]];
+function cameraAt(p) {
+  for (let i = 1; i < CAMERA.length; i++) {
+    const [p0, z0] = CAMERA[i - 1], [p1, z1] = CAMERA[i];
+    if (p <= p1) return z0 + (z1 - z0) * smooth(p0, p1, p);
+  }
+  return CAMERA[CAMERA.length - 1][1];
+}
+const place = (w, h, transform, extra) => ({ width: w, height: h, marginLeft: -w / 2, marginTop: -h / 2, transform, ...extra });
+
+function StoreFront({ shop, w, h, headed, onPick, window: win }) {
+  return (
+    <button
+      type="button"
+      onClick={onPick}
+      aria-label={"Walk into " + shop.name + ", " + shop.unit}
+      className="storefront"
+      style={{
+        ...shop.vars, width: "100%", height: "100%", background: "var(--p-surface)", color: "var(--p-ink)",
+        border: "14px solid var(--mall-trim)", display: "flex", flexDirection: "column", textAlign: "left", padding: 0, cursor: "pointer", position: "relative"
+      }}
+    >
+      <span style={{ height: h * 0.24, background: "var(--p-bg)", borderBottom: "8px solid var(--p-accent)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, padding: "0 34px", flex: "none", overflow: "hidden" }}>
+        <span style={{ fontFamily: shop.font, fontWeight: shop.weight, fontSize: h * 0.115, lineHeight: 1, color: "var(--p-accent)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{shop.name}</span>
+        <span className="font-mono" style={{ fontSize: 20, color: "var(--p-inkmuted)", letterSpacing: "0.12em", textTransform: "uppercase", flex: "none" }}>{shop.unit}</span>
+      </span>
+      <span style={{ flex: 1, display: "flex", gap: 20, padding: 22, minHeight: 0 }}>
+        <span style={{ flex: 1, background: "var(--p-bg)", border: "4px solid var(--p-line)", borderRadius: 8, padding: 18, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14, alignContent: "end", position: "relative", overflow: "hidden" }}>
+          {shop.stripes && <span aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "repeating-linear-gradient(90deg, " + shop.stripes + " 0 4px, transparent 4px 44px)" }} />}
+          {(win || shop.products.slice(0, 3)).map((p) => (
+            <span key={p.name} className="win-in" style={{ position: "relative", background: "var(--p-surface)", border: "2px solid var(--p-line)", borderRadius: 10, padding: 12, height: h * 0.36, display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "stretch", gap: 6 }}>
+              <span style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}><ProductArt kind={p.kind} size={h * 0.15} /></span>
+              <span style={{ fontSize: 17, lineHeight: 1.2, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{p.name}</span>
+              <span className="font-mono" style={{ fontSize: 18, fontWeight: 600, color: "var(--p-accent)" }}>{priceLabel(p.price)}</span>
+            </span>
+          ))}
+        </span>
+        <span className="glass" style={{ width: w * 0.2, border: "6px solid var(--p-line)", borderRadius: 6, position: "relative", flex: "none" }}>
+          <span className="font-mono" style={{ position: "absolute", top: 26, left: "50%", transform: "translateX(-50%)", background: "var(--p-accent)", color: "var(--p-bg)", fontSize: 18, fontWeight: 600, padding: "6px 12px", borderRadius: 6, letterSpacing: "0.14em" }}>OPEN</span>
+          <span style={{ position: "absolute", top: "52%", left: 14, width: 8, height: 70, borderRadius: 4, background: "var(--p-line)" }} />
+        </span>
+      </span>
+      {headed && (
+        <span className="font-mono" style={{ position: "absolute", top: -64, left: 0, background: "var(--accent-strong)", color: "#FFFFFF", fontSize: 22, fontWeight: 600, padding: "8px 16px", borderRadius: 999 }}>
+          You&rsquo;re heading here
+        </span>
+      )}
+    </button>
+  );
+}
+
+function Facade({ facadeRef, leafL, leafR }) {
+  const panel = { position: "absolute", background: "var(--facade)" };
+  return (
+    <div ref={facadeRef} className="p3" style={place(3000, 1600, "translate3d(0px, 0px, 0px)")} aria-hidden="true">
+      {/* wall around the doorway: opening runs x -180..180, y -150..330 in world units */}
+      <div style={{ ...panel, left: 0, top: 0, width: 3000, height: 650, background: "linear-gradient(180deg, var(--facade-2), var(--facade) 70%)" }}>
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 150, display: "flex", alignItems: "center", justifyContent: "center", gap: 34 }}>
+          <span style={{ width: 118, height: 90, background: "var(--accent)", borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 60px rgba(255,0,0,0.45)" }}>
+            <svg viewBox="0 0 14 10" width="64" height="46" fill="none"><rect y="0" width="14" height="2.4" rx="1.2" fill="#FFFFFF" /><rect y="7.6" width="14" height="2.4" rx="1.2" fill="#FFFFFF" /></svg>
+          </span>
+          <span className="font-display" style={{ fontSize: 150, fontWeight: 900, letterSpacing: "0.04em", color: "var(--facade-ink)", lineHeight: 1, textShadow: "0 0 40px rgba(255,255,255,0.18)" }}>SHELFSPACE</span>
+          <span className="font-mono" style={{ fontSize: 46, fontWeight: 600, letterSpacing: "0.3em", color: "var(--facade-muted)", alignSelf: "flex-end", paddingBottom: 14 }}>GLOBAL</span>
+        </div>
+        <div className="font-mono" style={{ position: "absolute", left: 0, right: 0, bottom: 60, textAlign: "center", fontSize: 28, letterSpacing: "0.3em", color: "var(--facade-muted)" }}>
+          CREATOR MALL · 2 LEVELS · NO ACCOUNT AT THE DOOR
+        </div>
+      </div>
+      <div style={{ ...panel, left: 0, top: 650, width: 1320, height: 480 }}>
+        <div style={{ position: "absolute", right: 70, top: 40, width: 360, height: 400, background: "#0B0B0B", border: "3px solid #333", borderRadius: 14, padding: "26px 28px", color: "var(--facade-ink)" }}>
+          <div className="font-mono" style={{ fontSize: 20, letterSpacing: "0.2em", color: "var(--facade-muted)" }}>DIRECTORY</div>
+          {[["Creator shops", "86"], ["Listings", "1,247+"], ["Catalog sync", "< 15 min"]].map(([k, v]) => (
+            <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", borderBottom: "2px dashed #333", padding: "16px 0", fontSize: 24 }}>
+              <span>{k}</span><span className="font-mono" style={{ color: "#FF5A52", fontWeight: 600 }}>{v}</span>
+            </div>
+          ))}
+          <div style={{ fontSize: 20, color: "var(--facade-muted)", marginTop: 16, lineHeight: 1.4 }}>L1 Beauty · Outdoor<br />L2 Fitness · Home</div>
+        </div>
+      </div>
+      <div style={{ ...panel, left: 1680, top: 650, width: 1320, height: 480 }}>
+        <div style={{ position: "absolute", left: 70, top: 40, width: 360, height: 400, background: "#0B0B0B", border: "3px solid #333", borderRadius: 14, padding: "22px 24px", color: "var(--facade-ink)", display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className="font-mono" style={{ fontSize: 20, letterSpacing: "0.2em", color: "var(--facade-muted)" }}>NOW TRADING</div>
+          {SHOPS.map((s) => (
+            <div key={s.id} style={{ ...s.vars, background: "var(--p-bg)", borderLeft: "8px solid var(--p-accent)", padding: "4px 12px", borderRadius: 5 }}>
+              <span style={{ fontFamily: s.font, fontWeight: s.weight, fontSize: 21, color: "var(--p-accent)", whiteSpace: "nowrap" }}>{s.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ position: "absolute", left: 0, top: 1130, width: 3000, height: 470, background: "linear-gradient(180deg, var(--pavement), #1A1A1A)" }} />
+      {/* sliding glass doors sit just behind the wall so they slide into it */}
+      <div style={{ position: "absolute", left: 1320, top: 650, width: 360, height: 480, transform: "translateZ(-8px)" }}>
+        <div ref={leafL} className="glass" style={{ position: "absolute", left: 0, top: 0, width: 182, height: 480, borderRight: "3px solid #0B0B0B" }}>
+          <span className="font-mono" style={{ position: "absolute", top: 210, right: 16, fontSize: 16, color: "#0B0B0B", letterSpacing: "0.2em", opacity: 0.6 }}>AUTO</span>
+        </div>
+        <div ref={leafR} className="glass" style={{ position: "absolute", right: 0, top: 0, width: 182, height: 480, borderLeft: "3px solid #0B0B0B" }}>
+          <span className="font-mono" style={{ position: "absolute", top: 210, left: 16, fontSize: 16, color: "#0B0B0B", letterSpacing: "0.2em", opacity: 0.6 }}>DOORS</span>
+        </div>
+      </div>
+      <div style={{ position: "absolute", left: 1306, top: 636, width: 388, height: 494, border: "14px solid #0B0B0B", borderBottom: "none", transform: "translateZ(2px)" }} />
+    </div>
+  );
+}
+
+function Shopper({ s }) {
+  return (
+    <div className="person" aria-hidden="true" style={{ "--x": s.x + "px", "--z0": s.z0 + "px", "--z1": s.z1 + "px", "--dur": s.dur + "s", "--delay": s.delay + "s" }}>
+      <span style={{ position: "absolute", top: 0, left: 17, width: 56, height: 56, borderRadius: "50%", background: "var(--mall-people)" }} />
+      <span style={{ position: "absolute", top: 62, left: 0, width: 90, height: 198, borderRadius: "45px 45px 14px 14px", background: "var(--mall-people)" }} />
+      <span style={{ position: "absolute", top: 150, left: s.x < 0 ? 70 : -16, width: 36, height: 42, borderRadius: 6, background: s.bag, opacity: 0.9 }} />
+    </div>
+  );
+}
+
+/* ---------- shop interior ---------- */
+
+function ProductDetail({ shop, product, onClose }) {
+  const closeRef = useRef(null);
+  useEffect(() => {
+    const prev = document.activeElement;
+    closeRef.current && closeRef.current.focus();
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => { window.removeEventListener("keydown", onKey); try { prev && prev.focus({ preventScroll: true }); } catch (e) {} };
+  }, []);
+  return (
+    <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-6" style={{ background: "var(--scrim)" }} onClick={onClose}>
+      <div role="dialog" aria-modal="true" aria-labelledby="pd-title" onClick={(e) => e.stopPropagation()}
+        className="w-full sm:max-w-[520px] rounded-t-2xl sm:rounded-2xl p-6 max-h-[88svh] overflow-y-auto"
+        style={{ ...shop.vars, background: "var(--p-surface)", color: "var(--p-ink)", border: "1px solid var(--p-line)" }}>
+        <div className="flex justify-between items-start gap-4">
+          <span className="font-mono text-[0.72rem] font-bold tracking-wider uppercase" style={{ color: "var(--p-inkmuted)" }}>{shop.name} · {product.type}</span>
+          <button ref={closeRef} type="button" onClick={onClose} className="min-h-[40px] px-3 rounded-full text-[0.85rem] font-medium" style={{ border: "1px solid var(--p-line)" }}>Close</button>
+        </div>
+        <div className="flex justify-center py-6 rounded-xl mt-3" style={{ background: "var(--p-bg)" }}><ProductArt kind={product.kind} size={140} /></div>
+        <h3 id="pd-title" className="mt-4 text-[1.6rem] leading-tight" style={{ fontFamily: shop.font, fontWeight: shop.weight }}>{product.name}</h3>
+        <p className="mt-2 text-[0.95rem] leading-relaxed" style={{ color: "var(--p-inkmuted)" }}>{product.desc}</p>
+        <div className="mt-4 flex items-center justify-between gap-3 flex-wrap">
+          <span className="font-mono text-[1.2rem] font-bold" style={{ color: "var(--p-accent)" }}>{priceLabel(product.price)}</span>
+          <CodeChip code={shop.code} item={product.name}
+            className="font-mono text-[0.85rem] font-semibold min-h-[44px] px-4 rounded-full tracking-wide whitespace-nowrap transition-opacity hover:opacity-85"
+            style={{ background: "var(--p-accent)", color: "var(--p-bg)" }} />
+        </div>
+        <p className="mt-4 text-[0.82rem] leading-relaxed" style={{ color: "var(--p-inkmuted)" }}>
+          Copy {shop.handle}&rsquo;s code, then check out wherever this listing lives. Shelfspace Global shows you the shelf; it never runs the checkout.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- follow a shop: opt-in, no account ---------- */
+
+const FOLLOW_KEY = "shelfspace.follows.v1";
+function loadFollows() { try { return JSON.parse(localStorage.getItem(FOLLOW_KEY) || "{}") || {}; } catch (e) { return {}; } }
+function saveFollows(f) { try { localStorage.setItem(FOLLOW_KEY, JSON.stringify(f)); } catch (e) {} }
+
+function FollowShop({ shop, centered, framed }) {
+  const [follows, setFollows] = useState(loadFollows);
+  const [open, setOpen] = useState(false);
+  const [contact, setContact] = useState("");
+  const [share, setShare] = useState(false);
+  const [err, setErr] = useState("");
+  const mine = follows[shop.id];
+  const uid = "follow-" + shop.id + (framed ? "-f" : "");
+  const update = (next) => { setFollows(next); saveFollows(next); };
+  const submit = (e) => {
+    e.preventDefault();
+    const v = contact.trim();
+    if (!(/^\S+@\S+\.\S+$/.test(v) || v.replace(/\D/g, "").length >= 9)) { setErr("Enter an email address or a WhatsApp number."); return; }
+    /* the contact itself is never kept in this preview, only the choice */
+    update({ ...follows, [shop.id]: { share } });
+    setOpen(false); setContact(""); setErr("");
+  };
+  const unfollow = () => { const next = { ...follows }; delete next[shop.id]; update(next); };
+  const btn = "inline-flex items-center gap-2 min-h-[44px] px-4 rounded-full text-[0.88rem] font-bold transition-opacity hover:opacity-85";
+  return (
+    <div className={"mt-3 " + (centered ? "text-center" : "")}>
+      {mine ? (
+        <p className="m-0 text-[0.88rem]" aria-live="polite">
+          <span className="font-bold">✓ Following {shop.name}.</span>{" "}
+          <span style={{ color: "var(--p-inkmuted)" }}>{mine.share ? "The owner can contact you directly." : "Updates reach you through Shelfspace Global. The owner never sees your details."}</span>{" "}
+          <button type="button" onClick={unfollow} className="underline underline-offset-4 min-h-[44px]" style={{ color: "var(--p-ink)" }}>Unfollow</button>
+        </p>
+      ) : !open ? (
+        <button type="button" onClick={() => setOpen(true)} className={btn} style={{ background: "transparent", color: "var(--p-ink)", border: "1.5px solid var(--p-accent)" }}>
+          <span aria-hidden="true">+</span> Follow this shop
+        </button>
+      ) : (
+        <form onSubmit={submit} className={"rounded-2xl p-4 max-w-[520px] text-left " + (centered ? "mx-auto" : "")} style={{ background: "var(--p-surface)", border: "1px solid var(--p-line)" }}>
+          <label htmlFor={uid} className="block text-[0.9rem] font-bold mb-1.5">Get updates from {shop.name}</label>
+          <input id={uid} type="text" inputMode="email" autoComplete="off" value={contact} onChange={(e) => { setContact(e.target.value); setErr(""); }}
+            placeholder="Email or WhatsApp number" aria-describedby={uid + "-h"}
+            className="w-full min-h-[44px] rounded-lg px-3 text-[0.95rem] outline-none focus-visible:ring-2"
+            style={{ background: "var(--p-bg)", color: "var(--p-ink)", border: "1px solid var(--p-line)", "--tw-ring-color": "var(--p-accent)" }} />
+          {err && <p className="text-[0.82rem] mt-1.5 m-0 font-semibold" role="alert">{err}</p>}
+          <label className="flex items-start gap-2.5 mt-3 text-[0.86rem] cursor-pointer">
+            <input type="checkbox" checked={share} onChange={(e) => setShare(e.target.checked)} className="mt-1 w-4 h-4 flex-none" />
+            <span>Also share my contact details with the owner of {shop.name}</span>
+          </label>
+          <p id={uid + "-h"} className="text-[0.78rem] mt-2 mb-0" style={{ color: "var(--p-inkmuted)" }}>
+            No account or password. Leave the box unticked and updates come through Shelfspace Global, so the owner never sees your details. Unfollow any time. This is a preview: your details are not sent or stored.
+          </p>
+          <div className="flex flex-wrap gap-2 mt-3">
+            <button type="submit" className={btn} style={{ background: "var(--p-accent)", color: "var(--p-bg)" }}>Follow</button>
+            <button type="button" onClick={() => { setOpen(false); setErr(""); }} className={btn} style={{ background: "transparent", color: "var(--p-ink)", border: "1px solid var(--p-line)" }}>Cancel</button>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+
+function ShopInterior({ shop, neighbors = [], onPick, onBack, framed, onApplyOrder, applied, openRequest, onAskStoavia }) {
+  const atrium = useStoavia();
+  const [q, setQ] = useState("");
+  const [open, setOpen] = useState(null);
+  useEffect(() => { setQ(""); setOpen(null); }, [shop.id, shop.layout, shop.name]);
+  useEffect(() => {
+    if (!openRequest || openRequest.shopId !== shop.id) return;
+    const p = shop.products.find((x) => x.name === openRequest.name);
+    if (p) setOpen(p);
+  }, [openRequest]);
+  const clean = q.toLowerCase().replace(/,/g, "");
+  const words = clean.split(/\s+/).filter((w) => w.length > 2 && !["the", "and", "for", "with", "show", "any", "some", "under", "below", "less", "than"].includes(w) && !/^r?\d+$/.test(w));
+  const under = clean.match(/(?:under|below|less than)\s*r?\s*(\d{2,5})/);
+  const items = shop.products.filter((p) => {
+    const hay = (p.name + " " + p.type + " " + p.desc).toLowerCase();
+    if (under && (p.price === null || p.price >= parseInt(under[1], 10))) return false;
+    return words.every((w) => hay.includes(w) || hay.includes(w.replace(/s$/, "")));
+  });
+  const note = q.trim() === ""
+    ? "Tap anything for details. Ask for a type, a word, or a price like “under 300”."
+    : items.length ? "Showing " + items.length + " of " + shop.products.length + "." : "Nothing matches that here. Try another word or a higher price.";
+
+  const L = shop.layout || "studio";
+  const pick = (p) => setOpen(p);
+  const chip = (p) => (
+    <CodeChip code={shop.code} item={p.name}
+      className="font-mono text-[0.74rem] font-semibold min-h-[36px] px-2.5 rounded-lg tracking-wide whitespace-nowrap transition-opacity hover:opacity-85 active:scale-95"
+      style={{ background: "var(--p-accent)", color: "var(--p-bg)" }} />
+  );
+  const price = (p, cls = "") => <span className={"font-mono text-[0.9rem] font-bold " + cls} style={{ color: "var(--p-accent)" }}>{priceLabel(p.price)}</span>;
+  const surface = { background: "var(--p-surface)", border: "1px solid var(--p-line)" };
+
+  let shelf;
+  if (items.length === 0) {
+    shelf = <p className="mt-4 text-[0.95rem]" style={{ color: "var(--p-inkmuted)" }}>This shelf is empty for that question.</p>;
+  } else if (L === "boutique") {
+    shelf = (
+      <ul className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-6 list-none p-0 m-0">
+        {items.map((p) => (
+          <li key={p.name} className="flex flex-col items-center text-center min-w-0">
+            <button type="button" onClick={() => pick(p)} className="group flex flex-col items-center w-full rounded-xl pt-2 px-1" aria-label={"View " + p.name}>
+              <span className="block transition-transform duration-200 group-hover:-translate-y-1.5"><ProductArt kind={p.kind} size={framed ? 72 : 88} /></span>
+              <span aria-hidden="true" className="block w-full h-[6px] rounded-full mt-1" style={{ background: "var(--p-line)", boxShadow: "0 8px 14px -8px rgba(0,0,0,.55)" }} />
+              <span className="mt-2.5 text-[0.9rem] leading-snug">{p.name}</span>
+            </button>
+            <span className="flex items-center gap-2 mt-1.5 flex-wrap justify-center">{price(p)}{chip(p)}</span>
+          </li>
+        ))}
+      </ul>
+    );
+  } else if (L === "basecamp") {
+    const [hero, ...rest] = items;
+    shelf = (
+      <div className="mt-4 grid md:grid-cols-[1.1fr_1fr] gap-3">
+        <div className="rounded-xl p-4 flex gap-4 items-center min-w-0" style={surface}>
+          <button type="button" onClick={() => pick(hero)} className="flex gap-4 items-center text-left min-w-0 flex-1" aria-label={"View " + hero.name}>
+            <span className="rounded-lg p-2 flex-none" style={{ background: "var(--p-bg)" }}><ProductArt kind={hero.kind} size={framed ? 80 : 104} /></span>
+            <span className="min-w-0">
+              <span className="font-mono text-[0.7rem] font-bold tracking-wider uppercase block" style={{ color: "var(--p-inkmuted)" }}>Pick of the shelf · {hero.type}</span>
+              <span className="block text-[1.25rem] leading-tight mt-1" style={{ fontFamily: shop.font, fontWeight: shop.weight }}>{hero.name}</span>
+              <span className="block text-[0.85rem] mt-1 leading-snug" style={{ color: "var(--p-inkmuted)" }}>{hero.desc}</span>
+            </span>
+          </button>
+          <span className="flex flex-col items-end gap-2 flex-none">{price(hero)}{chip(hero)}</span>
+        </div>
+        <ul className="flex flex-col gap-2 list-none p-0 m-0">
+          {rest.map((p) => (
+            <li key={p.name} className="rounded-xl px-3 py-2 flex items-center gap-3 min-w-0" style={surface}>
+              <button type="button" onClick={() => pick(p)} className="flex items-center gap-3 text-left flex-1 min-w-0 min-h-[44px]" aria-label={"View " + p.name}>
+                <ProductArt kind={p.kind} size={44} />
+                <span className="min-w-0">
+                  <span className="block text-[0.9rem] leading-snug">{p.name}</span>
+                  <span className="font-mono text-[0.7rem] uppercase tracking-wider" style={{ color: "var(--p-inkmuted)" }}>{p.type}</span>
+                </span>
+              </button>
+              {price(p, "flex-none")}
+              {chip(p)}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  } else if (L === "pantry") {
+    shelf = (
+      <ul className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-5 list-none p-0 m-0">
+        {items.map((p, i) => (
+          <li key={p.name} className="flex flex-col min-w-0">
+            <button type="button" onClick={() => pick(p)} className="group relative flex flex-col items-center pt-3" aria-label={"View " + p.name}>
+              <span className="absolute left-0 top-0 font-mono text-[0.68rem] font-bold px-1.5 py-0.5 rounded" style={{ background: "var(--p-surface)", border: "1px solid var(--p-line)", color: "var(--p-inkmuted)" }}>No. {String(i + 1).padStart(2, "0")}</span>
+              <span className="transition-transform duration-200 group-hover:-translate-y-1"><ProductArt kind={p.kind} size={framed ? 64 : 80} /></span>
+            </button>
+            <span aria-hidden="true" className="block h-3 rounded-sm" style={{ background: "var(--p-line)", boxShadow: "0 6px 10px -6px rgba(0,0,0,.45)" }} />
+            <span className="mt-2 text-[0.88rem] leading-snug">{p.name}</span>
+            <span className="flex items-center justify-between gap-2 mt-1.5 flex-wrap">{price(p)}{chip(p)}</span>
+          </li>
+        ))}
+      </ul>
+    );
+  } else {
+    shelf = (
+      <ul className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 list-none p-0 m-0">
+        {items.map((p) => (
+          <li key={p.name} className="rounded-3xl p-3.5 flex flex-col gap-2 min-w-0" style={surface}>
+            <button type="button" onClick={() => pick(p)} className="group flex flex-col items-center gap-2 text-center" aria-label={"View " + p.name}>
+              <span className="rounded-full p-3 transition-transform duration-200 group-hover:scale-105" style={{ background: "color-mix(in srgb, var(--p-accent) 16%, transparent)" }}><ProductArt kind={p.kind} size={framed ? 56 : 68} /></span>
+              <span className="text-[0.9rem] leading-snug">{p.name}</span>
+            </button>
+            <span className="flex items-center justify-between gap-2 flex-wrap mt-auto">{price(p)}{chip(p)}</span>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  const centered = L === "boutique";
+  return (
+    <div style={{ ...shop.vars, background: "var(--p-bg)", color: "var(--p-ink)", position: "relative", minHeight: framed ? 0 : "100%" }} className={framed ? "rounded-2xl overflow-hidden border border-line" : ""}>
+      {shop.stripes && <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(90deg, " + shop.stripes + " 0 3px, transparent 3px 38px)" }} />}
+      <div className={"relative max-w-[1100px] mx-auto px-5 " + (framed ? "py-6" : "pt-[124px] md:pt-[92px] pb-10")}>
+        <div className={"flex items-center gap-3 flex-wrap " + (centered ? "justify-center text-center" : "")}>
+          <div aria-hidden="true" className="w-11 h-11 rounded-full flex items-center justify-center text-[1.1rem] flex-none" style={{ background: "var(--p-accent)", color: "var(--p-bg)", fontFamily: shop.font, fontWeight: shop.weight }}>{shop.initial}</div>
+          <div className={"min-w-0 " + (centered ? "" : "flex-1")}>
+            <div className="text-[1.05rem] font-bold leading-tight">{shop.handle}</div>
+            <div className="text-[0.84rem]" style={{ color: "var(--p-inkmuted)" }}>{shop.niche} · {shop.room}</div>
+          </div>
+          {!centered && <div className="font-mono text-[0.75rem] tracking-[0.12em] uppercase" style={{ color: "var(--p-inkmuted)" }}>{shop.unit} · {shop.platform} {shop.follow}</div>}
+        </div>
+
+        <FollowShop key={shop.id + (framed ? "-f" : "")} shop={shop} centered={centered} framed={framed} />
+
+        <h2 className={"mt-4 md:mt-6 leading-[1.02] text-[clamp(1.9rem,5.2vw,3.6rem)] " + (centered ? "mx-auto text-center max-w-[18ch]" : "max-w-[20ch]")} style={{ fontFamily: shop.font, fontWeight: shop.weight, color: "var(--p-ink)" }}>{shop.tagline}</h2>
+
+        <form role="search" onSubmit={(e) => e.preventDefault()} className={"mt-4 md:mt-6 " + (centered ? "max-w-[560px] mx-auto" : "")}>
+          <label htmlFor={"ask-" + shop.id + (framed ? "-f" : "")} className="sr-only">Ask {shop.name}</label>
+          <input
+            id={"ask-" + shop.id + (framed ? "-f" : "")}
+            type="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            autoComplete="off"
+            placeholder={"Ask " + shop.name + "… e.g. “guide” or “under 300”"}
+            className="w-full min-h-[48px] rounded-full px-5 text-[1rem] outline-none focus-visible:ring-2"
+            style={{ background: "var(--p-surface)", color: "var(--p-ink)", border: "1px solid var(--p-line)", "--tw-ring-color": "var(--p-accent)" }}
+          />
+          <p className={"font-mono text-[0.76rem] mt-2 " + (centered ? "text-center" : "")} style={{ color: "var(--p-inkmuted)" }} aria-live="polite">{note}</p>
+          {onAskStoavia && atrium.status !== "off" && (
+            <div className={"mt-1 " + (centered ? "text-center" : "")}>
+              <button type="button" onClick={() => onAskStoavia("I'm in " + shop.name + ". What should a first-time visitor look at here, and why?")}
+                className="inline-flex items-center gap-2 min-h-[40px] text-[0.84rem] font-medium underline underline-offset-4" style={{ color: "var(--p-ink)" }}>
+                <StoaviaMark size={20} /> Not sure? Ask Stoavia about this shop
+              </button>
+            </div>
+          )}
+        </form>
+
+        {shelf}
+
+        <MerchAdvisor shop={shop} neighbors={neighbors} onApply={onApplyOrder} applied={applied} />
+
+        {(neighbors.length > 1 || onBack) && (
+          <div className={"mt-6 flex flex-wrap items-center gap-2 " + (centered ? "justify-center" : "")}>
+            {neighbors.length > 1 && <span className="font-mono text-[0.72rem] tracking-[0.12em] uppercase mr-1" style={{ color: "var(--p-inkmuted)" }}>Also on this floor</span>}
+            {neighbors.length > 1 && neighbors.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => onPick(s.id)}
+                aria-pressed={s.id === shop.id}
+                className="min-h-[40px] px-3.5 rounded-full text-[0.84rem] font-medium transition-colors"
+                style={s.id === shop.id
+                  ? { background: "var(--p-accent)", color: "var(--p-bg)", border: "1px solid var(--p-accent)" }
+                  : { background: "transparent", color: "var(--p-ink)", border: "1px solid var(--p-line)" }}
+              >
+                {s.name}
+              </button>
+            ))}
+            {onBack && (
+              <button type="button" onClick={onBack} className="min-h-[40px] px-3.5 rounded-full text-[0.84rem] font-medium underline underline-offset-4" style={{ color: "var(--p-inkmuted)" }}>
+                Walk back out
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+      {open && <ProductDetail shop={shop} product={open} onClose={() => setOpen(null)} />}
+    </div>
+  );
+}
+
+/* ---------- directory map ---------- */
+
+function Directory({ level, shopsOn, youZ, onClose, onVisit, onLevel }) {
+  const closeRef = useRef(null);
+  const [view, setView] = useState(level);
+  useEffect(() => {
+    const prev = document.activeElement;
+    closeRef.current && closeRef.current.focus();
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => { window.removeEventListener("keydown", onKey); try { prev && prev.focus({ preventScroll: true }); } catch (e) {} };
+  }, []);
+  const zToY = (z) => 410 - (Math.min(4400, Math.max(0, -z)) / 4400) * 380;
+  const list = shopsOn(view);
+  const unitH = (820 / 4400) * 380;
+  const hereY = youZ === null ? null : youZ > 0 ? 424 : zToY(youZ);
+  const L = LEVELS[view];
+
+  return (
+    <div className="fixed inset-0 z-[80] flex items-end md:items-center justify-center md:p-6" style={{ background: "var(--scrim)" }} onClick={onClose}>
+      <div role="dialog" aria-modal="true" aria-labelledby="dir-title" onClick={(e) => e.stopPropagation()}
+        className="bg-bg text-ink w-full md:max-w-[880px] rounded-t-2xl md:rounded-2xl border border-line max-h-[92svh] overflow-y-auto p-5 md:p-6">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <Eyebrow>Mall directory</Eyebrow>
+            <h2 id="dir-title" className="font-display font-extrabold uppercase text-[1.6rem] leading-tight m-0">{L.name} · {L.label}</h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <div role="tablist" aria-label="Levels" className="flex gap-1 p-1 rounded-full border border-line bg-surface">
+              {[1, 2].map((n) => (
+                <button key={n} role="tab" type="button" aria-selected={view === n} onClick={() => setView(n)}
+                  className={"min-h-[40px] px-3.5 rounded-full font-mono text-[0.78rem] " + (view === n ? "bg-chipbg text-chipink" : "text-inkmuted hover:text-ink")}>
+                  Level {n}
+                </button>
+              ))}
+            </div>
+            <button ref={closeRef} type="button" onClick={onClose} className="min-h-[44px] px-4 rounded-full border border-line bg-surface font-medium text-[0.9rem]">Close</button>
+          </div>
+        </div>
+
+        <div className="mt-5 grid md:grid-cols-[300px_minmax(0,1fr)] gap-6 items-start">
+          <svg viewBox="0 0 320 440" className="w-full max-w-[300px] mx-auto h-auto" role="img" aria-label={"Floor plan of " + L.name + ". Entrance at the bottom, escalators at the far end."}>
+            <rect x="120" y="30" width="80" height="380" rx="4" fill="var(--surface-2)" stroke="var(--line)" />
+            <rect x="120" y="14" width="80" height="16" rx="3" fill="var(--line)" />
+            {L.wings.map(([w, z]) => (
+              <text key={w} x="160" y={zToY(z) - 6} textAnchor="middle" fontSize="9" fill="var(--ink-muted)" fontFamily="Roboto Mono, monospace" letterSpacing="1">{w.toUpperCase()}</text>
+            ))}
+            <g onClick={() => { onLevel(view === 1 ? 2 : 1); }} style={{ cursor: "pointer" }}>
+              <rect x="136" y={zToY(ESCALATOR_Z) - 12} width="48" height="24" rx="12" fill="var(--chip-bg)" />
+              <text x="160" y={zToY(ESCALATOR_Z) + 4} textAnchor="middle" fontSize="10" fill="var(--chip-ink)" fontFamily="Roboto Mono, monospace">{view === 1 ? "↑ L2" : "↓ L1"}</text>
+            </g>
+            {list.map(({ shop, slot }) => {
+              const y = zToY(SLOTS[slot].z) - unitH / 2;
+              const x = SLOTS[slot].side < 0 ? 24 : 204;
+              return (
+                <g key={shop.id} style={{ ...shop.vars, cursor: "pointer" }} onClick={() => onVisit(shop.id)}>
+                  <rect x={x} y={y} width="92" height={unitH} rx="5" fill="var(--p-bg)" stroke="var(--p-accent)" strokeWidth="2" />
+                  <text x={x + 8} y={y + 18} fontSize="9" fill="var(--p-inkmuted)" fontFamily="Roboto Mono, monospace">{shop.unit.toUpperCase()}</text>
+                  <text x={x + 8} y={y + 36} fontSize="12" fill="var(--p-accent)" style={{ fontFamily: shop.font, fontWeight: shop.weight }}>{shop.name.length > 13 ? shop.name.slice(0, 12) + "…" : shop.name}</text>
+                </g>
+              );
+            })}
+            <rect x="130" y="408" width="60" height="6" rx="3" fill="var(--accent)" />
+            <text x="160" y="432" textAnchor="middle" fontSize="10" fill="var(--ink-muted)" fontFamily="Roboto Mono, monospace" letterSpacing="1">ENTRANCE</text>
+            {hereY !== null && view === level && (
+              <g>
+                <circle className="here-ring" cx="160" cy={hereY} r="6" fill="var(--accent)" />
+                <circle cx="160" cy={hereY} r="6" fill="var(--accent)" stroke="var(--bg)" strokeWidth="2" />
+                <text x="172" y={hereY + 4} fontSize="10" fill="var(--accent-text)" fontFamily="Roboto Mono, monospace" fontWeight="600">YOU ARE HERE</text>
+              </g>
+            )}
+          </svg>
+
+          <div className="min-w-0">
+            <ul className="flex flex-col gap-2 list-none p-0 m-0">
+              {list.map(({ shop }) => (
+                <li key={shop.id}>
+                  <button type="button" onClick={() => onVisit(shop.id)} className="w-full text-left flex items-center gap-3 rounded-xl border border-line bg-surface hover:bg-surface2 px-3 py-2.5 min-h-[56px] transition-colors">
+                    <span aria-hidden="true" className="w-10 h-10 rounded-lg flex items-center justify-center flex-none text-[1rem]" style={{ ...shop.vars, background: "var(--p-bg)", color: "var(--p-accent)", border: "2px solid var(--p-accent)", fontFamily: shop.font, fontWeight: shop.weight }}>{shop.initial}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-bold text-[0.95rem] truncate">{shop.name}</span>
+                      <span className="block text-[0.8rem] text-inkmuted truncate">{shop.niche} · {shop.unit}</span>
+                    </span>
+                    <span className="font-mono text-[0.75rem] text-accenttext flex-none">Walk in →</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button type="button" onClick={() => onLevel(view === 1 ? 2 : 1)} className="mt-3 w-full min-h-[48px] rounded-xl border border-dashed border-line text-[0.9rem] font-medium hover:bg-surface transition-colors">
+              {view === 1 ? "Take the escalator up to Level 2 · Fitness & Home" : "Take the escalator down to Level 1 · Beauty & Outdoor"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- the walk-through ---------- */
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(() => {
+    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; }
+  });
+  useEffect(() => {
+    try {
+      const m = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const f = () => setReduced(m.matches);
+      m.addEventListener("change", f);
+      return () => m.removeEventListener("change", f);
+    } catch (e) {}
+  }, []);
+  return reduced;
+}
+
+const STAGES = [["Entrance", 0], ["Concourse", 0.56], ["Inside the shop", 0.95]];
+
+function MallEntrance({ shops, apiRef, orders, onApplyOrder, onAskStoavia }) {
+  const reduced = usePrefersReducedMotion();
+  const atrium = useStoavia();
+  const [openReq, setOpenReq] = useState(null);
+  const [level, setLevel] = useState(1);
+  const [shopId, setShopId] = useState("mara");
+  const [stage, setStage] = useState(0);
+  const [tick, setTick] = useState(0);
+  const [dirOpen, setDirOpen] = useState(false);
+  const [flash, setFlash] = useState(null);
+  const sectionRef = useRef(null), screenRef = useRef(null), worldRef = useRef(null), levelRef = useRef(null), facadeRef = useRef(null);
+  const leafL = useRef(null), leafR = useRef(null), capA = useRef(null), capB = useRef(null), overlayRef = useRef(null), flashRef = useRef(null);
+  const unitRefs = useRef([]), signRefs = useRef([]), stageRef = useRef(0), tRef = useRef(-420), lastP = useRef(0), levelNow = useRef(1), busy = useRef(false);
+
+  const byId = useMemo(() => {
+    const m = {};
+    shops.forEach((s) => (m[s.id] = s));
+    return m;
+  }, [shops]);
+  const myShop = byId.mine || null;
+  const shopsOn = (n) => {
+    const ids = LEVELS[n].shops.slice();
+    if (n === 1 && myShop) ids.push("mine");
+    return ids.map((id, slot) => ({ shop: byId[id], slot }));
+  };
+  const onLevel = shopsOn(level);
+  const shop = byId[shopId] && byId[shopId].level === level ? byId[shopId] : onLevel[0].shop;
+  levelNow.current = level;
+
+  const scrollToP = (p) => {
+    const s = sectionRef.current;
+    if (!s) return;
+    const top = s.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: top + p * (s.offsetHeight - window.innerHeight), behavior: "smooth" });
+  };
+
+  /* ride the escalator: the corridor drops away, the new floor settles in */
+  const rideTo = (n, after) => {
+    if (n === levelNow.current || busy.current) { after && after(); return; }
+    busy.current = true;
+    const up = n > levelNow.current;
+    const w = levelRef.current, f = flashRef.current;
+    setFlash(LEVELS[n]);
+    if (f) f.style.opacity = "1";
+    if (w) { w.style.transition = "transform .42s ease-in"; w.style.transform = "translateY(" + (up ? 520 : -520) + "px)"; }
+    setTimeout(() => {
+      setLevel(n);
+      setShopId(LEVELS[n].shops[0]);
+      if (w) { w.style.transition = "none"; w.style.transform = "translateY(" + (up ? -520 : 520) + "px)"; }
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (w) { w.style.transition = "transform .55s ease-out"; w.style.transform = "translateY(0px)"; }
+        if (f) f.style.opacity = "0";
+        busy.current = false;
+        after && after();
+      }));
+    }, 440);
+  };
+
+  const visit = (id, productName) => {
+    const target = byId[id];
+    if (!target) return;
+    setDirOpen(false);
+    setShopId(id);
+    if (productName) setOpenReq({ shopId: id, name: productName, n: Date.now() });
+    if (reduced) {
+      const s = sectionRef.current || document.getElementById("top");
+      s && s.scrollIntoView({ block: "start" });
+      return;
+    }
+    if (target.level !== levelNow.current) { setLevel(target.level); }
+    scrollToP(0.95);
+  };
+  const where = () => {
+    const cur = byId[shopId];
+    const st = STAGES[stageRef.current] ? STAGES[stageRef.current][0] : "Entrance";
+    if (reduced) return "on the landing page, looking at " + (cur ? cur.name : "a shop");
+    if (stageRef.current === 0) return "outside the mall entrance";
+    if (stageRef.current === 1) return "walking the " + LEVELS[levelNow.current].name + " concourse (" + LEVELS[levelNow.current].label + ")";
+    return "inside " + (cur ? cur.name : "a shop") + " on " + LEVELS[levelNow.current].name;
+  };
+
+  useEffect(() => { if (apiRef) apiRef.current = { visit, where }; });
+
+  useEffect(() => {
+    if (reduced) return;
+    const t = setInterval(() => setTick((v) => v + 1), 4500);
+    return () => clearInterval(t);
+  }, [reduced]);
+
+  useEffect(() => {
+    if (reduced) return;
+    let raf = 0;
+    const fit = () => {
+      const k = Math.max(window.innerWidth / 1200, window.innerHeight / 750);
+      if (screenRef.current) screenRef.current.style.transform = "scale(" + k + ")";
+    };
+    const update = () => {
+      raf = 0;
+      const s = sectionRef.current;
+      if (!s || !worldRef.current) return;
+      const r = s.getBoundingClientRect();
+      const p = clamp01(-r.top / Math.max(1, r.height - window.innerHeight));
+      const T = cameraAt(p);
+      tRef.current = T;
+      const walking = T > 250 && T < 3400 ? 1 : 0;
+      worldRef.current.style.transform = "translate3d(0px, " + (Math.sin(T / 160) * 3.5 * walking).toFixed(2) + "px, " + T.toFixed(1) + "px)";
+      const open = smooth(0.04, 0.19, p);
+      leafL.current.style.transform = "translateX(" + (-open * 180) + "px)";
+      leafR.current.style.transform = "translateX(" + (open * 180) + "px)";
+      facadeRef.current.style.visibility = T > 860 ? "hidden" : "visible";
+      unitRefs.current.forEach((el, i) => { if (el) el.style.visibility = SLOTS[i].z + T > 600 ? "hidden" : "visible"; });
+      signRefs.current.forEach((el) => { if (el) el.style.visibility = Number(el.dataset.z) + T > 500 ? "hidden" : "visible"; });
+      const a = 1 - smooth(0.1, 0.19, p);
+      capA.current.style.opacity = a;
+      capA.current.style.visibility = a < 0.02 ? "hidden" : "visible";
+      const b = smooth(0.3, 0.36, p) * (1 - smooth(0.72, 0.8, p));
+      capB.current.style.opacity = b;
+      capB.current.style.visibility = b < 0.02 ? "hidden" : "visible";
+      const ov = smooth(0.83, 0.92, p);
+      const o = overlayRef.current;
+      o.style.opacity = ov;
+      o.style.transform = "scale(" + (0.9 + 0.1 * ov).toFixed(3) + ")";
+      o.style.visibility = ov < 0.02 ? "hidden" : "visible";
+      o.style.pointerEvents = ov > 0.6 ? "auto" : "none";
+      /* walking back out through the doors returns you to the ground floor */
+      if (p < 0.14 && p < lastP.current && levelNow.current !== 1 && !busy.current) { setLevel(1); setShopId(LEVELS[1].shops[0]); }
+      lastP.current = p;
+      const st = p < 0.26 ? 0 : p < 0.83 ? 1 : 2;
+      if (st !== stageRef.current) { stageRef.current = st; setStage(st); }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    const onResize = () => { fit(); onScroll(); };
+    fit(); update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onResize); if (raf) cancelAnimationFrame(raf); };
+  }, [reduced]);
+
+  const pick = (id) => { setShopId(id); scrollToP(0.95); };
+  const neighbors = onLevel.map((u) => u.shop);
+  const otherLevel = level === 1 ? 2 : 1;
+  const glass = { background: "var(--header-bg)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" };
+
+  if (reduced) {
+    const all = shops;
+    const cur = byId[shopId] || all[0];
+    return (
+      <section id="top" ref={sectionRef} className="py-12 md:py-16 border-b border-line">
+        <Wrap>
+          <Eyebrow>Listed once. Themed by them. Found by anyone.</Eyebrow>
+          <h1 className="font-display font-extrabold uppercase leading-[0.98] mt-3 text-[2.5rem] sm:text-[3.2rem] lg:text-[4.4rem]">
+            Walk into any<br />creator&rsquo;s <span className="text-accent">store.</span>
+          </h1>
+          <p className="text-[1.05rem] leading-relaxed text-inkmuted max-w-[52ch] mt-4 mb-8">
+            Every creator on Shelfspace Global gets their own shop in the mall, in their own colours, fonts and layout. Pick one below to step inside.
+          </p>
+          <ShopInterior shop={cur} neighbors={all} onPick={setShopId} framed
+            onApplyOrder={onApplyOrder} applied={!!orders[cur.id]} openRequest={openReq} onAskStoavia={onAskStoavia} />
+        </Wrap>
+      </section>
+    );
+  }
+
+  const L = LEVELS[level];
+  const win = (s, slot) => [0, 1, 2].map((i) => s.products[(i + tick + slot) % s.products.length]);
+
+  return (
+    <section id="top" ref={sectionRef} className="mall border-b border-line" aria-label="Walk through the Shelfspace Global mall">
+      <div className="mall-stage">
+        <div ref={screenRef} className="mall-screen">
+          <div ref={worldRef} className="mall-world">
+            <div ref={levelRef} className="mall-level">
+              {/* concourse: floor, ceiling, walls, end wall */}
+              <div className="p3 mall-floor" style={place(1040, 4400, "translate3d(0px, 330px, -2200px) rotateX(90deg)")} />
+              <div className="p3 mall-ceiling" style={place(1040, 4400, "translate3d(0px, -330px, -2200px) rotateX(-90deg)")} />
+              <div className="p3 mall-wall" style={place(4400, 660, "translate3d(-520px, 0px, -2200px) rotateY(90deg)")} />
+              <div className="p3 mall-wall" style={place(4400, 660, "translate3d(520px, 0px, -2200px) rotateY(-90deg)")} />
+              <div className="p3" style={place(1040, 660, "translate3d(0px, 0px, -4400px)", { background: "var(--mall-wall)" })} />
+
+              {/* hanging wing signs and the escalator sign */}
+              {L.wings.concat(myShop && level === 1 ? [["New tenants", -3380]] : []).map(([label, z], i) => (
+                <div key={label} ref={(el) => (signRefs.current[i] = el)} data-z={z} className="p3" style={place(560, 84, "translate3d(0px, -262px, " + z + "px)")} aria-hidden="true">
+                  <div className="font-display" style={{ width: "100%", height: "100%", background: "var(--mall-trim)", color: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", gap: 18, fontSize: 40, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", borderRadius: 8 }}>
+                    <span style={{ width: 16, height: 16, borderRadius: 4, background: "var(--accent)" }} />{label}
+                  </div>
+                </div>
+              ))}
+              <div ref={(el) => (signRefs.current[9] = el)} data-z={ESCALATOR_Z} className="p3" style={place(620, 90, "translate3d(0px, -258px, " + ESCALATOR_Z + "px)")}>
+                <button type="button" className="hang font-display" onClick={() => rideTo(otherLevel)} aria-label={"Take the escalator to " + LEVELS[otherLevel].name}
+                  style={{ width: "100%", height: "100%", background: "var(--accent-strong)", color: "#FFFFFF", fontSize: 40, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
+                  {otherLevel > level ? "↑" : "↓"} Escalator · {LEVELS[otherLevel].name}
+                </button>
+              </div>
+
+              {onLevel.map(({ shop: s, slot }) => (
+                <div key={s.id} ref={(el) => (unitRefs.current[slot] = el)} className="p3" style={place(820, 520, "translate3d(" + (SLOTS[slot].side * 516) + "px, 70px, " + SLOTS[slot].z + "px) rotateY(" + (SLOTS[slot].side * -90) + "deg)")}>
+                  <StoreFront shop={s} w={820} h={520} headed={s.id === shop.id} onPick={() => pick(s.id)} window={win(s, slot)} />
+                </div>
+              ))}
+              <div className="p3" style={place(880, 580, "translate3d(0px, 40px, -4396px)")}>
+                <StoreFront shop={shop} w={880} h={580} headed={false} onPick={() => scrollToP(0.95)} />
+              </div>
+
+              {SHOPPERS.map((s, i) => <Shopper key={i} s={s} />)}
+            </div>
+            <Facade facadeRef={facadeRef} leafL={leafL} leafR={leafR} />
+          </div>
+        </div>
+        <div className="mall-vignette" />
+
+        {/* caption: outside the doors (visible at rest) */}
+        <div ref={capA} className="mall-cap left-4 right-4 bottom-[88px] md:left-8 md:right-auto md:bottom-10 md:max-w-[560px]">
+          <div className="rounded-2xl border border-line p-5 md:p-6" style={glass}>
+            <Eyebrow>Listed once. Themed by them. Found by anyone.</Eyebrow>
+            <h1 className="font-display font-extrabold uppercase leading-[0.98] mt-2 text-[2.2rem] sm:text-[2.8rem] lg:text-[3.6rem]">
+              Walk into any<br />creator&rsquo;s <span className="text-accent">store.</span>
+            </h1>
+            <p className="text-[0.98rem] leading-relaxed text-inkmuted mt-3">
+              Two floors of creator shops, each themed in its owner&rsquo;s colours, fonts and layout. No account at the door.
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4">
+              <Button variant="primary" onClick={() => scrollToP(0.56)}>
+                <span>Walk in</span>
+                <svg aria-hidden="true" className="nudge ml-2" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1.5 6.5 6 11l4.5-4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </Button>
+              <button type="button" onClick={() => setDirOpen(true)} className="text-[0.9rem] font-medium underline underline-offset-4 min-h-[44px]">Open the directory</button>
+              <a href="#route" className="text-[0.9rem] text-inkmuted underline underline-offset-4 min-h-[44px] inline-flex items-center">Skip the walk</a>
+            </div>
+            {atrium.status !== "off" && (
+              <button type="button" onClick={() => onAskStoavia()} className="mt-3 w-full flex items-center gap-3 rounded-xl border border-line bg-surface hover:bg-surface2 px-3 py-2.5 text-left transition-colors">
+                <StoaviaMark size={30} />
+                <span className="min-w-0">
+                  <span className="block text-[0.9rem] font-bold">Not sure where to go? Ask Stoavia</span>
+                  <span className="block text-[0.8rem] text-inkmuted">The mall concierge knows every shop and shelf.</span>
+                </span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* caption: the concourse */}
+        <div ref={capB} className="mall-cap left-4 right-4 top-[124px] md:top-[88px] flex justify-center" style={{ opacity: 0, visibility: "hidden" }}>
+          <div className="rounded-2xl border border-line px-4 py-3 max-w-[680px] flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-center" style={glass}>
+            <div>
+              <span className="font-mono text-[0.72rem] tracking-[0.14em] uppercase text-inkmuted">{L.name} · {L.label}</span>
+              <p className="text-[0.92rem] m-0">Every shop is themed by its owner. Tap one to walk in.</p>
+            </div>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setDirOpen(true)} className="min-h-[40px] px-3.5 rounded-full border border-line bg-surface text-[0.84rem] font-medium">Directory</button>
+              <button type="button" onClick={() => rideTo(otherLevel)} className="min-h-[40px] px-3.5 rounded-full bg-chipbg text-chipink text-[0.84rem] font-medium">
+                {otherLevel > level ? "↑" : "↓"} {LEVELS[otherLevel].name}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* inside the shop */}
+        <div ref={overlayRef} className="shop-overlay" style={{ visibility: "hidden" }}>
+          <ShopInterior shop={shop} neighbors={neighbors} onPick={setShopId} onBack={() => scrollToP(0.56)}
+            onApplyOrder={onApplyOrder} applied={!!orders[shop.id]} openRequest={openReq} onAskStoavia={onAskStoavia} />
+        </div>
+
+        {/* escalator transition */}
+        <div ref={flashRef} className="mall-flash" aria-live="polite">
+          {flash && <>
+            <span className="font-mono text-[0.8rem] tracking-[0.2em] uppercase text-inkmuted">Escalator</span>
+            <span className="font-display font-extrabold uppercase text-[2.6rem] leading-none">{flash.name}</span>
+            <span className="text-[1rem] text-inkmuted">{flash.label}</span>
+          </>}
+        </div>
+
+        {/* where you are */}
+        <nav aria-label="Walk-through progress" className="absolute right-3 bottom-3 md:right-6 md:bottom-6 z-10">
+          <ol className="flex gap-1 list-none m-0 p-1 rounded-full border border-line" style={glass}>
+            {STAGES.map(([label, p], i) => (
+              <li key={label}>
+                <button
+                  type="button"
+                  onClick={() => scrollToP(p)}
+                  aria-current={stage === i ? "step" : undefined}
+                  className={"min-h-[40px] px-3 rounded-full font-mono text-[0.72rem] tracking-wide transition-colors " + (stage === i ? "bg-chipbg text-chipink" : "text-inkmuted hover:text-ink")}
+                >
+                  <span className="hidden sm:inline">{label}</span>
+                  <span className="sm:hidden">{label.split(" ").pop()}</span>
+                </button>
+              </li>
+            ))}
+            <li>
+              <button type="button" onClick={() => setDirOpen(true)} className="min-h-[40px] px-3 rounded-full font-mono text-[0.72rem] tracking-wide text-accenttext hover:text-ink">Map</button>
+            </li>
+          </ol>
+        </nav>
+      </div>
+
+      {dirOpen && (
+        <Directory
+          level={level}
+          shopsOn={shopsOn}
+          youZ={stage === 2 ? null : -tRef.current}
+          onClose={() => setDirOpen(false)}
+          onVisit={visit}
+          onLevel={(n) => { setDirOpen(false); if (stageRef.current === 0) { setLevel(n); setShopId(LEVELS[n].shops[0]); scrollToP(0.56); } else rideTo(n); }}
+        />
+      )}
+    </section>
+  );
+}
+
+/* ---------- design your shop ---------- */
+
+function ScaledFront({ shop, onPick }) {
+  const boxRef = useRef(null);
+  const [k, setK] = useState(0.5);
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const measure = () => setK(el.clientWidth / 860);
+    measure();
+    let ro;
+    try { ro = new ResizeObserver(measure); ro.observe(el); } catch (e) { window.addEventListener("resize", measure); }
+    return () => { try { ro && ro.disconnect(); } catch (e) {} window.removeEventListener("resize", measure); };
+  }, []);
+  return (
+    <div ref={boxRef} className="w-full rounded-xl overflow-hidden" style={{ height: 560 * k, background: "var(--mall-wall)" }}>
+      <div style={{ width: 820, height: 520, transform: "translate(" + 20 * k + "px, " + 20 * k + "px) scale(" + k + ")", transformOrigin: "0 0" }}>
+        <StoreFront shop={shop} w={820} h={520} headed={false} onPick={onPick} />
+      </div>
+    </div>
+  );
+}
+
+const LINKABLE = ["TikTok", "Instagram", "X", "WhatsApp Business", "Threads"];
+
+function ShopBuilder({ myShop, onOpen, onRemove, orders, onApplyOrder, withOrder }) {
+  const [cfg, setCfg] = useState(() => (myShop && myShop.cfg) || DEFAULT_CFG);
+  const [tab, setTab] = useState("front");
+  const set = (k) => (e) => setCfg((c) => ({ ...c, [k]: e.target.value }));
+  const links = cfg.links || [];
+  const toggleLink = (name) => setCfg((c) => { const cur = c.links || []; return { ...c, links: cur.includes(name) ? cur.filter((x) => x !== name) : [...cur, name] }; });
+  const draft = useMemo(() => withOrder(makeShop(cfg)), [cfg, orders]);
+  const pal = PALETTES.find((p) => p.id === cfg.palette) || PALETTES[0];
+  const ratio = contrast(cfg.accent, pal.vars["--p-bg"]);
+  const field = "w-full min-h-[44px] rounded-lg border border-line bg-bg text-ink px-3 text-[0.95rem]";
+  const labelCls = "block text-[0.85rem] font-semibold mb-1.5";
+
+  return (
+    <section id="personalize" className="py-14 border-b border-line">
+      <Wrap>
+        <Eyebrow>For creators</Eyebrow>
+        <h2 className="font-display font-extrabold uppercase text-[1.7rem] md:text-[2.3rem] max-w-[24ch] mt-1.5">
+          Design your shop. Then open it in the mall.
+        </h2>
+        <p className="text-inkmuted max-w-[62ch] mt-2 leading-relaxed">
+          Pick a name, colours, a sign font and a shelf layout. The storefront updates as you go. When it looks right, open it and walk in: it takes Shop 01 on Level 1, next to the other tenants.
+        </p>
+
+        <div className="mt-8 grid md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-6 items-start">
+          <Card className="p-5 md:p-6">
+            <form onSubmit={(e) => { e.preventDefault(); onOpen(cfg); }} className="flex flex-col gap-5">
+              <StoaviaBuilder cfg={cfg} onDesign={(next) => { setCfg(next); onApplyOrder("mine", null); setTab("front"); }} />
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="b-name" className={labelCls}>Shop name</label>
+                  <input id="b-name" className={field} value={cfg.name} maxLength={20} onChange={set("name")} />
+                </div>
+                <div>
+                  <label htmlFor="b-handle" className={labelCls}>Channel handle</label>
+                  <input id="b-handle" className={field} value={cfg.handle} maxLength={24} onChange={set("handle")} />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="b-niche" className={labelCls}>What you sell</label>
+                  <select id="b-niche" className={field} value={cfg.niche} onChange={(e) => { const v = e.target.value; setCfg((c) => ({ ...c, niche: v, products: undefined })); onApplyOrder("mine", null); }}>
+                    {Object.keys(NICHES).map((n) => <option key={n} value={n}>{n}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="b-tag" className={labelCls}>Tagline</label>
+                  <input id="b-tag" className={field} value={cfg.tagline} maxLength={56} onChange={set("tagline")} />
+                </div>
+              </div>
+
+              <fieldset className="border-0 p-0 m-0">
+                <legend className={labelCls}>Link your accounts</legend>
+                <div className="flex flex-wrap gap-2">
+                  {LINKABLE.map((name) => {
+                    const on = links.includes(name);
+                    return (
+                      <button key={name} type="button" aria-pressed={on} onClick={() => toggleLink(name)}
+                        className={"inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-full border text-[0.85rem] font-semibold transition-colors " + (on ? "border-verified text-verified bg-surface" : "border-line text-ink bg-bg hover:bg-surface2")}>
+                        <span aria-hidden="true">{on ? "✓" : "+"}</span>{name}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-[0.78rem] text-inkmuted mt-2 mb-0" role="status">
+                  {links.length
+                    ? "Linked as " + (cfg.handle || "your handle") + ": " + links.join(", ") + ". Your shop would pull your profile, verify your audience and keep your catalog in sync."
+                    : "One tap each. Linking pulls in your profile, verifies your audience and syncs your catalog."}
+                  {" "}This is a preview: real linking uses each platform&rsquo;s own sign-in.
+                </p>
+              </fieldset>
+
+              <fieldset className="border-0 p-0 m-0">
+                <legend className={labelCls}>Colours</legend>
+                <div className="grid grid-cols-3 gap-2">
+                  {PALETTES.map((p) => (
+                    <label key={p.id} className="swatch cursor-pointer">
+                      <input type="radio" name="b-palette" value={p.id} checked={cfg.palette === p.id} className="sr-only"
+                        onChange={() => setCfg((c) => ({ ...c, palette: p.id, accent: p.accent }))} />
+                      <span className="flex items-center gap-2 rounded-lg border border-line px-2.5 min-h-[44px]" style={{ background: p.vars["--p-bg"], color: p.vars["--p-ink"] }}>
+                        <span aria-hidden="true" className="w-3.5 h-3.5 rounded-full flex-none" style={{ background: p.accent }} />
+                        <span className="text-[0.82rem] font-medium">{p.name}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+                <div className="flex items-center gap-3 mt-3 flex-wrap">
+                  <label htmlFor="b-accent" className="text-[0.85rem]">Sign colour</label>
+                  <input id="b-accent" type="color" value={cfg.accent} onChange={set("accent")} className="w-12 h-10 rounded border border-line bg-bg p-0.5 cursor-pointer" />
+                  <span className="font-mono text-[0.78rem] text-inkmuted">{cfg.accent.toUpperCase()}</span>
+                  {ratio < 3 && <span className="text-[0.8rem] text-accenttext" role="status">Low contrast ({ratio.toFixed(1)}:1). Your sign may be hard to read.</span>}
+                </div>
+              </fieldset>
+
+              <fieldset className="border-0 p-0 m-0">
+                <legend className={labelCls}>Sign font</legend>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {FONTS.map((f) => (
+                    <label key={f.id} className="swatch cursor-pointer">
+                      <input type="radio" name="b-font" value={f.id} checked={cfg.font === f.id} onChange={set("font")} className="sr-only" />
+                      <span className="flex flex-col items-center justify-center rounded-lg border border-line bg-bg min-h-[64px] px-2">
+                        <span style={{ fontFamily: f.css, fontWeight: f.weight, fontSize: 24, lineHeight: 1 }}>Aa</span>
+                        <span className="text-[0.72rem] text-inkmuted mt-1">{f.name}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="border-0 p-0 m-0">
+                <legend className={labelCls}>Shelf layout</legend>
+                <div className="grid grid-cols-2 gap-2">
+                  {LAYOUTS.map((l) => (
+                    <label key={l.id} className="swatch cursor-pointer">
+                      <input type="radio" name="b-layout" value={l.id} checked={cfg.layout === l.id} onChange={(e) => { set("layout")(e); setTab("inside"); }} className="sr-only" />
+                      <span className="flex flex-col rounded-lg border border-line bg-bg min-h-[56px] px-3 py-2">
+                        <span className="text-[0.9rem] font-semibold">{l.name}</span>
+                        <span className="text-[0.76rem] text-inkmuted">{l.note}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <div className="flex flex-wrap gap-3 pt-1">
+                <button type="submit" className="inline-flex items-center justify-center min-h-[44px] rounded-full font-bold text-[0.9rem] px-5 bg-accentstrong text-accentink hover:brightness-110">
+                  {myShop ? "Update my shop and walk in" : "Open my shop in the mall"}
+                </button>
+                <Button variant="outline" onClick={() => setCfg(DEFAULT_CFG)}>Start over</Button>
+                {myShop && <button type="button" onClick={onRemove} className="text-[0.88rem] text-inkmuted underline underline-offset-4 min-h-[44px]">Remove it from the mall</button>}
+              </div>
+              <p className="text-[0.78rem] text-inkmuted m-0">Your design is saved in this browser only. Products are samples until you claim the shop and list your own. Open the Inside preview for Stoavia&rsquo;s merchandising tips.</p>
+            </form>
+          </Card>
+
+          <div className="md:sticky md:top-[88px] min-w-0">
+            <div role="tablist" aria-label="Preview" className="inline-flex gap-1 p-1 rounded-full border border-line bg-surface mb-3">
+              {[["front", "Storefront"], ["inside", "Inside"]].map(([id, label]) => (
+                <button key={id} role="tab" type="button" aria-selected={tab === id} onClick={() => setTab(id)}
+                  className={"min-h-[40px] px-4 rounded-full text-[0.85rem] font-medium " + (tab === id ? "bg-chipbg text-chipink" : "text-inkmuted hover:text-ink")}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            {tab === "front"
+              ? <ScaledFront shop={draft} onPick={() => setTab("inside")} />
+              : <ShopInterior shop={draft} framed onApplyOrder={onApplyOrder} applied={!!orders.mine} />}
+            <p className="font-mono text-[0.75rem] text-inkmuted mt-3">Preview · {draft.unit} · Level 1 · code {draft.code}{links.length ? " · linked: " + links.join(", ") : ""}</p>
+          </div>
+        </div>
+      </Wrap>
+    </section>
+  );
+}
+
+/* ---------- masthead ---------- */
+
+const NAV = [
+  ["#route", "How it works"],
+  ["#personalize", "Design your shop"],
+  ["#assistant", "Ask the shelf"],
+  ["#shelves", "Live shelves"]
+];
+
+function Masthead({ onStoavia }) {
+  const atrium = useStoavia();
+  return (
+    <header className="masthead border-b border-line">
+      <Wrap className="flex items-center justify-between gap-3 py-3">
+        <Wordmark />
+        <nav aria-label="Sections" className="hidden lg:flex items-center gap-6 text-[0.9rem] font-medium">
+          {NAV.map(([href, label]) => (
+            <a key={href} href={href} className="text-inkmuted hover:text-ink no-underline py-2">{label}</a>
+          ))}
+        </nav>
+        <div className="flex items-center gap-2">
+          {atrium.status !== "off" && (
+            <button type="button" onClick={() => onStoavia()} className="inline-flex items-center gap-2 min-h-[44px] pl-1.5 pr-3.5 rounded-full border border-line bg-surface hover:bg-surface2 text-[0.85rem] font-bold transition-colors" aria-label="Ask Stoavia, the mall concierge">
+              <StoaviaMark size={30} /><span>Stoavia</span>
+            </button>
+          )}
+          <Button variant="compact" href="#personalize" className="hidden sm:inline-flex">Claim a shop</Button>
+        </div>
+      </Wrap>
+      <nav aria-label="Sections" className="lg:hidden border-t border-line">
+        <div className="nav-scroll flex gap-1 overflow-x-auto px-3 text-[0.85rem] font-medium">
+          {NAV.map(([href, label]) => (
+            <a key={href} href={href} className="text-inkmuted hover:text-ink no-underline whitespace-nowrap px-2.5 py-2.5 min-h-[44px] flex items-center">{label}</a>
+          ))}
+        </div>
+      </nav>
+    </header>
+  );
+}
+
+/* ---------- route ---------- */
+
+const ROUTE_STOPS = [
+  {
+    n: "01", color: "border-ink text-ink", title: "Anyone lists",
+    body: "A supplier, a business, or a creator adds a product, app or download with price and terms. Physical items also carry stock and MOQ.",
+    terms: ["Physical, digital, apps", "Business or creator-owned"]
+  },
+  {
+    n: "02", color: "border-accentstrong text-accenttext", title: "Creator stocks & themes it",
+    body: "It goes on their shelf under their own code and price, and the shop renders in their colours, their layout and their voice.",
+    terms: ["Own code & price", "Own theme"]
+  },
+  {
+    n: "03", color: "border-verified text-verified", title: "Viewer walks in",
+    body: "They open a shop that already looks like the creator's own site, browse it directly, or tell the assistant at the door what they're after.",
+    terms: ["No account", "AI-assisted search"]
+  }
+];
+
+function RouteSection() {
+  return (
+    <section id="route" className="py-14 border-b border-line">
+      <Wrap>
+        <Eyebrow>The route</Eyebrow>
+        <h2 className="font-display font-extrabold uppercase text-[1.7rem] md:text-[2.3rem] mt-1.5">
+          Three stops. No sign-up form.
+        </h2>
+        <p className="text-inkmuted max-w-[58ch] mt-2 leading-relaxed">
+          A listing only reaches a viewer when a creator chooses to stock it. Shelfspace Global never lists anything on its own.
+        </p>
+
+        <ol className="mt-10 grid md:grid-cols-3 gap-8 md:gap-0 relative list-none p-0">
+          <div aria-hidden="true" className="hidden md:block absolute top-[17px] left-[18px] right-[calc(33.33%_-_18px)] h-0.5" style={{ backgroundImage: "repeating-linear-gradient(90deg, var(--line) 0 8px, transparent 8px 14px)" }} />
+          {ROUTE_STOPS.map((s) => (
+            <li key={s.n} className="relative md:pr-8 min-w-0">
+              <div className={"w-9 h-9 rounded-full bg-bg border-2 flex items-center justify-center font-mono font-semibold text-[0.8rem] mb-4 relative z-10 " + s.color}>
+                {s.n}
+              </div>
+              <h3 className="font-display font-extrabold uppercase text-[1.35rem] mb-2">{s.title}</h3>
+              <p className="text-inkmuted text-[0.95rem] leading-relaxed">{s.body}</p>
+              <div className="flex flex-wrap gap-1.5 mt-3">
+                {s.terms.map((t) => <Badge key={t}>{t}</Badge>)}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </Wrap>
+    </section>
+  );
+}
+
+/* ---------- assistant (ask-the-shelf demo) ---------- */
+
+const STOCK = [
+  { name: "Trail Runner Low", size: 9, price: 1899, tag: "Running" },
+  { name: "Court Classic", size: 10, price: 1299, tag: "Lifestyle" },
+  { name: "Featherweight Racer", size: 8, price: 2499, tag: "Running" },
+  { name: "Street Slip-On", size: 9, price: 999, tag: "Lifestyle" },
+  { name: "All-Terrain Boot", size: 11, price: 2899, tag: "Outdoor" },
+  { name: "Court Classic XT", size: 11, price: 1499, tag: "Lifestyle" },
+  { name: "Trail Runner Low", size: 11, price: 1899, tag: "Running" },
+  { name: "Featherweight Racer Pro", size: 11, price: 2199, tag: "Running" }
+];
+
+const TAGS = ["running", "lifestyle", "outdoor"];
+
+function runAssistantQuery(query) {
+  const q = (query || "").toLowerCase().replace(/,/g, "");
+  let items = STOCK.slice();
+  const descriptors = [];
+
+  const sizeMatch = q.match(/size\s*(\d{1,2})/);
+  if (sizeMatch) {
+    const size = parseInt(sizeMatch[1], 10);
+    items = items.filter((i) => i.size === size);
+    descriptors.push("size " + size);
+  }
+
+  const tag = TAGS.find((t) => q.includes(t) || (t === "outdoor" && /boot|hiking|trail/.test(q) && !q.includes("running")));
+  if (tag) {
+    items = items.filter((i) => i.tag.toLowerCase() === tag);
+    descriptors.push(tag);
+  }
+
+  const underMatch = q.match(/(?:under|below|less than|max|up to)\s*r?\s*(\d{2,6})/);
+  if (underMatch) {
+    const maxPrice = parseInt(underMatch[1], 10);
+    items = items.filter((i) => i.price < maxPrice);
+    descriptors.push("under R" + maxPrice.toLocaleString("en-ZA"));
+  }
+  const overMatch = q.match(/(?:over|above|more than|min)\s*r?\s*(\d{2,6})/);
+  if (overMatch) {
+    const minPrice = parseInt(overMatch[1], 10);
+    items = items.filter((i) => i.price > minPrice);
+    descriptors.push("over R" + minPrice.toLocaleString("en-ZA"));
+  }
+
+  let sortDir = null;
+  if (/(low to high|cheapest|ascending|lowest first)/.test(q)) sortDir = "asc";
+  if (/(high to low|most expensive|descending|highest first)/.test(q)) sortDir = "desc";
+  if (sortDir === "asc") {
+    items = items.slice().sort((a, b) => a.price - b.price);
+    descriptors.push("price low to high");
+  } else if (sortDir === "desc") {
+    items = items.slice().sort((a, b) => b.price - a.price);
+    descriptors.push("price high to low");
+  }
+
+  let note;
+  if (descriptors.length === 0) {
+    note = q.trim() === ""
+      ? "Showing all " + STOCK.length + " pairs. Type a size, a price, a style or a sort order."
+      : "No size, price, style or sort found in that yet. Showing all " + STOCK.length + " pairs.";
+  } else {
+    note = "Showing " + items.length + " of " + STOCK.length + ": " + descriptors.join(", ") + ".";
+  }
+  return { items, note, descriptors };
+}
+
+const ASSISTANT_CHIPS = [
+  { label: "Size 11, cheapest first", q: "size 11 sort by price low to high" },
+  { label: "Under R1,500, priciest first", q: "under 1500 sort high to low" },
+  { label: "Running shoes", q: "running shoes" },
+  { label: "Size 9", q: "size 9" }
+];
+
+function AssistantSection() {
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState(() => runAssistantQuery(""));
+
+  useEffect(() => {
+    const t = setTimeout(() => setResult(runAssistantQuery(query)), 180);
+    return () => clearTimeout(t);
+  }, [query]);
+
+  return (
+    <section id="assistant" className="py-14 border-b border-line">
+      <Wrap>
+        <Eyebrow>Ask the door, skip the filters</Eyebrow>
+        <h2 className="font-display font-extrabold uppercase text-[1.7rem] md:text-[2.3rem] max-w-[26ch] mt-1.5">
+          Type what you want. The shelf sorts itself.
+        </h2>
+        <p className="text-inkmuted max-w-[62ch] mt-2 leading-relaxed">
+          Every shop has an assistant at the entrance instead of a filter sidebar. Describe what you&rsquo;re after and it sets the filters for you. This preview runs on a small sneaker rack and updates as you type.
+        </p>
+
+        <Card className="mt-8 p-5 md:p-6">
+          <form role="search" onSubmit={(e) => { e.preventDefault(); setResult(runAssistantQuery(query)); }} className="flex gap-2.5 items-center">
+            <label htmlFor="shelf-query" className="sr-only">Ask the shelf assistant</label>
+            <input
+              id="shelf-query"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="e.g. running shoes size 11, cheapest first"
+              autoComplete="off"
+              className="flex-1 min-w-0 min-h-[48px] rounded-full border border-line bg-bg text-ink px-5 text-[1rem] placeholder:text-inkmuted"
+            />
+            {query && (
+              <Button variant="outline" className="flex-none" onClick={() => setQuery("")} aria-label="Clear the question">Clear</Button>
+            )}
+          </form>
+
+          <div className="flex flex-wrap gap-2 mt-4" aria-label="Example questions">
+            {ASSISTANT_CHIPS.map((c) => (
+              <button
+                key={c.q}
+                type="button"
+                aria-pressed={query === c.q}
+                onClick={() => setQuery(c.q)}
+                className={"font-mono text-[0.78rem] border min-h-[40px] px-3.5 rounded-full transition-colors " + (query === c.q ? "bg-chipbg text-chipink border-chipbg" : "bg-surface2 border-line text-inkmuted hover:text-ink hover:border-inkmuted")}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+
+          <p className="font-mono text-[0.8rem] text-inkmuted mt-5" aria-live="polite">{result.note}</p>
+
+          <ul className="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 list-none p-0 m-0">
+            {result.items.length === 0 ? (
+              <li className="col-span-full text-[0.92rem] text-inkmuted py-4">
+                Nothing on this rack matches all of that. Try size 11, or remove the price limit.
+              </li>
+            ) : result.items.map((item, i) => (
+              <li key={item.name + item.size + i} className="border border-line rounded-xl p-3.5 bg-bg min-w-0">
+                <div className="text-[0.9rem] font-semibold leading-snug">{item.name}</div>
+                <div className="font-mono text-[0.74rem] text-inkmuted mt-1 uppercase tracking-wide">Size {item.size} · {item.tag}</div>
+                <div className="font-mono text-[0.9rem] font-bold text-accenttext mt-2 [font-variant-numeric:tabular-nums]">R{item.price.toLocaleString("en-ZA")}</div>
+              </li>
+            ))}
+          </ul>
+
+          <p className="text-[0.82rem] text-inkmuted leading-relaxed mt-5">
+            In a real shop the assistant reads that creator&rsquo;s actual stock: sizes, prices and categories.
+          </p>
+        </Card>
+      </Wrap>
+    </section>
+  );
+}
+
+/* ---------- shelves (creator storefronts) ---------- */
+
+const SHELVES = [
+  {
+    initial: "M", avatarBg: "#B5533C", handle: "@marareviews", niche: "Skincare & home",
+    platform: "IG", platformName: "Instagram", follow: "142K followers",
+    items: [
+      { type: "Physical", name: "Overnight Barrier Repair, 30ml", code: "MARA15" },
+      { type: "Digital", name: "5-Step Routine Guide (PDF)", code: "MARA15" }
+    ]
+  },
+  {
+    initial: "P", avatarBg: "#3B6E5C", handle: "GearDrop w/ Pete", niche: "Outdoor & camping",
+    platform: "YT", platformName: "YouTube", follow: "380K subscribers",
+    items: [
+      { type: "Physical", name: "Packable Camp Stool", code: "PETE10" },
+      { type: "App", name: "Trail Route Planner (built w/ Lovable)", code: "PETE10" }
+    ]
+  },
+  {
+    initial: "Z", avatarBg: "#2E4F73", handle: "@stretchwithzee", niche: "Fitness & recovery",
+    platform: "TT", platformName: "TikTok", follow: "610K followers",
+    items: [
+      { type: "Physical", name: "Resistance Band Set, 5pc", code: "ZEE20" },
+      { type: "Digital", name: "8-Week Recovery Program (PDF)", code: "ZEE20" }
+    ]
+  },
+  {
+    initial: "H", avatarBg: "#8A5A2B", handle: "Homebody Hana", niche: "Home & kitchen",
+    platform: "YT", platformName: "YouTube", follow: "95K subscribers",
+    items: [
+      { type: "Physical", name: "6-Piece Ceramic Knife Set", code: "HANA12" },
+      { type: "Shopify", name: "Hana's Kitchen Shop (full catalog)", code: "HANA12" }
+    ]
+  }
+];
+
+function ShelfCard({ shelf }) {
+  return (
+    <Card className="overflow-hidden flex flex-col transition-transform duration-200 hover:-translate-y-0.5">
+      <div className="p-4 pb-3.5 border-b border-line flex gap-3 items-start">
+        <div aria-hidden="true" className="w-11 h-11 rounded-full flex-none flex items-center justify-center font-display font-extrabold text-[1.05rem] text-white" style={{ background: shelf.avatarBg }}>
+          {shelf.initial}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-[1rem] truncate m-0">{shelf.handle}</h3>
+          <div className="text-[0.84rem] text-inkmuted">{shelf.niche}</div>
+          <div className="flex items-center gap-2 mt-2">
+            <abbr title={shelf.platformName} className="no-underline font-mono text-[0.72rem] font-bold bg-surface2 border border-line px-1.5 py-0.5 rounded-md tracking-wide">{shelf.platform}</abbr>
+            <span className="font-mono text-[0.78rem] text-inkmuted">{shelf.follow}</span>
+          </div>
+        </div>
+      </div>
+      <ul className="p-4 pt-3.5 flex flex-col gap-3.5 flex-1 list-none m-0">
+        {shelf.items.map((item) => (
+          <li key={item.name} className="flex justify-between items-center gap-2.5">
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <span className="font-mono text-[0.7rem] font-bold tracking-wider uppercase text-inkmuted">{item.type}</span>
+              <span className="text-[0.9rem] leading-snug">{item.name}</span>
+            </div>
+            <CodeChip code={item.code} item={item.name} />
+          </li>
+        ))}
+      </ul>
+      <div className="border-t border-dashed border-line px-4 py-2.5 font-mono text-[0.74rem] text-inkmuted flex justify-between items-center gap-2">
+        <span>{shelf.items.length} listings stocked</span>
+        <span className="inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded-full" style={{ color: "var(--verified)", background: "var(--verified-bg)" }}>
+          <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5.2 4 7.5 8.5 2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          Channel verified
+        </span>
+      </div>
+    </Card>
+  );
+}
+
+function ShelvesSection() {
+  return (
+    <section id="shelves" className="py-14 border-b border-line">
+      <Wrap>
+        <Eyebrow>On shelves right now</Eyebrow>
+        <h2 className="font-display font-extrabold uppercase text-[1.7rem] md:text-[2.3rem] mt-1.5">Anything legal, one shelf</h2>
+        <p className="text-inkmuted max-w-[64ch] mt-2 leading-relaxed">
+          Physical stock, a digital download, an app a creator built, even their existing Shopify catalog, mixed freely on one shelf. Tap a code to copy it, the way a viewer would before checking out wherever that listing lives.
+        </p>
+        <div className="mt-8 grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          {SHELVES.map((s) => <ShelfCard key={s.handle} shelf={s} />)}
+        </div>
+      </Wrap>
+    </section>
+  );
+}
+
+/* ---------- audiences ---------- */
+
+const AUDIENCES = [
+  {
+    id: "consumers", eyebrow: "Consumers", title: "Read, don’t sign up",
+    items: [
+      "Product, price and the creator's own code, shown on the profile you already follow.",
+      "No email, no password, no cookie banner. If the page loads, the shop is open.",
+      "Ask the assistant at the door instead of digging through filters."
+    ]
+  },
+  {
+    id: "creators", eyebrow: "Creators, 500+ subs", title: "One shop, fully yours",
+    items: [
+      "List anything you can legally sell elsewhere: merch, downloads, an app you built, your Shopify catalog.",
+      "Theme the shop to your channel, set your own codes and pricing, and pull a listing whenever you want.",
+      "See the same manifest as the business behind each listing: what's stocked, what's sold, what's owed."
+    ]
+  },
+  {
+    id: "businesses", eyebrow: "Businesses & suppliers", title: "Distribution without ad spend",
+    items: [
+      "List a SKU or catalog once, on your own terms. Every creator who stocks it gets the sync.",
+      "Reach an audience through a creator they already trust instead of buying a cold one.",
+      "Deals are set per creator, not per follower, so you never bid against every other brand for the same post."
+    ]
+  }
+];
+
+function AudiencesSection() {
+  return (
+    <section id="audiences" className="py-14 border-b border-line">
+      <Wrap>
+        <Eyebrow>Built for three sides at once</Eyebrow>
+        <h2 className="font-display font-extrabold uppercase text-[1.7rem] md:text-[2.3rem] max-w-[24ch] mt-1.5">
+          Consumers, creators, and the businesses behind the stock.
+        </h2>
+        <p className="text-inkmuted max-w-[62ch] mt-2 leading-relaxed">
+          Shelfspace Global only works if it&rsquo;s worth opening for all three. Nobody is the product here.
+        </p>
+        <div className="mt-8 grid md:grid-cols-3 gap-5">
+          {AUDIENCES.map((a) => (
+            <Card key={a.id} className="p-5 md:p-6">
+              <div id={a.id} />
+              <Eyebrow className="mb-2.5">{a.eyebrow}</Eyebrow>
+              <h3 className="font-display font-extrabold uppercase text-[1.25rem] mb-3">{a.title}</h3>
+              <ul className="flex flex-col gap-2.5 list-none p-0 m-0">
+                {a.items.map((li) => (
+                  <li key={li} className="text-[0.92rem] leading-relaxed text-inkmuted pl-4 relative">
+                    <span aria-hidden="true" className="absolute left-0 top-[0.6em] w-1.5 h-1.5 rounded-full bg-accent" />
+                    {li}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ))}
+        </div>
+      </Wrap>
+    </section>
+  );
+}
+
+/* ---------- cta band + footer ---------- */
+
+function CtaBand() {
+  return (
+    <section className="py-12 border-b border-line bg-surface2">
+      <Wrap className="flex flex-wrap justify-between items-center gap-6">
+        <h2 className="font-display font-extrabold uppercase text-[1.6rem] md:text-[2.1rem] max-w-[20ch]">
+          Whatever you make or sell, open a shop this week.
+        </h2>
+        <div className="flex flex-wrap gap-3">
+          <Button variant="primary" href="#businesses">List something</Button>
+          <Button variant="outline" href="#personalize">Design my shop</Button>
+          <Button variant="outline" href="#businesses">I&rsquo;m a business</Button>
+        </div>
+      </Wrap>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="py-8 pb-10">
+      <Wrap className="flex flex-wrap justify-between gap-4 font-mono text-[0.75rem] text-inkmuted tracking-wide">
+        <span>SHELFSPACE GLOBAL &middot; the mall behind every creator&rsquo;s channel</span>
+        <span>Viewer accounts: none, by design</span>
+      </Wrap>
+    </footer>
+  );
+}
+
+function App() {
+  const [myCfg, setMyCfg] = useState(() => loadCfg());
+  const [orders, setOrders] = useState({});
+  const [atriumOpen, setStoaviaOpen] = useState(false);
+  const [atriumPending, setStoaviaPending] = useState(null);
+  const mallApi = useRef(null);
+
+  /* a shelf order Stoavia suggested (and the owner applied) reorders that shop's products everywhere */
+  const withOrder = (s) => {
+    const o = orders[s.id];
+    if (!o) return s;
+    const rank = (n) => { const i = o.indexOf(n); return i < 0 ? 999 : i; };
+    return { ...s, products: s.products.slice().sort((a, b) => rank(a.name) - rank(b.name)) };
+  };
+  const myShop = useMemo(() => (myCfg ? makeShop(myCfg) : null), [myCfg]);
+  const shops = useMemo(() => SHOPS.concat(myShop ? [myShop] : []).map(withOrder), [myShop, orders]);
+  const applyOrder = (id, order) => setOrders((o) => { const n = { ...o }; if (order) n[id] = order; else delete n[id]; return n; });
+
+  const openShop = (cfg) => {
+    saveCfg(cfg);
+    setMyCfg(cfg);
+    setTimeout(() => { mallApi.current && mallApi.current.visit("mine"); }, 60);
+  };
+  const removeShop = () => { clearCfg(); setMyCfg(null); applyOrder("mine", null); };
+  const askStoavia = (question) => { if (question) setStoaviaPending(question); setStoaviaOpen(true); };
+
+  return (
+    <div>
+      <a href="#route" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:px-4 focus:py-2 focus:rounded-full focus:bg-surface focus:text-ink">Skip to content</a>
+      <Masthead onStoavia={askStoavia} />
+      <main>
+        <MallEntrance shops={shops} apiRef={mallApi} orders={orders} onApplyOrder={applyOrder} onAskStoavia={askStoavia} />
+        <RouteSection />
+        <ShopBuilder myShop={myShop} onOpen={openShop} onRemove={removeShop} orders={orders} onApplyOrder={applyOrder} withOrder={withOrder} />
+        <AssistantSection />
+        <ShelvesSection />
+        <AudiencesSection />
+        <CtaBand />
+      </main>
+      <Footer />
+      <StoaviaPanel open={atriumOpen} onClose={() => setStoaviaOpen(false)} shops={shops} mallApi={mallApi}
+        pending={atriumPending} clearPending={() => setStoaviaPending(null)} />
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<StoaviaProvider><App /></StoaviaProvider>);
+</script>
+
+</body>
+</html>
