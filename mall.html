@@ -1480,18 +1480,21 @@ function Directory({ level, shopsOn, youZ, onClose, onVisit, onLevel }) {
 
 /* ---------- the walk-through ---------- */
 
-function liteDevice() {
-  try { return window.matchMedia("(max-width: 900px), (pointer: coarse)").matches || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); } catch (e) { return false; }
+function sceneZoom() {
+  try {
+    const touch = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    return touch ? Math.min(1, 1.5 / (window.devicePixelRatio || 1)) : 1;
+  } catch (e) { return 1; }
 }
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(() => {
-    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches || liteDevice(); } catch (e) { return false; }
+    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; }
   });
   useEffect(() => {
     try {
       const m = window.matchMedia("(prefers-reduced-motion: reduce)");
-      const f = () => setReduced(m.matches || liteDevice());
+      const f = () => setReduced(m.matches);
       m.addEventListener("change", f);
       return () => m.removeEventListener("change", f);
     } catch (e) {}
@@ -1595,7 +1598,8 @@ function MallEntrance({ shops, apiRef, orders, onApplyOrder, onAskStoavia }) {
     let raf = 0;
     const fit = () => {
       const k = Math.max(window.innerWidth / 1200, window.innerHeight / 750);
-      if (screenRef.current) screenRef.current.style.transform = "scale(" + k + ")";
+      const Z = sceneZoom();
+      if (screenRef.current) { screenRef.current.style.zoom = Z; screenRef.current.style.transform = "scale(" + (k / Z) + ")"; }
     };
     const update = () => {
       raf = 0;
@@ -1655,7 +1659,7 @@ function MallEntrance({ shops, apiRef, orders, onApplyOrder, onAskStoavia }) {
             Walk into any<br />creator&rsquo;s <span className="text-accent">store.</span>
           </h1>
           <p className="text-[1.05rem] leading-relaxed text-inkmuted max-w-[52ch] mt-4 mb-8">
-            Every creator on Shelfspace Global gets their own shop in the mall, in their own colours, fonts and layout. Pick one below to step inside. On a laptop you can walk the whole mall in 3D.
+            Every creator on Shelfspace Global gets their own shop in the mall, in their own colours, fonts and layout. Pick one below to step inside.
           </p>
           <ShopInterior shop={cur} neighbors={all} onPick={setShopId} framed
             onApplyOrder={onApplyOrder} applied={!!orders[cur.id]} openRequest={openReq} onAskStoavia={onAskStoavia} />
