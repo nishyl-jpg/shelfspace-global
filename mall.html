@@ -1480,14 +1480,18 @@ function Directory({ level, shopsOn, youZ, onClose, onVisit, onLevel }) {
 
 /* ---------- the walk-through ---------- */
 
+function liteDevice() {
+  try { return window.matchMedia("(max-width: 900px), (pointer: coarse)").matches || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); } catch (e) { return false; }
+}
+
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(() => {
-    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; }
+    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches || liteDevice(); } catch (e) { return false; }
   });
   useEffect(() => {
     try {
       const m = window.matchMedia("(prefers-reduced-motion: reduce)");
-      const f = () => setReduced(m.matches);
+      const f = () => setReduced(m.matches || liteDevice());
       m.addEventListener("change", f);
       return () => m.removeEventListener("change", f);
     } catch (e) {}
@@ -1651,7 +1655,7 @@ function MallEntrance({ shops, apiRef, orders, onApplyOrder, onAskStoavia }) {
             Walk into any<br />creator&rsquo;s <span className="text-accent">store.</span>
           </h1>
           <p className="text-[1.05rem] leading-relaxed text-inkmuted max-w-[52ch] mt-4 mb-8">
-            Every creator on Shelfspace Global gets their own shop in the mall, in their own colours, fonts and layout. Pick one below to step inside.
+            Every creator on Shelfspace Global gets their own shop in the mall, in their own colours, fonts and layout. Pick one below to step inside. On a laptop you can walk the whole mall in 3D.
           </p>
           <ShopInterior shop={cur} neighbors={all} onPick={setShopId} framed
             onApplyOrder={onApplyOrder} applied={!!orders[cur.id]} openRequest={openReq} onAskStoavia={onAskStoavia} />
