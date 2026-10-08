@@ -2009,7 +2009,7 @@ function Masthead({ onStoavia }) {
               <StoaviaMark size={30} /><span>Stoavia</span>
             </button>
           )}
-          <Button variant="compact" href="#personalize" className="hidden sm:inline-flex">Claim a shop</Button>
+          <Button variant="compact" href="waitlist.html" className="hidden sm:inline-flex">Join the waiting list</Button>
         </div>
       </Wrap>
       <nav aria-label="Sections" className="lg:hidden border-t border-line">
@@ -2460,5 +2460,6 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<StoaviaProvider><App /></StoaviaProvider>);
 </script>
 
+<div id="site-bar" style="position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;gap:6px;font:700 13px Roboto,-apple-system,sans-serif"><a href="index.html" style="display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;border:1px solid #333">Home</a><a href="waitlist.html" style="display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;background:#D90000;color:#fff;text-decoration:none">Join the waiting list</a></div>
 </body>
 </html>
