@@ -1030,18 +1030,19 @@ function StoreFront({ shop, w, h, headed, onPick, window: win }) {
 
 function Facade({ facadeRef, leafL, leafR }) {
   const panel = { position: "absolute", background: "var(--facade)" };
+  const signFit = typeof window === "undefined" ? 1 : Math.min(1, (window.innerWidth / Math.max(window.innerWidth / 1200, window.innerHeight / 750)) / 1180);
   return (
     <div ref={facadeRef} className="p3" style={place(3000, 1600, "translate3d(0px, 0px, 0px)")} aria-hidden="true">
       {/* wall around the doorway: opening runs x -180..180, y -150..330 in world units */}
       <div style={{ ...panel, left: 0, top: 0, width: 3000, height: 650, background: "linear-gradient(180deg, var(--facade-2), var(--facade) 70%)" }}>
-        <div style={{ position: "absolute", left: 0, right: 0, bottom: 150, display: "flex", alignItems: "center", justifyContent: "center", gap: 34 }}>
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 150, display: "flex", alignItems: "center", justifyContent: "center", gap: 34, transform: "scale(" + signFit + ")", transformOrigin: "50% 100%", whiteSpace: "nowrap" }}>
           <span style={{ width: 118, height: 90, background: "var(--accent)", borderRadius: 22, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 60px rgba(255,0,0,0.45)" }}>
             <svg viewBox="0 0 14 10" width="64" height="46" fill="none"><rect y="0" width="14" height="2.4" rx="1.2" fill="#FFFFFF" /><rect y="7.6" width="14" height="2.4" rx="1.2" fill="#FFFFFF" /></svg>
           </span>
           <span className="font-display" style={{ fontSize: 150, fontWeight: 900, letterSpacing: "0.04em", color: "var(--facade-ink)", lineHeight: 1, textShadow: "0 0 40px rgba(255,255,255,0.18)" }}>SHELFSPACE</span>
           <span className="font-mono" style={{ fontSize: 46, fontWeight: 600, letterSpacing: "0.3em", color: "var(--facade-muted)", alignSelf: "flex-end", paddingBottom: 14 }}>GLOBAL</span>
         </div>
-        <div className="font-mono" style={{ position: "absolute", left: 0, right: 0, bottom: 60, textAlign: "center", fontSize: 28, letterSpacing: "0.3em", color: "var(--facade-muted)" }}>
+        <div className="font-mono" style={{ position: "absolute", left: 0, right: 0, bottom: 60, textAlign: "center", fontSize: 28, letterSpacing: "0.3em", color: "var(--facade-muted)", transform: "scale(" + signFit + ")", transformOrigin: "50% 100%", whiteSpace: "nowrap" }}>
           CREATOR MALL · 2 LEVELS · NO ACCOUNT AT THE DOOR
         </div>
       </div>
@@ -1986,6 +1987,8 @@ function ShopBuilder({ myShop, onOpen, onRemove, orders, onApplyOrder, withOrder
 /* ---------- masthead ---------- */
 
 const NAV = [
+  ["index.html", "Home"],
+  ["waitlist.html", "Join the waiting list"],
   ["#route", "How it works"],
   ["#personalize", "Design your shop"],
   ["#assistant", "Ask the shelf"],
@@ -2460,6 +2463,5 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<StoaviaProvider><App /></StoaviaProvider>);
 </script>
 
-<div id="site-bar" style="position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;gap:6px;font:700 13px Roboto,-apple-system,sans-serif"><a href="index.html" style="display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;border:1px solid #333">Home</a><a href="waitlist.html" style="display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;background:#D90000;color:#fff;text-decoration:none">Join the waiting list</a></div>
 </body>
 </html>
