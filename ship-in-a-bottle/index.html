@@ -134,7 +134,7 @@ section.alt{background:#0d1238}
 .logo{font-size:15px}
 
 /* Moving hero */
-.hero{position:relative;min-height:min(86vh,760px);display:flex;align-items:center;padding:72px 0;background:#04061c}
+.hero{position:relative;min-height:min(86vh,760px);display:flex;align-items:center;padding:72px 0;background:radial-gradient(900px 600px at 78% 20%,#1a2aa8 0,transparent 65%),#04061c}
 .hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 40%}
 .hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,#04061cf2 0,#04061cb3 38%,#04061c26 68%,transparent),linear-gradient(0deg,#070a24 0,transparent 22%)}
 .hero .wrap{position:relative;z-index:1;display:block;width:100%}
@@ -147,6 +147,15 @@ section.alt{background:#0d1238}
   .hero .wrap{margin-top:-120px}
 }
 @media(prefers-reduced-motion:reduce){.hero-vid{display:none}.hero{background:url(hero.jpg) 72% 40%/cover #04061c}}
+
+/* Moving scene panels */
+.mood{padding:8px 0 56px}
+.mood .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.mood-card{position:relative;margin:0;border-radius:22px;overflow:hidden;aspect-ratio:16/10;border:1px solid #ffb34755;background:linear-gradient(180deg,#04061c,#16228f 70%,#4a34a8)}
+.mood-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mood-card figcaption{position:absolute;inset:auto 0 0 0;padding:44px 18px 16px;background:linear-gradient(0deg,#04061cee,transparent);color:#fff}
+.mood-card b{display:block;font:700 26px "Cormorant Garamond",Georgia,serif}
+.mood-card span{font-size:14px;color:#c9cdf5}
 </style>
 </head>
 <body>
@@ -207,6 +216,13 @@ section.alt{background:#0d1238}
     </div>
     <div class="flavours" id="flavours"></div>
     <div class="packs" id="packs"></div>
+  </div>
+</section>
+
+<section class="mood" aria-label="The mood">
+  <div class="wrap">
+    <figure class="mood-card"><video autoplay muted loop playsinline preload="metadata" poster="orbs.jpg" src="orbs.mp4" aria-label="Six round glowing bottles on a harbour ledge under an amber moon"></video><figcaption><b>Six cocktails</b><span>Round, ready and unlike anything on a local shelf</span></figcaption></figure>
+    <figure class="mood-card"><video autoplay muted loop playsinline preload="metadata" poster="bar.jpg" src="bar.mp4" aria-label="A lantern-lit bar on the deck of a sailing ship"></video><figcaption><b>For your deck, bar or event</b><span>By the single, the four-pack or the case</span></figcaption></figure>
   </div>
 </section>
 
