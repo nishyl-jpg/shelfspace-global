@@ -73,6 +73,10 @@ async function groengeld(page, base) {
   ok(big === over, 'weeklyTotal drops the fee at the free threshold');
   ok(await page.$eval('#send', (a) => a.getAttribute('aria-disabled') === 'true' && !a.getAttribute('href')), 'send is disabled with nothing selected');
   const plus = await page.$$('[data-plus]');
+  await plus[plus.length - 1].click();
+  ok(await page.$eval('#send', (a) => a.getAttribute('aria-disabled') === 'true'), 'send stays disabled below the minimum order');
+  ok(/Minimum order/.test(await page.textContent('#hint')), 'hint explains the minimum order');
+  await (await page.$$('[data-minus]')).pop().click();
   await plus[0].click(); await plus[0].click(); await plus[1].click();
   const names = await page.$$eval('[data-item-name]', (els) => els.slice(0, 2).map((e) => e.textContent.trim()));
   const href = await page.$eval('#send', (a) => a.href);
@@ -80,6 +84,18 @@ async function groengeld(page, base) {
   const text = waText(href);
   ok(names.every((n) => text.includes(n)), 'order message lists the chosen items');
   ok(/2 x/.test(text) && /Total/i.test(text) && /Deliver/i.test(text), 'order message has quantities, delivery days and total');
+}
+
+async function groengeldPages(page, base) {
+  for (const f of ['selection', 'combos', 'rewards']) {
+    const res = await page.goto(base + '/groengeld/' + f + '.html');
+    ok(res.status() === 200, f + '.html loads');
+    ok(!(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)), f + '.html has no sideways scroll at 360px');
+    const html = await page.content();
+    ok(!/href="[^"]*(pack\/|launch\/)/.test(html), f + '.html does not link to private pages');
+    const hrefs = await page.$$eval('[data-wa]', (as) => as.map((a) => a.href));
+    ok(hrefs.length > 0 && hrefs.every((h) => waEncoded(h)), f + '.html WhatsApp links are encoded');
+  }
 }
 
 async function ship(page, base) {
@@ -109,6 +125,7 @@ async function ship(page, base) {
   for (const biz of targets) {
     console.log('\n' + biz);
     await common(page, base, biz);
+    if (biz === 'groengeld') await groengeldPages(page, base);
     try { await specific[biz](page, base); } catch (e) { failed++; console.log('  FAIL  ' + e.message.split('\n')[0]); }
   }
   if (which === 'all') {

@@ -210,6 +210,15 @@ section.alt{background:var(--paper)}
 .mood-card b{font-family:Poppins,system-ui,sans-serif;font-size:22px}
 .mood-card span{color:#eef3dc}
 footer{background:var(--green-dark);color:#cfe0bf}
+
+.more{padding:0 0 52px}
+.more .wrap{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.more-card{display:block;background:var(--green);color:#fff;border-radius:18px;padding:20px;text-decoration:none;box-shadow:0 8px 24px #2f4a1f30}
+.more-card:nth-child(2){background:var(--gold);color:var(--ink)}
+.more-card:nth-child(3){background:var(--teal)}
+.more-card b{display:block;font:800 20px Poppins,system-ui,sans-serif;letter-spacing:-.02em;margin-bottom:4px}
+.more-card span{font-size:14.5px;opacity:.92}
+nav.main a{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -217,7 +226,7 @@ footer{background:var(--green-dark);color:#cfe0bf}
   <div class="wrap">
     <a class="logo" href="#top">groen<span>geld</span></a>
     <nav class="main" aria-label="Main">
-      <a href="#order">Build your order</a><a href="#how">How it works</a><a href="#who">Homes and kitchens</a><a href="#areas">Areas</a><a href="#faq">Questions</a>
+      <a href="#order">Order</a><a href="selection.html">How we choose</a><a href="combos.html">Combos</a><a href="rewards.html">Rewards</a><a href="#faq">Questions</a>
     </nav>
     <a class="btn small" href="#order">Start an order</a>
   </div>
@@ -238,7 +247,7 @@ footer{background:var(--green-dark);color:#cfe0bf}
     <ul class="facts">
       <li><b>From R220</b>a week for a household box</li>
       <li><b>Before 10:00</b>kitchen deliveries on your delivery days</li>
-      <li><b>No contract</b>pause, change or stop by WhatsApp</li>
+      <li><b>R350 minimum</b>per delivery, no contract</li>
       <li><b>Bad item?</b>credited on your next delivery</li>
     </ul>
   </div></div>
@@ -282,6 +291,14 @@ footer{background:var(--green-dark);color:#cfe0bf}
   <div class="wrap">
     <figure class="mood-card"><video autoplay muted loop playsinline preload="metadata" poster="market.jpg" src="market.mp4" aria-label="A produce market under stone arches before dawn"></video><figcaption><b>Bought before sunrise</b><span>We are at the market while the city sleeps</span></figcaption></figure>
     <figure class="mood-card"><video autoplay muted loop playsinline preload="metadata" poster="crate.jpg" src="crate.mp4" aria-label="A crate of fruit and vegetables lit by a lantern"></video><figcaption><b>At your door by morning</b><span>The same crate, every week, until you say stop</span></figcaption></figure>
+  </div>
+</section>
+
+<section class="more" aria-label="More from Groengeld">
+  <div class="wrap">
+    <a class="more-card" href="combos.html"><b>Combos and groceries</b><span>Produce plus noodles, rice, oil and eggs in one order, weekly or monthly.</span></a>
+    <a class="more-card" href="rewards.html"><b>Win an appliance every week</b><span>Every order enters the draw. Free chip cutter or fryer on big orders.</span></a>
+    <a class="more-card" href="selection.html"><b>How we choose</b><span>Six checks on every item, our potato list, and special requests.</span></a>
   </div>
 </section>
 
@@ -338,6 +355,7 @@ footer{background:var(--green-dark);color:#cfe0bf}
     <details><summary>Why do prices change?</summary><p>Market prices move with the weather and the season. Household box prices are fixed; we adjust what goes in. Restaurant prices are set every Sunday and held for that week.</p></details>
     <details><summary>What if something arrives bruised or short?</summary><p>Send a photo on WhatsApp the same day. We credit it on your next delivery, no argument.</p></details>
     <details><summary>Is there a contract or a minimum term?</summary><p>No. Change, pause or cancel any time before 18:00 the day before a delivery.</p></details>
+    <details><summary>Is there a minimum order?</summary><p>Yes. Every delivery must be R350 or more, whether it is a box, a combo or your own list.</p></details>
     <details><summary>Is there a delivery fee?</summary><p id="faq-fee"></p></details>
     <details><summary>Where does the produce come from?</summary><p>The Cape Town Market in Epping, where farmers from across the Western Cape and beyond sell every morning, and directly from local growers as we grow.</p></details>
     <details><summary>Is it organic?</summary><p>Not by default. It is good, fresh, conventional produce at fair prices. Tell us if you need organic items and we will quote.</p></details>
@@ -353,12 +371,14 @@ footer{background:var(--green-dark);color:#cfe0bf}
   </div>
 </footer>
 
+<script src="site.js"></script>
 <script>
 /* ============ EDIT HERE: contact details, delivery rules, items and prices ============ */
 const CONFIG = {
   whatsapp: '27000000000',            // your number, country code first, no + or spaces
   email: 'orders@groengeld.co.za',
-  legalName: 'Groengeld (Pty) Ltd',   // add the registration number once registered
+  legalName: 'Groengeld (Pty) Ltd',
+  minOrder: 350,                      // minimum order per delivery   // add the registration number once registered
   deliveryFee: 40,                    // per delivery, charged when a delivery is below the amount on the next line
   freeDeliveryOver: 600,
   days: ['Tue', 'Thu'],                 // launch days; add more as you add capacity, e.g. ['Mon','Tue','Wed','Thu','Fri','Sat']
@@ -392,6 +412,8 @@ const CONFIG = {
   }
 };
 /* ====================================================================================== */
+// Contact details and the minimum order come from site.js, which every Groengeld page shares.
+if (typeof GG !== 'undefined') { CONFIG.whatsapp = GG.whatsapp; CONFIG.email = GG.email; CONFIG.minOrder = GG.minOrder; }
 
 // Weekly cost: each delivery carries the full list; a delivery below the free threshold adds the fee.
 function weeklyTotal(items, daysPerWeek) {
@@ -439,7 +461,8 @@ function update() {
     : feeApplies ? `Includes ${rand(CONFIG.deliveryFee)} delivery per drop. Add ${rand(CONFIG.freeDeliveryOver - perDelivery)} for free delivery.`
     : 'Free delivery on this order.';
   const send = $('send');
-  if (items.length && days.length) {
+  const short = CONFIG.minOrder - perDelivery;
+  if (items.length && days.length && short <= 0) {
     const who = mode === 'home' ? 'Household' : 'Restaurant or business';
     const v = (id) => $(id).value.trim() || 'not given';
     send.href = wa(`Hi Groengeld, please start this standing order.\n\nType: ${who}\nName: ${v('o-name')}\nSuburb: ${v('o-area')}\nDelivery days: ${days.join(', ')}\n\nEach delivery:\n${items.map((it) => `${it.qty} x ${it.name} (${it.desc}) ${rand(it.price * it.qty)}`).join('\n')}\n\nTotal per week: ${rand(total)}${feeApplies ? ' including delivery' : ', free delivery'}`);
@@ -448,7 +471,7 @@ function update() {
   } else {
     send.removeAttribute('href');
     send.setAttribute('aria-disabled', 'true');
-    $('hint').textContent = 'Add at least one item and one delivery day.';
+    $('hint').textContent = items.length && days.length ? `Minimum order is ${rand(CONFIG.minOrder)} per delivery. Add ${rand(short)} more.` : 'Add at least one item and one delivery day.';
   }
 }
 $('items').addEventListener('click', (e) => {
