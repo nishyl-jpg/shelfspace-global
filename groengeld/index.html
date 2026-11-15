@@ -422,5 +422,12 @@ $('f-wa').href = wa('Hi Groengeld, I have a question.');
 $('f-legal').textContent = '© ' + new Date().getFullYear() + ' ' + CONFIG.legalName + '. Restaurant prices change weekly with the market. Household box prices are fixed.';
 renderItems(); update();
 </script>
+<script>
+/* Hide a moving panel if its clip is missing, and the whole band if none loaded. */
+document.querySelectorAll('.mood-card video').forEach(function (v) {
+  function gone() { var f = v.closest('figure'); f.hidden = true; var s = f.closest('.mood'); if (!s.querySelector('figure:not([hidden])')) s.hidden = true; }
+  if (v.error || v.networkState === 3) gone(); else v.addEventListener('error', gone);
+});
+</script>
 </body>
 </html>

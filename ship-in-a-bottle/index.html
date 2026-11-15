@@ -374,5 +374,12 @@ $('f-wa').href = wa('Hi Ship in a Bottle, I have a question.');
 $('f-mail').textContent = CONFIG.email; $('f-mail').href = 'mailto:' + CONFIG.email;
 $('f-legal').textContent = '© ' + new Date().getFullYear() + ' ' + CONFIG.legalName + '. Alcohol is sold only to persons aged 18 and over.';
 </script>
+<script>
+/* Hide a moving panel if its clip is missing, and the whole band if none loaded. */
+document.querySelectorAll('.mood-card video').forEach(function (v) {
+  function gone() { var f = v.closest('figure'); f.hidden = true; var s = f.closest('.mood'); if (!s.querySelector('figure:not([hidden])')) s.hidden = true; }
+  if (v.error || v.networkState === 3) gone(); else v.addEventListener('error', gone);
+});
+</script>
 </body>
 </html>
