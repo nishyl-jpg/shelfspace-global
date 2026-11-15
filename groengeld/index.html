@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Groengeld | Standing fruit and veg orders, delivered in Cape Town</title>
+<meta name="description" content="Set your fruit and veg order once and Groengeld delivers it every week. Market-fresh produce for Cape Town households and restaurants. No contract, pause any time.">
+<meta property="og:title" content="Groengeld | Your fruit and veg, on standing order">
+<meta property="og:description" content="Bought at the market at dawn, at your door the same morning. Households from R220 a week. Restaurant price list weekly.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--night:#070a24;--green:#5fd08a;--green-dark:#03051a;--leaf:#7fe0a6;--gold:#ffb347;--cream:#070a24;--paper:#0d1238;--ink:#efeaff;--muted:#a9add6;--line:#2a3176;--tomato:#c8412d}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.08;margin:0;letter-spacing:-.02em}
+a{color:var(--green)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:5;background:var(--green-dark);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px}
+.logo{font:800 23px "Bricolage Grotesque",sans-serif;color:#fff;text-decoration:none}
+.logo span{color:var(--gold)}
+nav.main{display:flex;gap:18px;font-size:14.5px;font-weight:500}
+nav.main a{color:#dfe9e0;text-decoration:none}
+@media(max-width:720px){nav.main{display:none}}
+.btn{display:inline-block;background:var(--gold);color:var(--ink);font-weight:700;padding:12px 20px;border-radius:12px;text-decoration:none;border:0;cursor:pointer;font:700 15.5px Inter,sans-serif}
+.btn:hover{filter:brightness(1.05)}
+.btn.small{padding:8px 14px;font-size:14px}
+.btn.green{background:var(--green);color:#fff}
+.btn[aria-disabled="true"]{background:#d5d2c3;color:#807d70;cursor:not-allowed;pointer-events:none}
+.hero{background:var(--green);color:#fff;padding:52px 0 60px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-90px;top:-90px;width:340px;height:340px;border-radius:50%;background:var(--leaf);opacity:.35}
+.hero::before{content:"";position:absolute;right:120px;bottom:-140px;width:260px;height:260px;border-radius:50%;background:var(--gold);opacity:.28}
+.hero .wrap{position:relative;z-index:1}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.hero h1{font-size:clamp(38px,7.5vw,68px);margin:10px 0 16px;max-width:13em}
+.hero p.lede{font-size:18.5px;color:#dbe8dd;max-width:34em;margin:0 0 24px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 2px #ffffff80}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:34px;padding:0;list-style:none}
+.facts li{background:#ffffff14;border-radius:14px;padding:14px;font-size:14px;color:#dbe8dd}
+.facts b{display:block;font:800 22px "Bricolage Grotesque",sans-serif;color:#fff}
+section{padding:56px 0}
+section.alt{background:var(--paper)}
+.sec-head{max-width:40em;margin-bottom:26px}
+.sec-head .eyebrow{color:var(--leaf)}
+.sec-head h2{font-size:clamp(28px,5vw,42px);margin:8px 0 10px}
+.sec-head p{color:var(--muted);margin:0}
+.builder{display:grid;gap:22px;grid-template-columns:1.25fr .75fr;align-items:start}
+@media(max-width:860px){.builder{grid-template-columns:1fr}}
+.switch{display:inline-flex;background:#e7e3d2;border-radius:12px;padding:4px;margin-bottom:16px}
+.switch button{font:600 15px Inter,sans-serif;padding:9px 16px;border-radius:9px;border:0;background:transparent;color:var(--ink);cursor:pointer}
+.switch button[aria-pressed="true"]{background:var(--green);color:#fff}
+.mode-note{color:var(--muted);font-size:14.5px;margin:0 0 14px}
+.items{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.group{background:#eef3e8;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);padding:8px 14px}
+.item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-top:1px solid #eeebdd}
+.item .info{flex:1;min-width:0}
+.item .name{font-weight:600}
+.item .desc{font-size:13px;color:var(--muted)}
+.item .p{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.step{display:flex;align-items:center;gap:6px}
+.step button{width:34px;height:34px;border-radius:9px;border:1px solid #c9c6b5;background:#fff;font:700 18px Inter,sans-serif;cursor:pointer;color:var(--green)}
+.step button:hover{background:#eef3e8}
+.step output{min-width:20px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.summary{background:#fff;border:2px solid var(--green);border-radius:16px;padding:18px;position:sticky;top:74px;display:grid;gap:12px}
+.summary h3{font-size:21px}
+.days{display:flex;flex-wrap:wrap;gap:6px}
+.days label{cursor:pointer}
+.days input{position:absolute;opacity:0}
+.days span{display:inline-block;padding:7px 11px;border-radius:9px;border:1px solid #c9c6b5;font-weight:600;font-size:14px}
+.days input:checked+span{background:var(--green);border-color:var(--green);color:#fff}
+.days input:focus-visible+span,button:focus-visible,a:focus-visible,input:focus,select:focus{outline:3px solid var(--gold);outline-offset:2px}
+.lbl{font-weight:600;font-size:14px;display:grid;gap:5px}
+input.txt{font:16px Inter,sans-serif;padding:10px 12px;border:1px solid #c9c6b5;border-radius:10px;width:100%}
+.lines{font-size:14px;color:var(--muted);margin:0;padding:0;list-style:none;max-height:150px;overflow:auto}
+.lines li{display:flex;justify-content:space-between;gap:8px;padding:2px 0}
+.tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed var(--line);padding-top:10px}
+.tot b{font:800 30px "Bricolage Grotesque",sans-serif;color:var(--green)}
+.fine{font-size:13px;color:var(--muted);margin:0}
+.steps{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));counter-reset:s;padding:0;list-style:none;margin:0}
+.steps li{counter-increment:s;background:#fff;border-radius:16px;padding:20px;border:1px solid var(--line)}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--gold);font-weight:800;margin-bottom:10px}
+.steps h3{font-size:19px;margin-bottom:4px}
+.steps p{margin:0;color:var(--muted);font-size:14.5px}
+.two{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.panel h3{font-size:22px;margin-bottom:8px}
+.panel ul{padding-left:18px;color:var(--muted);margin:0}
+.panel li{margin:5px 0}
+.areas{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none;margin:0}
+.areas li{background:#eef3e8;color:var(--green-dark);padding:6px 12px;border-radius:999px;font-size:14px;font-weight:600}
+details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px}
+summary{font-weight:600;cursor:pointer}
+details p{color:var(--muted);margin:10px 0 0}
+footer{background:var(--green-dark);color:#c8d6cb;padding:40px 0;font-size:14.5px}
+footer a{color:#fff}
+footer .wrap{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+
+/* ===== Moonlit night art direction ===== */
+:root{color-scheme:dark}
+body{background:var(--night);color:var(--ink)}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;letter-spacing:0;font-weight:700}
+h1,h2,h3,.price,.tot b,.facts b,.steps li::before{font-variant-numeric:lining-nums tabular-nums}
+form.w input,form.w select{border:1px solid #3a4296}
+.eyebrow,.logo{font-family:Cinzel,Georgia,serif;letter-spacing:.14em}
+.logo{font-size:19px;font-weight:700;text-transform:uppercase}
+.scene{display:block;width:100%;max-width:460px;height:auto;margin:0 auto;filter:drop-shadow(0 20px 50px #000a)}
+select,input,textarea,input.txt{background:#0a0f38;color:var(--ink);border:1px solid #3a4296}
+::placeholder{color:#7d83b8}
+details p,.fine{color:var(--muted)}
+
+.hero{background:radial-gradient(900px 500px at 85% 0,#1a2aa8 0,transparent 60%),var(--night)}
+.hero::before,.hero::after{display:none}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(42px,7.5vw,72px)}
+.facts{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.facts b{font-family:"Cormorant Garamond",Georgia,serif;font-size:24px;color:var(--gold)}
+.btn{color:#1a1030;box-shadow:0 0 24px #ffb34755}
+.btn.green{color:#04121a}
+.btn.ghost{color:#fff}
+.btn[aria-disabled="true"]{background:#232a66;color:#7d83b8;box-shadow:none}
+.switch{background:#131949}
+.switch button{color:var(--ink)}
+.switch button[aria-pressed="true"],.days input:checked+span{color:#04121a}
+.items,.summary,.steps li,.panel,details{background:#131949;border-color:var(--line)}
+.summary{border-color:var(--green);box-shadow:0 0 40px #5fd08a22}
+.group{background:#0d1238;color:var(--leaf)}
+.item{border-top-color:#232a66}
+.step button{background:#0a0f38;border-color:#3a4296}
+.step button:hover{background:#1b2260}
+.days span{border-color:#3a4296}
+.tot b,.steps li::before{font-family:"Cormorant Garamond",Georgia,serif}
+.steps li::before{color:#1a1030;font-size:20px}
+.areas li{background:#131949;color:var(--leaf);border:1px solid var(--line)}
+footer{color:var(--muted)}
+
+/* Moving hero */
+.hero{position:relative;min-height:min(86vh,760px);display:flex;align-items:center;padding:72px 0;background:radial-gradient(900px 600px at 78% 20%,#1a2aa8 0,transparent 65%),#04061c;overflow:hidden}
+.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 40%}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,#04061cf2 0,#04061cb3 38%,#04061c26 68%,transparent),linear-gradient(0deg,#070a24 0,transparent 22%)}
+.hero .wrap{position:relative;z-index:1;display:block;width:100%}
+.hero .wrap>div{max-width:560px}
+.hero h1,.hero p,.hero li{text-shadow:0 2px 18px #000c}
+@media(max-width:720px){
+  .hero{min-height:0;display:block;padding:0 0 40px}
+  .hero-vid{position:relative;display:block;height:auto;aspect-ratio:4/5;object-position:78% 30%}
+  .hero-shade{background:linear-gradient(0deg,#070a24 46%,transparent 70%)}
+  .hero .wrap{margin-top:-120px}
+}
+@media(prefers-reduced-motion:reduce){.hero-vid{display:none}.hero{background:url(hero.jpg) 72% 40%/cover #04061c}}
+
+/* Moving scene panels */
+.mood{padding:8px 0 56px}
+.mood .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.mood-card{position:relative;margin:0;border-radius:22px;overflow:hidden;aspect-ratio:16/10;border:1px solid #ffb34755;background:linear-gradient(180deg,#04061c,#16228f 70%,#4a34a8)}
+.mood-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mood-card figcaption{position:absolute;inset:auto 0 0 0;padding:44px 18px 16px;background:linear-gradient(0deg,#04061cee,transparent);color:#fff}
+.mood-card b{display:block;font:700 26px "Cormorant Garamond",Georgia,serif}
+.mood-card span{font-size:14px;color:#c9cdf5}
+.hero .wrap>div{max-width:620px}
+
+/* ===== Citrus grove: bright palette (lemon, leaf green, teal, tangerine) ===== */
+:root{color-scheme:light;--night:#f7f6e9;--green:#2f4a1f;--green-dark:#1d3312;--leaf:#6e8f2a;--gold:#f4c430;--zest:#e0a91f;--teal:#0f4c45;--tang:#ff8c1c;--persimmon:#e2552a;--cream:#f7f6e9;--paper:#fffdf2;--ink:#1c2a14;--muted:#56644c;--line:#dde2c4}
+body{background:var(--cream);color:var(--ink)}
+h1,h2,h3{font-family:Poppins,system-ui,sans-serif;font-weight:800;letter-spacing:-.025em}
+.eyebrow{font-family:Poppins,system-ui,sans-serif;font-weight:700;letter-spacing:.12em}
+.logo{font-family:Comfortaa,Poppins,system-ui,sans-serif;font-weight:700;font-size:25px;letter-spacing:-.01em;text-transform:none}
+.logo span{color:var(--gold)}
+header.top{background:var(--green-dark)}
+.hero{background:var(--green-dark)}
+.hero-shade{background:linear-gradient(90deg,#1d3312f5 0,#1d3312cc 36%,#1d331240 66%,transparent)}
+.hero .eyebrow{color:var(--gold)}
+.hero h1{font-size:clamp(40px,7vw,68px);color:#fff}
+.hero h1 em{font-style:normal;color:#c9e265}
+.hero p.lede{color:#eef3dc}
+.facts li{background:#ffffff1f;color:#eef3dc;backdrop-filter:blur(6px)}
+.facts b{font-family:Poppins,system-ui,sans-serif;font-size:21px;color:var(--gold)}
+@media(max-width:720px){.hero-shade{background:linear-gradient(0deg,#1d3312 46%,transparent 70%)}}
+.sec-head .eyebrow{color:var(--leaf)}
+.sec-head h2 em,.accent{color:var(--leaf);font-style:normal}
+.btn{background:var(--gold);color:var(--ink);box-shadow:0 6px 18px #e0a91f55}
+.btn.green{background:var(--green);color:#fff;box-shadow:0 6px 18px #2f4a1f40}
+.btn.ghost{color:#fff}
+.btn[aria-disabled="true"]{background:#dde2c4;color:#858c74;box-shadow:none}
+select,input,textarea,input.txt{background:#fff;color:var(--ink);border:1px solid #c9cfae}
+::placeholder{color:#8f977f}
+section.alt{background:var(--paper)}
+.switch{background:#e8ecd0}
+.switch button{color:var(--ink)}
+.switch button[aria-pressed="true"],.days input:checked+span{background:var(--green);border-color:var(--green);color:#fff}
+.items,.summary,.steps li,.panel,details{background:#fff;border-color:var(--line)}
+.items,.steps li,.panel{box-shadow:0 8px 24px #2f4a1f12}
+.summary{border-color:var(--leaf);box-shadow:0 12px 34px #6e8f2a30}
+.group{background:#eef3dc;color:var(--green)}
+.item{border-top-color:#eceed9}
+.item .p{color:var(--teal)}
+.step button{background:#fff;border-color:#c9cfae;color:var(--green)}
+.step button:hover{background:#eef3dc}
+.days span{border-color:#c9cfae}
+.tot b{font-family:Poppins,system-ui,sans-serif;color:var(--persimmon)}
+.steps li::before{background:var(--tang);color:#fff;font-family:Poppins,system-ui,sans-serif;font-size:17px}
+.panel h3{color:var(--green)}
+.areas li{background:#eef3dc;color:var(--green);border:0}
+.mood-card{border-color:#6e8f2a66;background:var(--green-dark)}
+.mood-card b{font-family:Poppins,system-ui,sans-serif;font-size:22px}
+.mood-card span{color:#eef3dc}
+footer{background:var(--green-dark);color:#cfe0bf}
+
+.more{padding:0 0 52px}
+.more .wrap{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.more-card{display:block;background:var(--green);color:#fff;border-radius:18px;padding:20px;text-decoration:none;box-shadow:0 8px 24px #2f4a1f30}
+.more-card:nth-child(2){background:var(--gold);color:var(--ink)}
+.more-card:nth-child(3){background:var(--teal)}
+.more-card b{display:block;font:800 20px Poppins,system-ui,sans-serif;letter-spacing:-.02em;margin-bottom:4px}
+.more-card span{font-size:14.5px;opacity:.92}
+nav.main a{white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">groen<span>geld</span></a>
+    <nav class="main" aria-label="Main">
+      <a href="#order">Order</a><a href="selection.html">How we choose</a><a href="combos.html">Combos</a><a href="rewards.html">Rewards</a><a href="#faq">Questions</a>
+    </nav>
+    <a class="btn small" href="#order">Start an order</a>
+  </div>
+</header>
+
+<main id="top">
+<div class="hero">
+  <video class="hero-vid" autoplay muted loop playsinline preload="auto" poster="hero.jpg" src="hero.mp4" aria-label="Garden islands floating above moonlit clouds, with waterfalls"></video>
+  <div class="hero-shade"></div>
+  <div class="wrap"><div>
+    <p class="eyebrow">Cape Town · Standing fruit and veg orders</p>
+    <h1>Set it once. <em>Fresh at your door every week.</em></h1>
+    <p class="lede">We buy at the Cape Town Market at dawn and deliver the same morning. Households get a weekly box. Restaurants get their list, on their days, before prep starts.</p>
+    <div class="cta-row">
+      <a class="btn" href="#order">Build your standing order</a>
+      <a class="btn ghost" href="#who">For restaurants</a>
+    </div>
+    <ul class="facts">
+      <li><b>From R220</b>a week for a household box</li>
+      <li><b>Before 10:00</b>kitchen deliveries on your delivery days</li>
+      <li><b>R350 minimum</b>per delivery, no contract</li>
+      <li><b>Bad item?</b>credited on your next delivery</li>
+    </ul>
+  </div></div>
+</div>
+
+<section id="order">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Build your order</p>
+      <h2>What do you want, and on which days?</h2>
+      <p>Choose your items and delivery days. The same order repeats every week until you change it.</p>
+    </div>
+    <div class="builder">
+      <div>
+        <div class="switch" role="group" aria-label="Order type">
+          <button id="m-home" aria-pressed="true">Household</button>
+          <button id="m-kitchen" aria-pressed="false">Restaurant or business</button>
+        </div>
+        <p class="mode-note" id="mode-note"></p>
+        <div class="items" id="items"></div>
+      </div>
+      <aside class="summary" aria-label="Your standing order">
+        <h3>Your standing order</h3>
+        <div>
+          <div class="lbl" id="days-lbl">Delivery days</div>
+          <div class="days" id="days" role="group" aria-labelledby="days-lbl"></div>
+        </div>
+        <ul class="lines" id="lines"></ul>
+        <div class="tot"><span>Estimated weekly total</span><b id="total">R0</b></div>
+        <p class="fine" id="fee-note"></p>
+        <label class="lbl">Name or business<input class="txt" id="o-name" autocomplete="name"></label>
+        <label class="lbl">Suburb<input class="txt" id="o-area" autocomplete="address-level2"></label>
+        <a class="btn green" id="send" aria-disabled="true" target="_blank" rel="noopener">Send order on WhatsApp</a>
+        <p class="fine" id="hint">Add at least one item and one delivery day.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="mood" aria-label="The mood">
+  <div class="wrap">
+    <figure class="mood-card"><video autoplay muted loop playsinline preload="metadata" poster="market.jpg" src="market.mp4" aria-label="A produce market under stone arches before dawn"></video><figcaption><b>Bought before sunrise</b><span>We are at the market while the city sleeps</span></figcaption></figure>
+    <figure class="mood-card"><video autoplay muted loop playsinline preload="metadata" poster="crate.jpg" src="crate.mp4" aria-label="A crate of fruit and vegetables lit by a lantern"></video><figcaption><b>At your door by morning</b><span>The same crate, every week, until you say stop</span></figcaption></figure>
+  </div>
+</section>
+
+<section class="more" aria-label="More from Groengeld">
+  <div class="wrap">
+    <a class="more-card" href="combos.html"><b>Combos and groceries</b><span>Produce plus noodles, rice, oil and eggs in one order, weekly or monthly.</span></a>
+    <a class="more-card" href="rewards.html"><b>Win an appliance every week</b><span>Every order enters the draw. Free chip cutter or fryer on big orders.</span></a>
+    <a class="more-card" href="selection.html"><b>How we choose</b><span>Six checks on every item, our potato list, and special requests.</span></a>
+  </div>
+</section>
+
+<section class="alt" id="how">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">How it works</p><h2>Four steps, then it runs itself</h2></div>
+    <ol class="steps">
+      <li><h3>Build your order</h3><p>Pick items and days above and send it on WhatsApp. We confirm your first delivery date.</p></li>
+      <li><h3>We buy at dawn</h3><p>Every delivery morning we buy to order at the market, so nothing sits in a store room.</p></li>
+      <li><h3>We deliver</h3><p>Kitchens before 10:00. Households between 9:00 and 14:00, with a message when we are close.</p></li>
+      <li><h3>You pay weekly</h3><p>Households pay by EFT before delivery. Restaurants get one invoice a week.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="who">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Homes and kitchens</p><h2>One service, two kinds of customer</h2></div>
+    <div class="two">
+      <div class="panel">
+        <h3>For households</h3>
+        <ul>
+          <li>Weekly boxes sized for one to two people or a family</li>
+          <li>What is in the box changes with the season; you get the list the day before</li>
+          <li>Swap out up to two items you do not eat</li>
+          <li>Add eggs, avocados and extras</li>
+          <li>Going away? Pause by WhatsApp before 18:00 the day before</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>For restaurants, cafes, schools and offices</h3>
+        <ul>
+          <li>Your standing list, delivered on your days before 10:00</li>
+          <li>New price list every Sunday by WhatsApp, held for the week</li>
+          <li>Top-ups by 20:00 for next-morning delivery</li>
+          <li>One weekly invoice; 7-day account after four weeks of on-time payment</li>
+          <li>Short or poor item? Credited or replaced the same day where we can</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="areas">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Areas</p><h2>Where we deliver</h2><p>Not on the list? Ask. We add a suburb when three customers there sign up.</p></div>
+    <ul class="areas" id="area-list"></ul>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Questions</p><h2>Good to know</h2></div>
+    <details><summary>Why do prices change?</summary><p>Market prices move with the weather and the season. Household box prices are fixed; we adjust what goes in. Restaurant prices are set every Sunday and held for that week.</p></details>
+    <details><summary>What if something arrives bruised or short?</summary><p>Send a photo on WhatsApp the same day. We credit it on your next delivery, no argument.</p></details>
+    <details><summary>Is there a contract or a minimum term?</summary><p>No. Change, pause or cancel any time before 18:00 the day before a delivery.</p></details>
+    <details><summary>Is there a minimum order?</summary><p>Yes. Every delivery must be R350 or more, whether it is a box, a combo or your own list.</p></details>
+    <details><summary>Is there a delivery fee?</summary><p id="faq-fee"></p></details>
+    <details><summary>Where does the produce come from?</summary><p>The Cape Town Market in Epping, where farmers from across the Western Cape and beyond sell every morning, and directly from local growers as we grow.</p></details>
+    <details><summary>Is it organic?</summary><p>Not by default. It is good, fresh, conventional produce at fair prices. Tell us if you need organic items and we will quote.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><a class="logo" href="#top">groen<span>geld</span></a><p>Standing fruit and veg orders for Cape Town homes and kitchens.</p></div>
+    <div><strong>Contact</strong><p><a id="f-wa" href="#">WhatsApp us</a><br><a id="f-mail" href="#"></a><br>Orders and changes: by 18:00 the day before</p></div>
+    <div><p id="f-legal"></p></div>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script>
+/* ============ EDIT HERE: contact details, delivery rules, items and prices ============ */
+const CONFIG = {
+  whatsapp: '27000000000',            // your number, country code first, no + or spaces
+  email: 'orders@groengeld.co.za',
+  legalName: 'Groengeld (Pty) Ltd',
+  minOrder: 350,                      // minimum order per delivery   // add the registration number once registered
+  deliveryFee: 40,                    // per delivery, charged when a delivery is below the amount on the next line
+  freeDeliveryOver: 600,
+  days: ['Tue', 'Thu'],                 // launch days; add more as you add capacity, e.g. ['Mon','Tue','Wed','Thu','Fri','Sat']
+  areas: ['City Bowl', 'Atlantic Seaboard', 'Observatory', 'Rondebosch', 'Claremont', 'Wynberg', 'Plumstead', 'Bergvliet', 'Pinelands', 'Goodwood', 'Parow', 'Bellville', 'Durbanville', 'Milnerton', 'Table View'],
+  items: {
+    home: [
+      { group: 'Weekly boxes', name: 'Small Veg Box', desc: '7 seasonal vegetables, feeds 1 to 2', price: 220 },
+      { group: 'Weekly boxes', name: 'Family Veg Box', desc: '11 seasonal vegetables, feeds 4', price: 340 },
+      { group: 'Weekly boxes', name: 'Fruit Box', desc: '5 seasonal fruits, about 5 kg', price: 190 },
+      { group: 'Weekly boxes', name: 'Family Fruit & Veg Box', desc: 'Family Veg Box plus Fruit Box', price: 480 },
+      { group: 'Extras', name: 'Free-range eggs', desc: 'Tray of 18', price: 85 },
+      { group: 'Extras', name: 'Avocados', desc: 'Pack of 4, ripe this week', price: 60 },
+      { group: 'Extras', name: 'Bananas', desc: '1 kg', price: 28 },
+      { group: 'Extras', name: 'Potatoes', desc: '2 kg', price: 40 },
+      { group: 'Extras', name: 'Fresh herbs', desc: 'One bunch, your choice', price: 18 }
+    ],
+    kitchen: [
+      { group: 'Staples', name: 'Potatoes', desc: '10 kg pocket', price: 110 },
+      { group: 'Staples', name: 'Onions', desc: '10 kg pocket', price: 95 },
+      { group: 'Staples', name: 'Tomatoes', desc: '5 kg box', price: 110 },
+      { group: 'Staples', name: 'Carrots', desc: '5 kg bag', price: 60 },
+      { group: 'Staples', name: 'Butternut', desc: '10 kg pocket', price: 85 },
+      { group: 'Salad and greens', name: 'Cos lettuce', desc: 'Each', price: 22 },
+      { group: 'Salad and greens', name: 'Mixed peppers', desc: '5 kg box', price: 170 },
+      { group: 'Salad and greens', name: 'Cucumbers', desc: 'Box of 12', price: 120 },
+      { group: 'Salad and greens', name: 'Fresh herbs', desc: 'Large bunch, your choice', price: 25 },
+      { group: 'Fruit', name: 'Lemons', desc: '5 kg bag', price: 75 },
+      { group: 'Fruit', name: 'Avocados', desc: 'Box of 20', price: 260 },
+      { group: 'Fruit', name: 'Bananas', desc: '18 kg box', price: 230 }
+    ]
+  }
+};
+/* ====================================================================================== */
+// Contact details and the minimum order come from site.js, which every Groengeld page shares.
+if (typeof GG !== 'undefined') { CONFIG.whatsapp = GG.whatsapp; CONFIG.email = GG.email; CONFIG.minOrder = GG.minOrder; }
+
+// Weekly cost: each delivery carries the full list; a delivery below the free threshold adds the fee.
+function weeklyTotal(items, daysPerWeek) {
+  const perDelivery = items.reduce((sum, it) => sum + it.price * it.qty, 0);
+  const fee = perDelivery > 0 && perDelivery < CONFIG.freeDeliveryOver ? CONFIG.deliveryFee : 0;
+  return (perDelivery + fee) * daysPerWeek;
+}
+
+const rand = (n) => 'R' + Math.round(n).toLocaleString('en-ZA').replace(/\s|,/g, ' ');
+const $ = (id) => document.getElementById(id);
+const wa = (text) => 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(text);
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+let mode = 'home';
+const qty = { home: {}, kitchen: {} };
+const notes = {
+  home: 'Most households choose one box and one delivery day. Prices are fixed; the contents follow the season.',
+  kitchen: 'Sample prices for this week. Each delivery day gets the full list below; tell us if days differ and we will set it up by hand.'
+};
+
+function renderItems() {
+  let html = '', last = '';
+  CONFIG.items[mode].forEach((it, i) => {
+    if (it.group !== last) { html += `<div class="group">${esc(it.group)}</div>`; last = it.group; }
+    html += `<div class="item"><div class="info"><div class="name" data-item-name>${esc(it.name)}</div><div class="desc">${esc(it.desc)}</div></div>
+      <div class="p">${rand(it.price)}</div>
+      <div class="step"><button data-minus="${i}" aria-label="Less ${esc(it.name)}">−</button><output id="q${i}">${qty[mode][i] || 0}</output><button data-plus="${i}" aria-label="More ${esc(it.name)}">+</button></div></div>`;
+  });
+  $('items').innerHTML = html;
+  $('mode-note').textContent = notes[mode];
+  $('m-home').setAttribute('aria-pressed', mode === 'home');
+  $('m-kitchen').setAttribute('aria-pressed', mode === 'kitchen');
+}
+function chosen() {
+  return CONFIG.items[mode].map((it, i) => ({ ...it, qty: qty[mode][i] || 0 })).filter((it) => it.qty > 0);
+}
+function update() {
+  const items = chosen();
+  const days = [...document.querySelectorAll('#days input:checked')].map((c) => c.value);
+  const perDelivery = items.reduce((s, it) => s + it.price * it.qty, 0);
+  const total = weeklyTotal(items, days.length);
+  $('lines').innerHTML = items.map((it) => `<li><span>${it.qty} x ${esc(it.name)}</span><span>${rand(it.price * it.qty)}</span></li>`).join('');
+  $('total').textContent = rand(total);
+  const feeApplies = perDelivery > 0 && perDelivery < CONFIG.freeDeliveryOver;
+  $('fee-note').textContent = !items.length ? `Delivery ${rand(CONFIG.deliveryFee)}, free on deliveries of ${rand(CONFIG.freeDeliveryOver)} or more.`
+    : feeApplies ? `Includes ${rand(CONFIG.deliveryFee)} delivery per drop. Add ${rand(CONFIG.freeDeliveryOver - perDelivery)} for free delivery.`
+    : 'Free delivery on this order.';
+  const send = $('send');
+  const short = CONFIG.minOrder - perDelivery;
+  if (items.length && days.length && short <= 0) {
+    const who = mode === 'home' ? 'Household' : 'Restaurant or business';
+    const v = (id) => $(id).value.trim() || 'not given';
+    send.href = wa(`Hi Groengeld, please start this standing order.\n\nType: ${who}\nName: ${v('o-name')}\nSuburb: ${v('o-area')}\nDelivery days: ${days.join(', ')}\n\nEach delivery:\n${items.map((it) => `${it.qty} x ${it.name} (${it.desc}) ${rand(it.price * it.qty)}`).join('\n')}\n\nTotal per week: ${rand(total)}${feeApplies ? ' including delivery' : ', free delivery'}`);
+    send.setAttribute('aria-disabled', 'false');
+    $('hint').textContent = 'Opens WhatsApp with your order ready to send. We confirm before the first delivery.';
+  } else {
+    send.removeAttribute('href');
+    send.setAttribute('aria-disabled', 'true');
+    $('hint').textContent = items.length && days.length ? `Minimum order is ${rand(CONFIG.minOrder)} per delivery. Add ${rand(short)} more.` : 'Add at least one item and one delivery day.';
+  }
+}
+$('items').addEventListener('click', (e) => {
+  const d = e.target.dataset; const i = d.plus ?? d.minus; if (i === undefined) return;
+  qty[mode][i] = Math.max(0, Math.min(99, (qty[mode][i] || 0) + (d.plus !== undefined ? 1 : -1)));
+  $('q' + i).textContent = qty[mode][i]; update();
+});
+function setMode(m) { mode = m; renderItems(); update(); }
+$('m-home').onclick = () => setMode('home');
+$('m-kitchen').onclick = () => setMode('kitchen');
+$('days').innerHTML = CONFIG.days.map((d, i) => `<label><input type="checkbox" value="${d}"${i === 0 ? ' checked' : ''}><span>${d}</span></label>`).join('');
+$('days').addEventListener('change', update);
+$('o-name').addEventListener('input', update); $('o-area').addEventListener('input', update);
+$('area-list').innerHTML = CONFIG.areas.map((a) => `<li>${esc(a)}</li>`).join('');
+$('faq-fee').textContent = `${rand(CONFIG.deliveryFee)} per delivery, and free on any delivery of ${rand(CONFIG.freeDeliveryOver)} or more.`;
+$('f-mail').textContent = CONFIG.email; $('f-mail').href = 'mailto:' + CONFIG.email;
+$('f-wa').href = wa('Hi Groengeld, I have a question.');
+$('f-legal').textContent = '© ' + new Date().getFullYear() + ' ' + CONFIG.legalName + '. Restaurant prices change weekly with the market. Household box prices are fixed.';
+renderItems(); update();
+</script>
+<script>
+/* Hide a moving panel if its clip is missing, and the whole band if none loaded. */
+document.querySelectorAll('.mood-card video').forEach(function (v) {
+  function gone() { var f = v.closest('figure'); f.hidden = true; var s = f.closest('.mood'); if (!s.querySelector('figure:not([hidden])')) s.hidden = true; }
+  if (v.error || v.networkState === 3) gone(); else v.addEventListener('error', gone);
+});
+</script>
+</body>
+</html>

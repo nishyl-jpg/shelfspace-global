@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ship in a Bottle | Imported ready-to-drink cocktails, Cape Town</title>
+<meta name="description" content="Ship in a Bottle imports the ready-to-drink cocktails you have seen online and delivers them in Cape Town, to homes, bars and events. Strictly 18+.">
+<meta property="og:title" content="Ship in a Bottle | The drinks you've seen online, landed in Cape Town">
+<meta property="og:description" content="Imported ready-to-drink cocktails for homes, bars and events. Strictly 18+.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--night:#070a24;--navy:#0b1040;--deep:#03051a;--sea:#9fb0ff;--coral:#ff5a36;--sun:#ffb347;--foam:#070a24;--ink:#efeaff;--muted:#a9add6;--line:#2a3176}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--foam);color:var(--ink);font:16px/1.6 Rubik,system-ui,sans-serif}
+h1,h2,h3{line-height:1.05;margin:0;font-weight:900;letter-spacing:-.02em}
+a{color:var(--sea)}
+[hidden]{display:none!important}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.btn{display:inline-block;background:var(--coral);color:#fff;font:700 15.5px Rubik,sans-serif;padding:12px 22px;border-radius:999px;text-decoration:none;border:0;cursor:pointer}
+.btn:hover{filter:brightness(1.07)}
+.btn.sun{background:var(--sun);color:var(--ink)}
+.btn.line{background:transparent;box-shadow:inset 0 0 0 2px currentColor;color:#fff}
+.btn.small{padding:8px 16px;font-size:14px}
+button:focus-visible,a:focus-visible,input:focus,select:focus{outline:3px solid var(--sun);outline-offset:2px}
+
+/* Age gate */
+#gate{position:fixed;inset:0;z-index:20;background:var(--deep);color:#fff;display:grid;place-items:center;padding:20px;text-align:center}
+#gate .box{max-width:440px}
+#gate h1{font-size:clamp(30px,7vw,44px);margin:18px 0 10px}
+#gate p{color:#b9c8d6;margin:0 0 22px}
+#gate .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#gate small{display:block;margin-top:22px;color:#8296a8}
+.mark{width:84px;height:84px;margin:0 auto}
+
+header.top{position:sticky;top:0;z-index:5;background:var(--navy);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:19px;color:#fff;text-decoration:none;letter-spacing:-.01em}
+.logo svg{width:34px;height:34px;flex:none}
+nav.main{display:flex;gap:18px;font-size:14.5px;font-weight:500}
+nav.main a{color:#c9d7e3;text-decoration:none}
+@media(max-width:760px){nav.main{display:none}}
+.badge18{font-weight:900;font-size:12px;border:2px solid var(--sun);color:var(--sun);border-radius:999px;padding:1px 7px}
+
+.hero{background:linear-gradient(180deg,var(--navy),var(--sea));color:#fff;padding:56px 0 0;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+@media(max-width:820px){.hero .wrap{grid-template-columns:1fr}}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sun)}
+.hero h1{font-size:clamp(40px,8vw,74px);margin:10px 0 16px}
+.hero h1 em{font-style:normal;color:var(--sun)}
+.hero p.lede{font-size:18.5px;color:#d5e3ee;max-width:32em;margin:0 0 24px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.status{display:inline-block;margin-top:20px;background:#ffffff1c;border-radius:10px;padding:8px 14px;font-size:14px}
+.art{display:flex;justify-content:center;align-items:flex-end;gap:14px;padding:10px 0 0;min-height:230px}
+.ball{width:118px;height:118px;border-radius:50%;position:relative;box-shadow:inset -14px -16px 0 #0002,inset 10px 12px 0 #fff3;flex:none}
+.ball::before{content:"";position:absolute;left:50%;top:-9px;transform:translateX(-50%);width:44px;height:14px;border-radius:6px 6px 0 0;background:#ffffffcc}
+.ball:nth-child(1){background:#59c36a;margin-bottom:26px}
+.ball:nth-child(2){background:var(--coral);width:140px;height:140px;margin-bottom:60px}
+.ball:nth-child(3){background:var(--sun);margin-bottom:14px}
+@media(max-width:420px){.ball{width:88px;height:88px}.ball:nth-child(2){width:104px;height:104px}}
+.waves{display:block;width:100%;height:46px;margin-top:-30px;position:relative}
+
+section{padding:56px 0}
+section.alt{background:#fff}
+.sec-head{max-width:40em;margin-bottom:26px}
+.sec-head .eyebrow{color:var(--coral)}
+.sec-head h2{font-size:clamp(28px,5.2vw,44px);margin:8px 0 10px}
+.sec-head p{color:var(--muted);margin:0}
+.flavours{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:28px}
+.fl{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center}
+.fl i{display:block;width:54px;height:54px;border-radius:50%;margin:0 auto 10px;box-shadow:inset -6px -7px 0 #0002,inset 5px 6px 0 #fff4}
+.fl b{display:block}
+.fl span{font-size:13px;color:var(--muted)}
+.packs{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.pack{background:var(--navy);color:#fff;border-radius:22px;padding:24px;display:flex;flex-direction:column}
+.pack.hot{background:var(--coral)}
+.pack h3{font-size:24px}
+.pack .price{font-weight:900;font-size:36px;margin:8px 0 0}
+.pack .each{font-size:14px;opacity:.85}
+.pack p{flex:1;opacity:.9;margin:12px 0 18px;font-size:15px}
+.soon{font-weight:700;font-size:14px;background:#ffffff26;border-radius:999px;padding:8px 14px;text-align:center}
+.two{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.panel{background:var(--foam);border:1px solid var(--line);border-radius:18px;padding:22px}
+section:not(.alt) .panel{background:#fff}
+.panel h3{font-size:22px;margin-bottom:8px}
+.panel ul{padding-left:18px;color:var(--muted);margin:0 0 16px}
+.panel li{margin:5px 0}
+form.w{background:var(--navy);color:#fff;border-radius:22px;padding:24px;display:grid;gap:14px;max-width:560px}
+form.w label{font-weight:500;font-size:14px;display:grid;gap:6px}
+form.w input,form.w select{font:16px Rubik,sans-serif;padding:11px 12px;border:0;border-radius:10px;width:100%}
+.fine{font-size:13px;color:var(--muted);margin:0}
+form.w .fine{color:#b9c8d6}
+.rules{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:0;list-style:none;margin:0}
+.rules li{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;font-size:14.5px;color:var(--muted)}
+.rules b{display:block;color:var(--ink);margin-bottom:4px}
+details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px}
+section.alt details{background:var(--foam)}
+summary{font-weight:700;cursor:pointer}
+details p{color:var(--muted);margin:10px 0 0}
+.resp{background:var(--sun);color:var(--ink);text-align:center;font-weight:700;padding:12px 16px;font-size:15px}
+footer{background:var(--deep);color:#b9c8d6;padding:40px 0;font-size:14.5px}
+footer a{color:#fff}
+footer .wrap{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+
+/* ===== Moonlit night art direction ===== */
+:root{color-scheme:dark}
+body{background:var(--night);color:var(--ink)}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;letter-spacing:0;font-weight:700}
+h1,h2,h3,.price,.tot b,.facts b,.steps li::before{font-variant-numeric:lining-nums tabular-nums}
+form.w input,form.w select{border:1px solid #3a4296}
+.eyebrow,.logo{font-family:Cinzel,Georgia,serif;letter-spacing:.14em}
+.logo{font-size:19px;font-weight:700;text-transform:uppercase}
+.scene{display:block;width:100%;max-width:460px;height:auto;margin:0 auto;filter:drop-shadow(0 20px 50px #000a)}
+select,input,textarea,input.txt{background:#0a0f38;color:var(--ink);border:1px solid #3a4296}
+::placeholder{color:#7d83b8}
+details p,.fine{color:var(--muted)}
+
+h1,h2,h3{font-weight:700}
+#gate{background:radial-gradient(700px 500px at 50% 0,#1a2aa8 0,transparent 65%),var(--deep)}
+.hero{background:radial-gradient(900px 500px at 85% 0,#1a2aa8 0,transparent 60%),var(--night);padding-bottom:56px}
+.hero h1{font-size:clamp(44px,8vw,78px)}
+.btn{box-shadow:0 0 24px #ff5a3655}
+.btn.sun{color:#1a1030;box-shadow:0 0 24px #ffb34755}
+section.alt{background:#0d1238}
+.fl,.rules li,details,section.alt details,.panel,section:not(.alt) .panel{background:#131949;border-color:var(--line)}
+.rules b{color:var(--sun)}
+.pack{border:1px solid var(--line)}
+.pack.hot{border-color:transparent;box-shadow:0 0 40px #ff5a3655}
+.pack .price{font-family:"Cormorant Garamond",Georgia,serif;font-size:44px}
+.resp{color:#1a1030}
+.logo{font-size:15px}
+
+/* Moving hero */
+.hero{position:relative;min-height:min(86vh,760px);display:flex;align-items:center;padding:72px 0;background:radial-gradient(900px 600px at 78% 20%,#1a2aa8 0,transparent 65%),#04061c}
+.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 40%}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,#04061cf2 0,#04061cb3 38%,#04061c26 68%,transparent),linear-gradient(0deg,#070a24 0,transparent 22%)}
+.hero .wrap{position:relative;z-index:1;display:block;width:100%}
+.hero .wrap>div{max-width:560px}
+.hero h1,.hero p{text-shadow:0 2px 18px #000c}
+@media(max-width:720px){
+  .hero{min-height:0;display:block;padding:0 0 40px}
+  .hero-vid{position:relative;display:block;height:auto;aspect-ratio:4/5;object-position:78% 30%}
+  .hero-shade{background:linear-gradient(0deg,#070a24 46%,transparent 70%)}
+  .hero .wrap{margin-top:-120px}
+}
+@media(prefers-reduced-motion:reduce){.hero-vid{display:none}.hero{background:url(hero.jpg) 72% 40%/cover #04061c}}
+
+/* Moving scene panels */
+.mood{padding:8px 0 56px}
+.mood .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.mood-card{position:relative;margin:0;border-radius:22px;overflow:hidden;aspect-ratio:16/10;border:1px solid #ffb34755;background:linear-gradient(180deg,#04061c,#16228f 70%,#4a34a8)}
+.mood-card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mood-card figcaption{position:absolute;inset:auto 0 0 0;padding:44px 18px 16px;background:linear-gradient(0deg,#04061cee,transparent);color:#fff}
+.mood-card b{display:block;font:700 26px "Cormorant Garamond",Georgia,serif}
+.mood-card span{font-size:14px;color:#c9cdf5}
+</style>
+</head>
+<body>
+
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-h">
+  <div class="box" id="gate-ask">
+    <svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="36" r="24" fill="none" stroke="#ffc23d" stroke-width="3"/><rect x="25" y="4" width="14" height="9" rx="2" fill="#ffc23d"/><path d="M18 44h28l-5 7H23z" fill="#ff6b4a"/><path d="M32 22v20M32 24l11 14H32z" stroke="#fff" stroke-width="2.5" fill="#fff" stroke-linejoin="round"/></svg>
+    <h1 id="gate-h">Are you 18 or older?</h1>
+    <p>Ship in a Bottle sells alcohol. You must be of legal drinking age to come aboard.</p>
+    <div class="row">
+      <button class="btn sun" id="age-yes">Yes, I am 18 or older</button>
+      <button class="btn line" id="age-no">No</button>
+    </div>
+    <small>Not for persons under the age of 18. Enjoy responsibly.</small>
+  </div>
+  <div class="box" id="age-refused" hidden>
+    <h1>Sorry, not yet.</h1>
+    <p>This site is only for people aged 18 and over. Come back when you are.</p>
+  </div>
+</div>
+
+<div id="site" hidden>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="36" r="24" fill="none" stroke="#ffc23d" stroke-width="4"/><rect x="25" y="4" width="14" height="9" rx="2" fill="#ffc23d"/><path d="M18 44h28l-5 7H23z" fill="#ff6b4a"/><path d="M32 22v20M32 24l11 14H32z" stroke="#fff" stroke-width="2.5" fill="#fff" stroke-linejoin="round"/></svg>
+      Ship in a Bottle
+    </a>
+    <nav class="main" aria-label="Main"><a href="#range">The range</a><a href="#who">Homes and trade</a><a href="#delivery">Delivery</a><a href="#faq">Questions</a></nav>
+    <span class="badge18" title="Not for persons under 18">18+</span>
+  </div>
+</header>
+
+<main id="top">
+<div class="hero">
+  <video class="hero-vid" autoplay muted loop playsinline preload="auto" poster="hero.jpg" src="hero.mp4" aria-label="A woman in a blue velvet gown holding a rose at the rail of a ship under a clouded moon"></video>
+  <div class="hero-shade"></div>
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Imported ready-to-drink cocktails · Cape Town</p>
+      <h1>You've seen them online. <em>They've landed.</em></h1>
+      <p class="lede">The round, ready-to-drink cocktails from overseas, shipped in and delivered in Cape Town. For your fridge, your bar or your event.</p>
+      <div class="cta-row">
+        <a class="btn sun" id="hero-cta" href="#waitlist">Join the waiting list</a>
+        <a class="btn line" href="#who">Bars and events</a>
+      </div>
+      <p class="status" id="status"></p>
+    </div>
+  </div>
+</div>
+
+<section id="range">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">The range</p>
+      <h2>Six cocktails. Shake, chill, open.</h2>
+      <p id="range-note"></p>
+    </div>
+    <div class="flavours" id="flavours"></div>
+    <div class="packs" id="packs"></div>
+  </div>
+</section>
+
+<section class="mood" aria-label="The mood">
+  <div class="wrap">
+    <figure class="mood-card"><video autoplay muted loop playsinline preload="metadata" poster="orbs.jpg" src="orbs.mp4" aria-label="Six round glowing bottles on a harbour ledge under an amber moon"></video><figcaption><b>Six cocktails</b><span>Round, ready and unlike anything on a local shelf</span></figcaption></figure>
+    <figure class="mood-card"><video autoplay muted loop playsinline preload="metadata" poster="bar.jpg" src="bar.mp4" aria-label="A lantern-lit bar on the deck of a sailing ship"></video><figcaption><b>For your deck, bar or event</b><span>By the single, the four-pack or the case</span></figcaption></figure>
+  </div>
+</section>
+
+<section class="alt" id="who">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Homes and trade</p><h2>For your fridge, or for your bar</h2></div>
+    <div class="two">
+      <div class="panel">
+        <h3>For you</h3>
+        <ul>
+          <li>Singles, mixed four-packs and party cases</li>
+          <li>Delivered in Cape Town to an adult with ID</li>
+          <li>Party coming up? Order a week ahead and we hold your case</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>For bars, restaurants, bottle stores and events</h3>
+        <ul>
+          <li>Trade pricing by the case for licensed businesses</li>
+          <li>Counter display units and menu cards</li>
+          <li>Event packs with ice tubs for licensed event bars</li>
+          <li>We ask for a copy of your liquor licence before the first order</li>
+        </ul>
+        <a class="btn small" id="trade-link" href="#" target="_blank" rel="noopener">Ask about trade supply</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="waitlist">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Waiting list</p>
+      <h2>Be first when the ship comes in</h2>
+      <p>We are not selling yet: our liquor licence application is in progress. Join the list and we will message you once, the day we open.</p>
+    </div>
+    <form class="w" id="w-form" onsubmit="return false">
+      <label>Your name<input id="w-name" autocomplete="name"></label>
+      <label>I am<select id="w-type"><option>Buying for myself</option><option>A bar, restaurant or bottle store</option><option>An event organiser</option></select></label>
+      <label>Suburb<input id="w-area" autocomplete="address-level2"></label>
+      <a class="btn sun" id="w-send" href="#" target="_blank" rel="noopener">Join on WhatsApp</a>
+      <p class="fine">By joining you confirm you are 18 or older and agree to one message when we open. Reply STOP to be removed.</p>
+    </form>
+  </div>
+</section>
+
+<section class="alt" id="delivery">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Delivery</p><h2>How delivery works</h2></div>
+    <ul class="rules">
+      <li><b>Adults only</b>The driver checks ID on every delivery. No ID, no handover.</li>
+      <li><b>Someone must be there</b>We never leave alcohol at a gate, with a child, or with a person who is clearly intoxicated.</li>
+      <li><b>Licensed hours</b>We deliver only within the trading hours on our licence.</li>
+      <li><b>Cape Town first</b>City Bowl, Atlantic Seaboard, Southern and Northern Suburbs, Blouberg. More areas as we grow.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head"><p class="eyebrow">Questions</p><h2>Good to know</h2></div>
+    <details><summary>When can I order?</summary><p id="faq-when"></p></details>
+    <details><summary>Are these the real imported drinks?</summary><p>Yes. Everything we sell is the genuine product, imported in its original sealed container, cleared through customs with duties paid, and labelled to South African requirements.</p></details>
+    <details><summary>How strong are they?</summary><p>Most are 15% alcohol by volume in a 200 ml serving, which is stronger than a beer or cider. One is a proper drink. Please treat it like one.</p></details>
+    <details><summary>Do you deliver outside Cape Town?</summary><p>Not at launch. Join the list with your suburb and we will tell you when we reach you.</p></details>
+    <details><summary>Can you supply my bar or event?</summary><p>Yes, if you hold a liquor licence or an event liquor permit. Use the trade button above.</p></details>
+    <details><summary>What if a delivery arrives damaged?</summary><p>Send a photo the same day and we replace or refund it.</p></details>
+  </div>
+</section>
+</main>
+
+<div class="resp">Not for persons under the age of 18. Don't drink and drive.</div>
+<footer>
+  <div class="wrap">
+    <div><strong>Ship in a Bottle</strong><p>Imported ready-to-drink cocktails. Cape Town.</p></div>
+    <div><strong>Contact</strong><p><a id="f-wa" href="#" target="_blank" rel="noopener">WhatsApp us</a><br><a id="f-mail" href="#"></a></p></div>
+    <div><p id="f-legal"></p><p id="f-licence"></p></div>
+  </div>
+</footer>
+</div>
+
+<script>
+/* ============ EDIT HERE: contact details, licence, range and prices ============ */
+const CONFIG = {
+  whatsapp: '27000000000',             // your number, country code first, no + or spaces
+  email: 'ahoy@shipinabottle.co.za',
+  legalName: 'Ship in a Bottle (Pty) Ltd',  // add the registration number once registered
+  licenceNumber: '',                   // LEAVE EMPTY until your liquor licence is granted. Filling it in switches on ordering.
+  flavours: [                          // replace with the real product names once your supply is confirmed
+    { name: 'Lime Margarita', note: 'Tequila, lime', colour: '#59c36a' },
+    { name: 'Strawberry Daiquiri', note: 'Rum, strawberry', colour: '#ff5a7a' },
+    { name: 'Espresso Martini', note: 'Vodka, coffee', colour: '#6b4a3a' },
+    { name: 'Mango Chilli', note: 'Tequila, mango, heat', colour: '#ffb03d' },
+    { name: 'Chocolate Cream', note: 'Cream liqueur', colour: '#a9774f' },
+    { name: 'Cranberry Punch', note: 'Vodka, cranberry', colour: '#c7354f' }
+  ],
+  products: [
+    { name: 'Single', price: 99, units: 1, text: 'One cocktail, any flavour. 200 ml, 15% alcohol.' },
+    { name: 'Mixed four-pack', price: 360, units: 4, hot: true, text: 'Choose any four flavours. The one most people start with.' },
+    { name: 'Party case', price: 2040, units: 24, text: 'Twenty-four cocktails, your mix. For parties and events.' }
+  ]
+};
+/* =============================================================================== */
+
+const $ = (id) => document.getElementById(id);
+const rand = (n) => 'R' + Math.round(n).toLocaleString('en-ZA').replace(/\s|,/g, ' ');
+const wa = (text) => 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(text);
+
+// For testing on your own computer only: ?licence=XYZ previews the ordering mode. Ignored on the live site.
+const local = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+const licence = (local && new URLSearchParams(location.search).get('licence')) || CONFIG.licenceNumber.trim();
+const open = Boolean(licence);
+
+// Age gate: asked on every visit, nothing shown until answered yes.
+$('age-yes').onclick = () => { $('gate').hidden = true; $('site').hidden = false; };
+$('age-no').onclick = () => { $('gate-ask').hidden = true; $('age-refused').hidden = false; };
+
+$('flavours').innerHTML = CONFIG.flavours.map((f) => `<div class="fl"><i style="background:${f.colour}"></i><b>${f.name}</b><span>${f.note}</span></div>`).join('');
+$('packs').innerHTML = CONFIG.products.map((p) => `
+  <div class="pack${p.hot ? ' hot' : ''}">
+    <h3>${p.name}</h3>
+    <div class="price">${rand(p.price)}</div>
+    <div class="each">${p.units > 1 ? rand(p.price / p.units) + ' each' : 'each'}</div>
+    <p>${p.text}</p>
+    ${open
+      ? `<a class="btn sun" data-order href="${wa(`Ahoy! I am 18 or older and would like to order: ${p.name} (${rand(p.price)}).\nFlavours: \nDelivery suburb: `)}" target="_blank" rel="noopener">Order on WhatsApp</a>`
+      : '<div class="soon">Available when we open</div>'}
+  </div>`).join('');
+
+$('range-note').textContent = open
+  ? 'Prices include VAT. Delivery is quoted when you order. ID is checked on delivery.'
+  : 'Planned launch range and prices, including VAT. Final range confirmed when we open.';
+$('status').textContent = open ? 'Now delivering in Cape Town. ID checked on delivery.' : 'Licence pending. Not yet selling. Join the list to be first.';
+$('faq-when').textContent = open ? 'Now. Choose a pack above and order on WhatsApp.' : 'As soon as our liquor licence is granted. Until then we cannot sell or deliver. Join the waiting list and we will tell you the day we open.';
+if (open) {
+  $('waitlist').hidden = true;
+  $('hero-cta').textContent = 'See the range'; $('hero-cta').href = '#range';
+  $('f-licence').textContent = 'Liquor licence number: ' + licence;
+} else {
+  $('f-licence').textContent = 'Liquor licence: application in progress. No alcohol is sold through this site yet.';
+  const upd = () => {
+    const v = (id) => $(id).value.trim() || 'not given';
+    $('w-send').href = wa(`Ahoy! Please add me to the Ship in a Bottle waiting list. I confirm I am 18 or older.\nName: ${v('w-name')}\nI am: ${$('w-type').value}\nSuburb: ${v('w-area')}`);
+  };
+  $('w-form').addEventListener('input', upd); $('w-form').addEventListener('change', upd); upd();
+}
+$('trade-link').href = wa('Hi Ship in a Bottle, I would like to ask about trade supply.\nBusiness name: \nLicence type: \nArea: ');
+$('f-wa').href = wa('Hi Ship in a Bottle, I have a question.');
+$('f-mail').textContent = CONFIG.email; $('f-mail').href = 'mailto:' + CONFIG.email;
+$('f-legal').textContent = '© ' + new Date().getFullYear() + ' ' + CONFIG.legalName + '. Alcohol is sold only to persons aged 18 and over.';
+</script>
+<script>
+/* Hide a moving panel if its clip is missing, and the whole band if none loaded. */
+document.querySelectorAll('.mood-card video').forEach(function (v) {
+  function gone() { var f = v.closest('figure'); f.hidden = true; var s = f.closest('.mood'); if (!s.querySelector('figure:not([hidden])')) s.hidden = true; }
+  if (v.error || v.networkState === 3) gone(); else v.addEventListener('error', gone);
+});
+</script>
+</body>
+</html>

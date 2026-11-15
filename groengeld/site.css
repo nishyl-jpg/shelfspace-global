@@ -1,0 +1,67 @@
+/* Groengeld inner pages: citrus grove palette. Layout: photo band hero, then cream sections of white cards. */
+:root{--green:#2f4a1f;--green-dark:#1d3312;--leaf:#6e8f2a;--lime:#c9e265;--gold:#f4c430;--zest:#e0a91f;--teal:#0f4c45;--tang:#ff8c1c;--persimmon:#e2552a;--cream:#f7f6e9;--paper:#fffdf2;--ink:#1c2a14;--muted:#56644c;--line:#dde2c4;--soft:#eef3dc}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif}
+h1,h2,h3{font-family:Poppins,system-ui,sans-serif;font-weight:800;letter-spacing:-.025em;line-height:1.1;margin:0;text-wrap:balance}
+a{color:var(--teal)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.top{position:sticky;top:0;z-index:5;background:var(--green-dark);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:58px;flex-wrap:wrap;padding-block:8px}
+.logo{font:700 25px Comfortaa,Poppins,system-ui,sans-serif;color:#fff;text-decoration:none;letter-spacing:-.01em}
+.logo span{color:var(--gold)}
+nav.main{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:14.5px;font-weight:500}
+nav.main a{color:#dfe9d2;text-decoration:none;padding:4px 0}
+nav.main a[aria-current]{color:var(--gold);box-shadow:0 2px 0 var(--gold)}
+.btn{display:inline-block;background:var(--gold);color:var(--ink);font:700 15px Inter,sans-serif;padding:11px 18px;border-radius:12px;text-decoration:none;box-shadow:0 6px 18px #e0a91f55}
+.btn.green{background:var(--green);color:#fff;box-shadow:0 6px 18px #2f4a1f40}
+.btn.small{padding:8px 14px;font-size:14px}
+a:focus-visible,.btn:focus-visible{outline:3px solid var(--tang);outline-offset:2px}
+.band{position:relative;background:var(--green-dark) center/cover;color:#fff;padding:64px 0 56px}
+.band::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#1d3312f2 0,#1d3312bf 45%,#1d331255)}
+.band .wrap{position:relative}
+.eyebrow{font:700 13px Poppins,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf)}
+.band .eyebrow{color:var(--gold)}
+.band h1{font-size:clamp(36px,6.5vw,62px);margin:10px 0 14px;max-width:14em}
+.band h1 em,h2 em{font-style:normal;color:var(--lime)}
+h2 em{color:var(--leaf)}
+.band p{font-size:18px;color:#eef3dc;max-width:36em;margin:0}
+section{padding:52px 0}
+section.alt{background:var(--paper)}
+.sec-head{max-width:42em;margin-bottom:24px}
+.sec-head h2{font-size:clamp(26px,4.6vw,38px);margin:8px 0 10px}
+.sec-head p{color:var(--muted);margin:0}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.grid.wide{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 24px #2f4a1f12;min-width:0}
+.card h3{font-size:19px;margin-bottom:6px;color:var(--green)}
+.card p{margin:0;color:var(--muted);font-size:14.5px}
+.card ul{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:14.5px}
+.card li{margin:3px 0}
+.icon{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--soft);margin-bottom:12px;color:var(--leaf)}
+.icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.num{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:var(--tang);color:#fff;font:800 17px Poppins,sans-serif;margin-bottom:10px}
+.price{font:800 28px Poppins,sans-serif;color:var(--persimmon);font-variant-numeric:tabular-nums;margin:6px 0 2px}
+.price small{font:500 13px Inter,sans-serif;color:var(--muted)}
+.tag{display:inline-block;background:var(--soft);color:var(--green);font-weight:700;font-size:12px;padding:2px 9px;border-radius:999px;margin-bottom:8px}
+.tag.hot{background:var(--gold);color:var(--ink)}
+.card .btn{margin-top:14px}
+.card.dark{background:var(--green);border-color:var(--green);color:#fff}
+.card.dark h3{color:var(--lime)}
+.card.dark p,.card.dark ul{color:#e3ecd4}
+.card.sun{background:var(--gold);border-color:var(--zest)}
+.card.sun h3{color:var(--ink)}
+.card.sun p{color:#3a3410}
+.table-wrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px #2f4a1f12}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid #eceed9;vertical-align:top}
+th{background:var(--soft);color:var(--green);font-weight:700;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.r{font-weight:700;color:var(--teal);white-space:nowrap;font-variant-numeric:tabular-nums}
+.note{background:var(--soft);border-radius:14px;padding:14px 16px;color:var(--green);font-size:14.5px;margin-top:16px}
+.fine{font-size:13px;color:var(--muted)}
+.prizes{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none;margin:0}
+.prizes li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:600;font-size:14.5px;color:var(--green)}
+footer{background:var(--green-dark);color:#cfe0bf;padding:36px 0;font-size:14.5px}
+footer a{color:#fff}
+footer .wrap{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
